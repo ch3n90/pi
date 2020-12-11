@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Menu from '../components/Menu'
-import SMMS from '@/components/auth/SMMS'
-import PostImage from '@/components/auth/PostImage'
+import Auth from '../components/auth/Auth'
+import M3nu from '../components/auth/M3nu'
+import Smms from '../components/auth/Smms.vue'
+// import PostImage from '../components/auth/PostImage'
 
 Vue.use(Router)
 
@@ -10,23 +11,23 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'Menu',
-      component: Menu,
-      redirect:'/menu',
+      name: 'Auth',
+      component: Auth,
+      redirect:'/m3nu',
       children:[
         {
-          path: '/menu',
-          component: Menu,
+          path: '/m3nu',
+          component: M3nu,
 
         },
         {
           path: '/smms',
-          component: SMMS,
+          component: Smms,
         },
-        {
-          path: '/postimage',
-          component: PostImage,
-        },
+        // {
+        //   path: '/postimage',
+        //   component: PostImage,
+        // },
         // {
         //   path: '/loading',
         //   component: Loading,

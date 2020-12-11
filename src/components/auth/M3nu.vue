@@ -1,11 +1,11 @@
 <template>
-  <div class="main">
+<div class="main">
     <div class="container">
-      <router-link to="/smms" class="item" >
+      <router-link to="/smms" class="item">
             <div class="item-inner">
               <div class="item-hd">
                 <div class="log">
-                  <img src="../assets/images/smms.webp" alt="">
+                  <img src="../../assets/images/smms.webp" alt="">
                 </div>
                 <div class="title">
                     <span>SM.MS</span>
@@ -21,7 +21,7 @@
           <div class="item-inner">
               <div class="item-hd">
                 <div class="log">
-                  <img src="../assets/images/postimage.png" alt="">
+                  <img src="../../assets/images/postimage.png" alt="">
                 </div>
                 <div class="title">
                     <span>Post Image</span>
@@ -33,60 +33,16 @@
           </div>
       </div>
 
-        <div class="item">
-          <div class="item-inner">
-              <div class="item-hd">
-                <div class="log">
-                  <img src="../assets/images/smms.webp" alt="">
-                </div>
-                <div class="title">
-                    <span>SM.MS</span>
-                </div>
-              </div>
-              <div class="item-ft">
-                https://sm.ms
-              </div>
-          </div>
-      </div>
-
-         <div class="item">
-          <div class="item-inner">
-              <div class="item-hd">
-                <div class="log">
-                  <img src="../assets/images/smms.webp" alt="">
-                </div>
-                <div class="title">
-                    <span>SM.MS</span>
-                </div>
-              </div>
-              <div class="item-ft">
-                https://sm.ms
-              </div>
-          </div>
-      </div>
-
-        <div class="item">
-          <div class="item-inner">
-              <div class="item-hd">
-                <div class="log">
-                  <img src="../assets/images/smms.webp" alt="">
-                </div>
-                <div class="title">
-                    <span>SM.MS</span>
-                </div>
-              </div>
-              <div class="item-ft">
-                https://sm.ms
-              </div>
-          </div>
-      </div>
     </div>
   </div>
 </template>
 
+
 <script>
+
+
 export default {
-  name: 'Menu',
+  name: 'M3nu',
 
 }
 </script>
