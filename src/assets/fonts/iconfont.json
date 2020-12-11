@@ -1,0 +1,23 @@
+{
+  "id": "2265240",
+  "name": "pi",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "17833660",
+      "name": "减号",
+      "font_class": "jianhao",
+      "unicode": "e622",
+      "unicode_decimal": 58914
+    },
+    {
+      "icon_id": "17833666",
+      "name": "关闭",
+      "font_class": "guanbi1",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    }
+  ]
+}
