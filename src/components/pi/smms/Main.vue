@@ -3,11 +3,7 @@
       <div class="login">
           <h3>登入</h3>
           <div  class="username" >
-            <input type="text" placeholder="账户" v-model="username">
-          </div>
-
-          <div class="password" >
-            <input type="password" placeholder="密码" v-model="password">
+            <input type="text" placeholder="Api Key">
           </div>
 
           <div class="remember">
@@ -17,7 +13,7 @@
           </div>
 
           <div class="sign">
-            <input type="button" value="登入" @click="sign">
+            <input type="button" value="登入">
           </div>
 
           <div class="m3nu">
@@ -28,52 +24,9 @@
   </div>
 </template>
 
-
 <script>
-import HttpApi from '../../util/http.js'
-import qs from 'qs'
-
-const {ipcRenderer} = require('electron')
 export default {
-  name: 'Smms',
-  data(){
-    return {
-      username:'ch3ng',
-      password: "ch3ng4smms",
-      rememberMe: false,
-    }
-  },
-  methods:{
-    sign(){
-
-      HttpApi.post(
-        '/api/v2/token',
-        qs.stringify({
-          username: this.username,
-          password: this.password,
-        }),
-      )
-      .then(response=>{
-        if(response.success){
-          console.log(response.data.token);
-          this.$store.commit("setToken",response.data.token);
-          // this.$route.push("/pi")
-          ipcRenderer.send("pi-win");
-        }else{
-          throw response.message;
-        }
-      }).catch(err => {
-        let myNotification = new Notification('失败',{
-                body: err,
-                silent: true,
-            });
-      });
-    }
-  },
-  created(){
-    this.$store.commit("setUri","https://sm.ms/api/v2");
-    HttpApi.defaults.baseURL = "https://sm.ms";
-  }
+  name: 'PostImage',
 }
 </script>
 
@@ -160,21 +113,6 @@ label::before {
   border: 1px solid #ccc;
 }
 
-.password {
-   width: 100%;
-  height: 40px;
-  margin-top: 10px;
-  text-align: center;
-}
-
-.password input{
-  width: 80%;
-  height: 30px;
-  padding: 0 10px;
-  border-radius: 3px;
-  border: 1px solid #ccc;
-}
-
 .sign{
   width: 100%;
   height: 40px;
@@ -188,7 +126,6 @@ label::before {
   color: #fff;
   border: 0px;
   background-color: #3db8b5;
-  cursor: pointer;
 }
 
 .m3nu{
