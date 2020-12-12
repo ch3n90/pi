@@ -1,5 +1,5 @@
 <template>
-<div class="main">
+<div class="m3nu">
     <div class="container">
       <router-link to="/smms" class="item">
             <div class="item-inner">
@@ -17,7 +17,7 @@
             </div>
         </router-link>
 
-        <div class="item">
+        <router-link to="/postimage" class="item">
           <div class="item-inner">
               <div class="item-hd">
                 <div class="log">
@@ -31,8 +31,24 @@
                 https://postimages.org
               </div>
           </div>
-      </div>
+      </router-link>
 
+
+        <router-link to="/postimage" class="item">
+          <div class="item-inner">
+              <div class="item-hd">
+                <div class="log">
+                  <img src="../../assets/images/postimage.png" alt="">
+                </div>
+                <div class="title">
+                    <span>Post Image</span>
+                </div>
+              </div>
+              <div class="item-ft">
+                https://postimages.org
+              </div>
+          </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -50,7 +66,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-.main{
+.m3nu{
   width: 100%;
   height: 100%;
 }
@@ -60,7 +76,6 @@ export default {
   height: 90%;
   position: absolute;
   left: 2.5%;
-  top: 35px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -72,12 +87,12 @@ export default {
 .item{
   width: 180px;
   height: 100px;
-  /* background-color: #fdfdfd; */
   border-radius: 5px;
   margin-bottom: 10px;
   border:1px solid #ccc;
   background-image: -webkit-linear-gradient(top,#fff,#f9f9f9);
   position: relative;
+  color: #444;
 }
 
 .item:hover{

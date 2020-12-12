@@ -1,13 +1,13 @@
 <template>
-<div>
-  <div class="menu">
+<div class="main">
+  <div class="frame">
     <div class="close iconfont icon-guanbi1"  @click="close"></div>
     <div class="min iconfont icon-jianhao" @click="minimize"></div>
   </div>
 
   <transition  name="flip"
-        enter-active-class="flipInY"
-        leave-active-class="flipOutY" mode="out-in">
+        enter-active-class="flipInX"
+        leave-active-class="flipOutX" mode="out-in">
     <router-view style="animation-duration: 0.5s"/>
   </transition>
 </div>
@@ -41,22 +41,23 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.main{
+  width: 100%;
+  height: 100%;
+}
 
-.menu{
+.frame{
   background-color: #e9ebec;
   width: 100%;
   height: 35px;
-  position: absolute;
   -webkit-app-region: drag;
   -webkit-user-select: none;
   z-index: 999;
-
 }
-.menu div{
+.frame div{
   width: 35px;
   height: 100%;
-   -webkit-app-region: no-drag;
-  /* background: blue; */
+  -webkit-app-region: no-drag;
   float:right;
   line-height: 35px;
   text-align: center;

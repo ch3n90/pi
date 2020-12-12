@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Auth from '../components/auth/Auth'
 import M3nu from '../components/auth/M3nu'
 import Smms from '../components/auth/Smms.vue'
-// import PostImage from '../components/auth/PostImage'
+import PostImage from '../components/auth/PostImage'
 
 Vue.use(Router)
 
@@ -24,10 +24,10 @@ export default new Router({
           path: '/smms',
           component: Smms,
         },
-        // {
-        //   path: '/postimage',
-        //   component: PostImage,
-        // },
+        {
+          path: '/postimage',
+          component: PostImage,
+        },
         // {
         //   path: '/loading',
         //   component: Loading,
