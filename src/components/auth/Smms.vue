@@ -34,6 +34,7 @@ import HttpApi from '../../util/http.js'
 import qs from 'qs'
 
 const {ipcRenderer} = require('electron')
+const remote = require('electron').remote
 export default {
   name: 'Smms',
   data(){
@@ -55,9 +56,9 @@ export default {
       )
       .then(response=>{
         if(response.success){
-          console.log(response.data.token);
-          this.$store.commit("setToken",response.data.token);
-          // this.$route.push("/pi")
+          // this.$store.commit("setToken",response.data.token);
+          remote.getGlobal('cache').token = response.data.token;
+          remote.getGlobal('cache').pi = './smms/Main';
           ipcRenderer.send("pi-win");
         }else{
           throw response.message;

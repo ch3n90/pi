@@ -1,7 +1,6 @@
 <template>
   <div>
-      dfasdf
-sdfasdf
+    postimage
 <br>
 <hr>
 <hr>

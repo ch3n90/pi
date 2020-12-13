@@ -5,7 +5,7 @@
     <div class="min iconfont icon-jianhao" @click="minimize"></div>
   </div>
 
-   <router-view style="animation-duration: 0.5s"/>
+   <pi></pi>
 </div>
 
 
@@ -13,15 +13,25 @@
 
 
 <script>
-import SMMS from "./smms/Main"
+
 import "../../assets/fonts/iconfont.css"
 const remote = require('electron').remote
-
 export default {
   name: 'Pi',
-   render:function(c){
-        return c(SMMS);
-    },
+
+  data:function(){
+    return {
+      componentName:'./smms/Main'
+    }
+  },
+  components:{
+    "pi": () => {
+      switch(remote.getGlobal('cache').pi){
+        case "./smms/Main" : return import('./smms/Main');
+        case "./postimage/Main" : return import('./postimage/Main')
+      }
+    }
+  },
   methods:{
     close(){
       remote.getCurrentWindow().close();
@@ -29,6 +39,10 @@ export default {
     minimize(){
       remote.getCurrentWindow().minimize();
     }
+  },
+  created(){
+    console.log("---1")
+    this.componentName = remote.getGlobal('cache').pi
   }
 
 }

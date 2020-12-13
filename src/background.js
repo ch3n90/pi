@@ -9,6 +9,12 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 let piWin
 let m3nuWin
 
+
+global.cache = {
+  pi:null,
+  token:null,
+}
+
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
