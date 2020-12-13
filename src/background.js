@@ -62,8 +62,8 @@ protocol.registerSchemesAsPrivileged([
 async function createPiWindow () {
   // Create the browser window.
   const piWin = new BrowserWindow({
-    width: 1000,
-    height: 800,
+    width: 800,
+    height: 600,
     // icon: path.join(__static, 'icon.png'),
     // resizable:false,
     autoHideMenuBar:true,
