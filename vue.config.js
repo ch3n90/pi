@@ -1,9 +1,10 @@
 module.exports = {
     pages: {
       index: 'src/main.js',
-    //   chatpage: 'src/chatpage/main.js'
+      pi: 'src/components/pi/main.js'
     },
     lintOnSave:false,
+
     pluginOptions:{
       electronBuilder:{
         nodeIntegration: true,

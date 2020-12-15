@@ -39,7 +39,7 @@
            <el-row class="rows">
             <el-col :span="18" :offset="3">
               <div class="remember">
-                  <el-checkbox v-model="checked">记住我</el-checkbox>
+                  <el-checkbox v-model="rememberMe">记住我</el-checkbox>
               </div>
             </el-col>
           </el-row>
@@ -81,7 +81,9 @@
 
 <script>
 import HttpApi from '../../util/http.js'
-const qs = require('querystring')
+const {ipcRenderer} = require('electron')
+const remote = require('electron').remote
+import qs from 'qs'
 export default {
   name: 'Smms',
   data(){
@@ -93,22 +95,22 @@ export default {
   },
   methods:{
     sign(){
-      let params = new URLSearchParams();
-      params.append("username","abc");
-      params.append("password",this.password);
-
-      // let data = qs.stringify(quarm);
-      // console.log(data);
       HttpApi.post(
         '/api/v2/token',
-        params,
-        {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }
+        qs.stringify({
+          username: this.username,
+          password: this.password,
+        }),
       )
       .then(response=>{
         if(response.success){
-          this.$store.commit("setToken",response.data.token);
+          console.log(response.data.token)
+          console.log(remote)
+          // this.$store.commit("setToken",response.data.token);
+          console.log( remote.getGlobal('cache').token)
+          remote.getGlobal('cache').token = response.data.token;
+          remote.getGlobal('cache').pi = './smms/Main';
+          ipcRenderer.send("pi-win");
         }else{
           throw response.message;
         }
@@ -144,7 +146,6 @@ export default {
 .rows{
   margin-bottom: 30px;
 }
-
 .sign .el-button{
   width: 100%;
 }

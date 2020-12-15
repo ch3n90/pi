@@ -11,7 +11,9 @@ const instance = axios.create({
 
 instance.interceptors.request.use(function (config) {
     let token = vuex.state.token;
-    config.headers.authorization = token;
+    if(token){
+      config.headers.authorization = token;
+    }
     return config;
   }, function (error) {
     return Promise.reject(error);
@@ -19,7 +21,6 @@ instance.interceptors.request.use(function (config) {
 
 
 instance.interceptors.response.use(function (response) {
-  console.log(response);
     return response.data;
   }, function (error) {
     // 对响应错误做点什么
