@@ -1,31 +1,81 @@
 <template>
-  <div class="smms">
-      <div class="login">
-          <h3>登入</h3>
-          <div  class="username" >
-            <input type="text" placeholder="账户" v-model="username">
-          </div>
+  <el-container>
+  <el-main>
+    <el-row >
+      <el-col :span="20" :offset="2">
+        <div class="login">
+          <el-row >
+            <el-col :span="24">
+              <div class="title">登入</div>
+            </el-col>
+          </el-row>
 
-          <div class="password" >
-            <input type="password" placeholder="密码" v-model="password">
-          </div>
+          <el-row class="rows">
+            <el-col :span="18" :offset="3">
+              <div class="username">
+                 <el-input
+                    placeholder="ID"
+                    prefix-icon="el-icon-user"
+                    v-model="username">
+                  </el-input>
+              </div>
+            </el-col>
+          </el-row>
 
-          <div class="remember">
-            <input type="checkbox" id="inputId" v-model="rememberMe">
-            <label for="inputId"></label>
-            <span @click.stop="clickRememberMe">记住我</span>
-          </div>
+          <el-row class="rows">
+            <el-col :span="18" :offset="3">
+              <div class="password">
+                 <el-input
+                    placeholder="password"
+                    prefix-icon="el-icon-lock"
+                    v-model="password"
+                    show-password>
+                  </el-input>
+              </div>
+            </el-col>
+          </el-row>
 
-          <div class="sign">
-            <input type="button" value="登入" @click="sign">
-          </div>
 
-          <div class="m3nu">
-            <router-link class="a" to="/m3nu">菜单</router-link>
-          </div>
+           <el-row class="rows">
+            <el-col :span="18" :offset="3">
+              <div class="remember">
+                  <el-checkbox v-model="checked">记住我</el-checkbox>
+              </div>
+            </el-col>
+          </el-row>
 
-      </div>
-  </div>
+
+           <el-row style="margin-bottom:10px">
+            <el-col :span="18" :offset="3">
+              <div class="sign">
+                
+                  <el-button type="primary" size="medium" @click.stop="sign">登入</el-button>
+              </div>
+            </el-col>
+          </el-row>
+          
+           <el-row>
+            <el-col :span="2" :offset="3">
+              <div>
+                  <router-link  to="/m3nu">
+                    <el-link type="primary">菜单</el-link>
+                  </router-link>
+              </div>
+            </el-col>
+          </el-row>
+
+           <el-row style="margin-top:30px">
+            <el-col :span="2" :offset="21">
+              <div >
+                  <el-link type="warning">试用</el-link>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </el-col>
+    </el-row>
+  </el-main>
+</el-container>
 </template>
 
 
@@ -78,131 +128,24 @@ export default {
 </script>
 
 <style scoped>
-.smms{
-  width: 100%;
-  height: 100%;
-  padding-top: 15%;
-}
 
 .login{
-  width: 70%;
-  height: 60%;
-  position: absolute;
-  left: 15%;
-  /* top: 20%; */
-  box-shadow: 2px 4px 6px #999;
+   /* background-color: #ccc; */
+   height: 400px;
+   margin-top: 50px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
 }
 
-.remember{
-    height: 20px;
-    margin: 0 0 20px 10%;
-    display: flex;
-    align-items: center;
+.title{
+  text-align: center;
+  color: #409eff;
+  margin:20px 0 30px 0 ;
+}
+.rows{
+  margin-bottom: 30px;
 }
 
-.remember input{
-    display: none;
-}
-label {
-    width: 12px;
-    height: 12px;
-    border-radius: 1px;
-    border: 1px solid #888;
-    position: relative;
-    cursor: pointer;
-}
-label::before {
-    content: " ";
-    width: 6px;
-    border: 2px solid #fff;
-    height: 2px;
-    border-top: none;
-    border-right: none;
-    transform: rotate(-45deg);
-    top: 2px;
-    left: 1px;
-    position: absolute;
-    opacity: 0;
-}
-.remember input:checked+label {
-      background: #888;
-  }
-.remember input:checked+label::before{
-    opacity: 1;
-    transform: all 0.5s;
-}
-
-.remember span{
-    margin-left: 10px;
-    font-size: 12px;
-    color: #888;
-    cursor: pointer;
-}
-
-.login h3{
+.sign .el-button{
   width: 100%;
-  text-align: center;
-  color: #3db8b5;
 }
-
-.username {
-  width: 100%;
-  height: 40px;
-  margin-top: 20px;
-  text-align: center;
-}
-
-.username input{
-  width: 80%;
-  height: 30px;
-  padding: 0 10px;
-  border-radius: 3px;
-  border: 1px solid #ccc;
-}
-
-.password {
-   width: 100%;
-  height: 40px;
-  margin-top: 10px;
-  text-align: center;
-}
-
-.password input{
-  width: 80%;
-  height: 30px;
-  padding: 0 10px;
-  border-radius: 3px;
-  border: 1px solid #ccc;
-}
-
-.sign{
-  width: 100%;
-  height: 40px;
-  margin-top: 10px;
-  text-align: center;
-}
-
-.sign input{
-  width: 80%;
-  height: 30px;
-  color: #fff;
-  border: 0px;
-  background-color: #3db8b5;
-}
-
-.m3nu{
-  width: 80%;
-  height: 35px;
-  margin: auto;
-
-
-}
-
-.m3nu .a{
-  font-size: 12px;
-  cursor: pointer;
-  color: #3db8b5;
-  text-decoration: none;
-}
-
 </style>
