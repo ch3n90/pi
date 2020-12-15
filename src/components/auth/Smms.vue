@@ -31,7 +31,7 @@
 
 <script>
 import HttpApi from '../../util/http.js'
-const qs = require('qs');
+const qs = require('querystring')
 export default {
   name: 'Smms',
   data(){
@@ -43,19 +43,21 @@ export default {
   },
   methods:{
     sign(){
+      let params = new URLSearchParams();
+      params.append("username","abc");
+      params.append("password",this.password);
+
+      // let data = qs.stringify(quarm);
+      // console.log(data);
       HttpApi.post(
-        '/token',
-        qs.stringify({
-          username: this.username,
-          password: this.password,
-        }),
+        '/api/v2/token',
+        params,
         {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded'}
+          'Content-Type': 'application/x-www-form-urlencoded',
         }
       )
       .then(response=>{
         if(response.success){
-          console.log(response.data.token);
           this.$store.commit("setToken",response.data.token);
         }else{
           throw response.message;
@@ -69,8 +71,8 @@ export default {
     }
   },
   created(){
-    this.$store.commit("setUri","https://sm.ms/api/v2");
-    HttpApi.defaults.baseURL = "https://sm.ms/api/v2";
+    this.$store.commit("setUri","https://sm.ms");
+    HttpApi.defaults.baseURL = "https://sm.ms";
   }
 }
 </script>

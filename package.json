@@ -17,6 +17,8 @@
     "core-js": "^3.6.5",
     "electron": "^11.0.4",
     "electron-store": "^6.0.1",
+    "element-ui": "^2.14.1",
+    "qs": "^6.9.4",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9",
     "vue2-animate": "^2.1.4",
