@@ -19,7 +19,7 @@
 
               <el-row>
                 <el-col :span="11" :offset="1">
-                  <span>http://sm.ms</span>
+                  <span class="url">http://sm.ms</span>
                 </el-col>
               </el-row>
           </div>
@@ -43,7 +43,7 @@
 
               <el-row>
                 <el-col :span="11" :offset="1">
-                  <span>http://sm.ms</span>
+                  <span class="url">http://sm.ms</span>
                 </el-col>
               </el-row>
           </div>
@@ -67,7 +67,7 @@
 
               <el-row>
                 <el-col :span="11" :offset="1">
-                  <span>http://sm.ms</span>
+                  <span class="url">http://sm.ms</span>
                 </el-col>
               </el-row>
           </div>
@@ -103,7 +103,7 @@ export default {
   }
 
   .bg-purple {
-    background: #d3dce6;
+    background: #DCDFE6;
   }
    .bg-purple:hover{
      box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
@@ -124,6 +124,11 @@ export default {
 
   .title{
     margin-top: 20px;
+    color: #000;
   }
- 
+
+  .url{
+    color:#000
+  }
+
 </style>
