@@ -41,7 +41,6 @@ export default {
     }
   },
   created(){
-    console.log("---1")
     this.componentName = remote.getGlobal('cache').pi
   }
 

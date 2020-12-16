@@ -5,10 +5,12 @@
         <el-col :span="22" :offset="1">
           <el-upload
             class="upload_list"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            action="https://sm.ms/api/v2/upload"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :file-list="fileList"
+            :headers="auth"
+            name="smfile"
             list-type="picture">
             <el-button class="uploadBtn" type="primary" icon="el-icon-upload" circle ></el-button>
           </el-upload>
@@ -18,36 +20,36 @@
      <el-row class="details" v-show="curImag.storename">
         <!-- <div> -->
             <el-row>
-              <el-col :span="23" offset="1">
+              <el-col :span="23" :offset="1">
                 markdown：![{{curImag.filename}}]({{curImag.url}})
               </el-col>
             </el-row>
             <el-row>
-              <el-col :span="10" offset="1">
+              <el-col :span="10" :offset="1">
                 云端名称：{{curImag.storename}}
               </el-col>
             </el-row>
 
             <el-row>
-              <el-col :span="10" offset="1">
+              <el-col :span="10" :offset="1">
                 图片名称：{{curImag.filename}}
               </el-col>
             </el-row>
             
             <el-row>
-                <el-col :span="10" offset="1">
+                <el-col :span="10" :offset="1">
                   云端路径：{{curImag.path}}
                 </el-col>
             </el-row>
 
             <el-row>
-              <el-col :span="10" offset="1">
+              <el-col :span="10" :offset="1">
                 图片大小：{{curImag.size}}
               </el-col>
             </el-row>
 
               <el-row>
-                <el-col :span="23" offset="1">
+                <el-col :span="23" :offset="1">
                 宽 XX 高：{{curImag.width}} * {{curImag.height}}
               </el-col>
             </el-row>
@@ -71,11 +73,11 @@ export default {
     return {
       fileList:null,
       curImag:{},
+      auth: null,
     }
   },
   methods:{
     handlePreview(file){
-      console.log(file);
       this.curImag = file;
     },
     handleRemove(file, fileList){
@@ -84,10 +86,11 @@ export default {
     }
   },
   created(){
+    this.auth = {"Authorization" : remote.getGlobal('cache').token} ;
     HttpApi.get(
       'https://sm.ms/api/v2/upload_history',
       {
-        headers:{"Authorization":remote.getGlobal('cache').token}
+        headers:this.auth
       }
     )
     .then(response=>{
