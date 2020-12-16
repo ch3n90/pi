@@ -96,7 +96,7 @@ export default {
   methods:{
     sign(){
       HttpApi.post(
-        '/api/v2/token',
+        'https://sm.ms/api/v2/token',
         qs.stringify({
           username: this.username,
           password: this.password,
@@ -104,10 +104,6 @@ export default {
       )
       .then(response=>{
         if(response.success){
-          console.log(response.data.token)
-          console.log(remote)
-          // this.$store.commit("setToken",response.data.token);
-          console.log( remote.getGlobal('cache').token)
           remote.getGlobal('cache').token = response.data.token;
           remote.getGlobal('cache').pi = './smms/Main';
           ipcRenderer.send("pi-win");
@@ -122,17 +118,13 @@ export default {
       });
     }
   },
-  created(){
-    this.$store.commit("setUri","https://sm.ms");
-    HttpApi.defaults.baseURL = "https://sm.ms";
-  }
+  
 }
 </script>
 
 <style scoped>
 
 .login{
-   /* background-color: #ccc; */
    height: 400px;
    margin-top: 50px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)

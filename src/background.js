@@ -63,9 +63,11 @@ async function createPiWindow () {
   // Create the browser window.
   const piWin = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 700,
     // icon: path.join(__static, 'icon.png'),
     // resizable:false,
+    minWidth:600,
+    minHeight:700,
     autoHideMenuBar:true,
     frame:false,
     show:false,

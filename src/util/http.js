@@ -1,5 +1,4 @@
 import axios from 'axios'
-import vuex from './vuexx.js'
 
 
 const instance = axios.create({
@@ -10,10 +9,6 @@ const instance = axios.create({
 
 
 instance.interceptors.request.use(function (config) {
-    let token = vuex.state.token;
-    if(token){
-      config.headers.authorization = token;
-    }
     return config;
   }, function (error) {
     return Promise.reject(error);
