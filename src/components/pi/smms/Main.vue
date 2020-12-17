@@ -8,8 +8,13 @@
             action="https://sm.ms/api/v2/upload"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
+            :on-success="uploadSuccess"
             :file-list="fileList"
             :headers="auth"
+            :multiple=true
+            :on-exceed="fileExceed"
+            v-loading="loading"
+            accept="image/*"
             name="smfile"
             list-type="picture">
             <el-button class="uploadBtn" type="primary" icon="el-icon-upload" circle ></el-button>
@@ -17,51 +22,18 @@
         </el-col>
     </el-row>
 
-     <el-row class="details" v-show="curImag.storename">
-        <!-- <div> -->
-            <el-row>
-              <el-col :span="23" :offset="1">
-                markdown：![{{curImag.filename}}]({{curImag.url}})
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="10" :offset="1">
-                云端名称：{{curImag.storename}}
-              </el-col>
-            </el-row>
-
-            <el-row>
-              <el-col :span="10" :offset="1">
-                图片名称：{{curImag.filename}}
-              </el-col>
-            </el-row>
-            
-            <el-row>
-                <el-col :span="10" :offset="1">
-                  云端路径：{{curImag.path}}
-                </el-col>
-            </el-row>
-
-            <el-row>
-              <el-col :span="10" :offset="1">
-                图片大小：{{curImag.size}}
-              </el-col>
-            </el-row>
-
-              <el-row>
-                <el-col :span="23" :offset="1">
-                宽 XX 高：{{curImag.width}} * {{curImag.height}}
-              </el-col>
-            </el-row>
-          </el-row>
-        <!-- </div> -->
-  </el-main>
-  
-  
-  
+     <el-row class="details" v-if="curImage.url">
+       <el-tabs value="markdown"  type="card" >
+          <el-tab-pane  label="Markdown" name="markdown">
+            <el-input  readonly v-bind:value="curImage | markdown"></el-input>
+          </el-tab-pane>
+          <el-tab-pane label="Image URL" name="imageUrl">
+            <el-input  readonly v-bind:value="curImage.url"></el-input>
+          </el-tab-pane>
+        </el-tabs>
+     </el-row>
+</el-main>
 </el-container>
-
-  
 </template>
 
 <script>
@@ -71,18 +43,64 @@ export default {
   name: 'SMMS',
   data:function(){
     return {
-      fileList:null,
-      curImag:{},
+      fileList:[],
+      curImage:{},
       auth: null,
+      loading: true,
+        dialogImageUrl: '',
+        dialogVisible: false
     }
+  },
+  filters:{
+    markdown:function(curImag){
+      return "!["+ curImag.name +"]("+ curImag.url +")";
+    },
   },
   methods:{
     handlePreview(file){
-      this.curImag = file;
+      this.curImage = file;
+    },
+    uploadSuccess(response,file,fileList){
+      if(response.success){
+        file.hash = response.data.hash;
+        file.url = response.data.url;
+      }else{
+        const index = fileList.indexOf(file);
+        if(index > -1){
+          fileList.splice(index, 1)
+        }
+        this.$notify.error({
+          title: '错误',
+          message: response.message
+        });
+      }
     },
     handleRemove(file, fileList){
-      console.log(file);
-      console.log(fileList)
+      if(file.hash === this.curImage.hash){
+        this.curImage={};
+      }
+      HttpApi.get(
+        'https://sm.ms/api/v2/delete/' + file.hash,
+      )
+      .then(response=>{
+        if(response.success){
+           this.$notify({
+              title: '成功',
+              message: '图片删除成功',
+              type: 'success'
+            });
+        }else{
+          throw response.message;
+        }
+      }).catch(err => {
+         this.$notify.error({
+          title: '错误',
+          message: err
+        });
+      });
+    },
+    fileExceed(files, fileList){
+      this.$message("一次最多上传10张图片");
     }
   },
   created(){
@@ -99,6 +117,7 @@ export default {
         data.forEach(element => {
           element.name = element.filename;
         });
+        this.loading = false;
         this.fileList = data;
       }else{
         throw response.message;
@@ -118,10 +137,10 @@ export default {
 }
 
 .el-main .imgs{
-  height: 80%;
+  height: 70%;
   overflow:scroll;
   overflow-x:hidden;
-  border-bottom: 1px solid #ccc;
+  border:1px solid #ccc;
 }
 
 .upload_list >>> .el-upload-list__item {
@@ -139,7 +158,7 @@ export default {
   line-height: 50px!important;
 }
 .el-main .details{
-  height: 20%;
+  height: 30%;
 
   font-size: 12px;
   padding-top:5px ;
