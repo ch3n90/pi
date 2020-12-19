@@ -13,13 +13,13 @@
                 </el-col>
 
                 <el-col :span="11">
-                  <div  class="title">SM.MS</div>                  
+                  <div  class="title">sm.ms</div>                  
                 </el-col>
               </el-row>
 
               <el-row>
                 <el-col :span="11" :offset="1">
-                  <span class="url">http://sm.ms</span>
+                  <span class="url">https://sm.ms</span>
                 </el-col>
               </el-row>
           </div>
@@ -37,48 +37,18 @@
                 </el-col>
 
                 <el-col :span="11">
-                  <div  class="title">SM.MS</div>                  
+                  <div  class="title">post.image</div>                  
                 </el-col>
               </el-row>
 
               <el-row>
                 <el-col :span="11" :offset="1">
-                  <span class="url">http://sm.ms</span>
+                  <span class="url">https://postimages.org</span>
                 </el-col>
               </el-row>
           </div>
         </router-link>
       </el-col>
-
-       <el-col :span="8">
-        <router-link to="/smms">
-          <div class="grid-content bg-purple">
-              <el-row style="margin-bottom:5px">
-                <el-col :span="9" :offset="1">
-                  <div class="logo">
-                    <img src="../../assets/images/smms.webp" alt="" class="logo-img">
-                  </div>
-                </el-col>
-
-                <el-col :span="11">
-                  <div  class="title">SM.MS</div>                  
-                </el-col>
-              </el-row>
-
-              <el-row>
-                <el-col :span="11" :offset="1">
-                  <span class="url">http://sm.ms</span>
-                </el-col>
-              </el-row>
-          </div>
-        </router-link>
-      </el-col>
-    </el-row>
-
-    <el-row :gutter="20">
-      <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="8"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
 
   </el-main>
@@ -96,7 +66,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   .rows{
-     margin-bottom: 20px;
+    margin-bottom: 20px;
   }
   .el-col {
     border-radius: 4px;
