@@ -1,9 +1,9 @@
 <template>
 <div class="main">
-  <div class="frame">
+  <!-- <div class="frame">
     <div class="close iconfont icon-guanbi1"  @click="close"></div>
     <div class="min iconfont icon-jianhao" @click="minimize"></div>
-  </div>
+  </div> -->
 
   <transition  name="flip"
         enter-active-class="flipInX"

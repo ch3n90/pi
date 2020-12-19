@@ -29,7 +29,7 @@ protocol.registerSchemesAsPrivileged([
     resizable:false,
     transparent: true,
     center:true,
-    frame:false,
+    // frame:false,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -62,14 +62,14 @@ protocol.registerSchemesAsPrivileged([
 async function createPiWindow () {
   // Create the browser window.
   const piWin = new BrowserWindow({
-    width: 800,
+    width: 890,
     height: 700,
     // icon: path.join(__static, 'icon.png'),
     // resizable:false,
-    minWidth:600,
+    minWidth:890,
     minHeight:700,
     autoHideMenuBar:true,
-    frame:false,
+    frame:true,
     show:false,
     center:true,
     // backgroundColor: '#222326',
@@ -149,6 +149,11 @@ ipcMain.on("pi-win",()=>{
   m3nuWin = null;
 })
 
+ipcMain.on("m3nu-win",()=>{
+  m3nuWin = createM3nuWindow();
+  piWin.then(win => { win.destroy()});
+  piWin = null;
+})
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
