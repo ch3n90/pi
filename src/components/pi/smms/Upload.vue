@@ -87,6 +87,8 @@ export default {
           title: '错误',
           message: response.message
         });
+      }else{
+        this.fileList.splice(1,0,file);
       }
     },
     handleRemove(file, fileList){

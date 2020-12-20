@@ -75,6 +75,7 @@ export default {
     uploader(request){
       let file = request.file;
       if (file) {
+        let ext = file.type.substring(file.type.indexOf("/") + 1);
         let md5str = md5(this.key)
         //将文件以Data URL形式读入页面
         let reader = new FileReader();
@@ -90,7 +91,7 @@ export default {
               version:"1.0.1",
               name:file.name,
               portable:1,
-              type:file.type.substring(file.type.indexOf("/") + 1)
+              type: ext
             }
 
             // -----------------
@@ -102,14 +103,15 @@ export default {
               ),
             )
             .then(response=>{
-              xml2js.parseStringPromise(response /*, options */)
+              response =response.replace(/&(?!(?:apos|quot|[gl]t|amp);|#)/g, '&amp;')
+              xml2js.parseStringPromise(response ,{explicitArray : false})
               .then( result => {
                 if(result.data.$.status === "200"){
                   let img = {
-                    name:result.data.image[0].name[0],
-                    url:result.data.links[0].hotlink[0]
+                    name:result.data.image.name,
+                    url:result.data.links.hotlink
                   }
-                  this.fileList.push(img);
+                  this.fileList.splice(1,0,img);
                 }
               })
               .catch(function (err) {
@@ -138,7 +140,7 @@ export default {
     },
     fileExceed(files, fileList){
       this.$message("一次最多上传1张图片");
-    }
+    },
   },
   created(){
      this.key = remote.getGlobal('cache').token;

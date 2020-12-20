@@ -2,6 +2,7 @@
 <div>
    <el-table
     :data="tableData"
+    :default-sort="{prop:'created_at',order:'descending'}"
     stripe
     style="width: 100%">
     <!-- <el-table-column
@@ -39,6 +40,7 @@
       prop="created_at"
       :formatter = "dateFormat"
       label="上传日期"
+      sortable
       width="130">
     </el-table-column>
 
