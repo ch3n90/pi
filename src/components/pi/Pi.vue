@@ -4,7 +4,6 @@
 
 <script>
 
-import "../../assets/fonts/iconfont.css"
 const remote = require('electron').remote
 
 export default {
@@ -20,6 +19,7 @@ export default {
       switch(remote.getGlobal('cache').pi){
         case "./smms/Main" : return import('./smms/Main');
         case "./postimage/Main" : return import('./postimage/Main')
+        case "./minio/Main" : return import('./minio/Main')
       }
     }
   },

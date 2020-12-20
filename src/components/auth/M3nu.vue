@@ -50,6 +50,34 @@
         </router-link>
       </el-col>
     </el-row>
+      <br>
+      <br>
+      <br>
+      <el-row :gutter="20" class="rows">
+      <el-col :span="8">
+        <router-link to="/minio">
+          <div class="grid-content bg-purple">
+              <el-row style="margin-bottom:5px">
+                <el-col :span="9" :offset="1">
+                  <div class="logo">
+                    <img src="../../assets/images/minio.svg" alt="" class="logo-img">
+                  </div>
+                </el-col>
+
+                <el-col :span="11">
+                  <div  class="title">minio</div>                  
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="23" :offset="1">
+                  <span class="url">自建服务器</span>
+                </el-col>
+              </el-row>
+          </div>
+        </router-link>
+      </el-col>
+    </el-row>
 
   </el-main>
 </el-container>

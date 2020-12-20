@@ -4,6 +4,7 @@ import Auth from '../components/auth/Auth'
 import M3nu from '../components/auth/M3nu'
 import Smms from '../components/auth/Smms.vue'
 import PostImage from '../components/auth/PostImage'
+import Minio from '../components/auth/Minio'
 
 Vue.use(Router)
 
@@ -28,10 +29,10 @@ export default new Router({
           path: '/postimage',
           component: PostImage,
         },
-        // {
-        //   path: '/loading',
-        //   component: Loading,
-        // }
+        {
+          path: '/minio',
+          component: Minio,
+        }
       ]
     },
   ]

@@ -14,7 +14,6 @@
 <script>
 import M3nu from './M3nu'
 import 'vue2-animate/dist/vue2-animate.min.css'
-import "../../assets/fonts/iconfont.css"
 const remote = require('electron').remote
 
 export default {
@@ -22,15 +21,6 @@ export default {
    render:function(c){
         return c(M3nu);
     },
-  methods:{
-    close(){
-      remote.getCurrentWindow().close();
-    },
-    minimize(){
-      remote.getCurrentWindow().minimize();
-    }
-  }
-
 }
 </script>
 
