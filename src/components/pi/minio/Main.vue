@@ -17,9 +17,9 @@
     <el-row>
       <el-col :span="24">
         <el-menu
-          default-active="Upload"
+          default-active="List"
           @select="rightCom">
-          <el-menu-item index="History" v-for="bucket in buckets" :key="bucket.name">
+          <el-menu-item index="List" v-for="bucket in buckets" :key="bucket.name">
             <i class="el-icon-upload"></i>
             <span slot="title">{{bucket.name}}</span>
           </el-menu-item>
@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import History from './History'
+import List from './List'
 import Upload from './Upload'
 import Profile from './Profile'
 const remote = require('electron').remote
@@ -70,7 +70,7 @@ export default {
       return {
          minioClient: null,
          buckets:[],
-         rightComName: History,
+         rightComName: List,
       };
     },
   methods:{
@@ -112,7 +112,7 @@ export default {
   components:{
         //right
         Upload,
-        History,
+        List,
         Profile,
      
     },

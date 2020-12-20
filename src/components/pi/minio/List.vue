@@ -96,7 +96,7 @@
 const remote = require('electron').remote
 const Minio = require('minio')
 export default {
-  name: 'History',
+  name: 'List',
   data:function(){
     return {
       tableData:[],
