@@ -1,5 +1,8 @@
 <template>
   <el-container>
+    <router-link  to="/m3nu" class="back" >
+      <el-button type="warning" icon="el-icon-arrow-left" circle></el-button>
+    </router-link>
   <el-main>
     <el-row >
       <el-col :span="20" :offset="2">
@@ -40,16 +43,6 @@
             </el-col>
           </el-row>
           
-           <el-row>
-            <el-col :span="2" :offset="3">
-              <div>
-                  <router-link  to="/m3nu">
-                    <el-link type="primary">菜单</el-link>
-                  </router-link>
-              </div>
-            </el-col>
-          </el-row>
-
            <el-row style="margin-top:30px">
             <el-col :span="2" :offset="21">
               <div >
@@ -106,5 +99,11 @@ export default {
 }
 .sign .el-button{
   width: 100%;
+}
+.back{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 999;
 }
 </style>

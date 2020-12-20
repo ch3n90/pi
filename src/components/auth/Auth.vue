@@ -1,10 +1,5 @@
 <template>
 <div class="main">
-  <!-- <div class="frame">
-    <div class="close iconfont icon-guanbi1"  @click="close"></div>
-    <div class="min iconfont icon-jianhao" @click="minimize"></div>
-  </div> -->
-
   <transition  name="flip"
         enter-active-class="flipInX"
         leave-active-class="flipOutX" mode="out-in">
