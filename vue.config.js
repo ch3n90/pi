@@ -10,7 +10,7 @@ module.exports = {
         nodeIntegration: true,
         outputDir: 'build',
         builderOptions: {
-          "appId": "com.milchstrabe.rainbow",
+          "appId": "com.milchstrabe.pi",
           "copyright": "Copyright © 2020 ch3ng",
           "nsis": {
             "oneClick": false,
@@ -21,7 +21,7 @@ module.exports = {
             "installerHeaderIcon": "build/icons/icon.ico",
             "createDesktopShortcut": true,
             "createStartMenuShortcut": true,
-            "shortcutName": "rainbow"
+            "shortcutName": "π"
           },
           "dmg": {
             "contents": [
