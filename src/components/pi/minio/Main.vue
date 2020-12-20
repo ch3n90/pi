@@ -19,7 +19,7 @@
         <el-menu
           default-active="List"
           @select="rightCom">
-          <el-menu-item index="List" v-for="bucket in buckets" :key="bucket.name">
+          <el-menu-item :index="bucket.name" v-for="bucket in buckets" :key="bucket.name">
             <i class="el-icon-upload"></i>
             <span slot="title">{{bucket.name}}</span>
           </el-menu-item>
@@ -81,7 +81,7 @@ export default {
         console.log(key, keyPath);
       },
       rightCom(index,indexPath){
-          this.rightComName = index;
+          this.rightComName = "List";
       },
       exit(){
         ipcRenderer.send("m3nu-win");
