@@ -49,7 +49,7 @@
                   mode="out-in">
           <component :is="rightComName"
                       style="animation-duration: .2s;"
-                      ></component>
+                       :key='incrementKey'></component>
         </transition>
       </el-col>
     </el-row>
@@ -70,22 +70,36 @@ export default {
       return {
          minioClient: null,
          buckets:[],
+         bucket:null,
          rightComName: List,
+         incrementKey:0,
       };
     },
   methods:{
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
       rightCom(index,indexPath){
-          this.rightComName = "List";
+          this.$store.commit("setBucket",index);
+          this.incrementKey++;
       },
       exit(){
         ipcRenderer.send("m3nu-win");
-      }
+      },
+      listObject(prefix){
+        let stream = this.minioClient.listObjectsV2(this.bucket,prefix);
+        stream.on('data', (obj) => {
+          let type = 1;
+          if(obj.size === 0){
+            type = 0;
+          }
+          let img = {
+            name: type === 0 ? obj.prefix:obj.name,
+            size: obj.size,
+            date: obj.lastModified,
+            type: type
+          }
+          this.$store.commit("addObjectList",img);
+        } )
+        stream.on('error', function(err) { console.log(err) } )
+      },
   },
   created(){
     let token =  remote.getGlobal('cache').token;
@@ -98,13 +112,16 @@ export default {
       });
     this.minioClient.listBuckets((err, buckets) => {
         if (err){
-          console.log(err)
            this.$notify.error({
               title: '错误',
               message: err
             });
         }else{
           this.buckets = buckets;
+          if(buckets && buckets.length > 0){
+            this.bucket = buckets[0].name;
+            this.listObject('');
+          }
         }
         
       });

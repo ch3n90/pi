@@ -99,13 +99,12 @@ export default {
   name: 'List',
   data:function(){
     return {
-      tableData:[],
+      tableData:this.$store.getters.getObjectList,
       curImage:{},
       drawer:false,
       minioClient:{},
-      bucket:null,
       prefixs:[],
-      curBucket:"",
+      curBucket:this.bucket,
     }
   },
  filters:{
@@ -157,7 +156,7 @@ export default {
       }
     },
     listObject(prefix){
-      let stream = this.minioClient.listObjectsV2(this.curBucket,prefix);
+      let stream = this.minioClient.listObjectsV2(this.$store.getters.getBucket,prefix);
       stream.on('data', (obj) => {
         let type = 1;
         if(obj.size === 0){
@@ -206,10 +205,9 @@ export default {
           accessKey: token.accessKey,
           secretKey: token.secretKey
       });
-    this.curBucket = "oss";
-    this.listObject();
+      this.listObject();
 
-  }
+  },
 }
 </script>
 <style scoped>

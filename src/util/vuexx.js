@@ -5,23 +5,23 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-      uri:null,
-      token:null,
+      bucket:null,
+      objectList: [],
     },
     mutations: {
-      setUri(state,uri){
-        state.uri = uri;
+      setBucket(state,bucket){
+        state.bucket = bucket;
       },
-      setToken(state,token){
-        state.token = token;
-      },
+      addObjectList(state,object){
+        state.objectList.unshift(object)
+      }
     },
     getters: {
-      getUri: state => {
-        return state.uri;
+      getBucket: state => {
+        return state.bucket;
       },
-      getToken: state => {
-        return state.token;
-      },
+      getObjectList: state => {
+        return state.objectList;
+      }
     }
   })
