@@ -4,7 +4,7 @@
     <el-main>
     <el-row>
       <el-col :span="24">
-            <el-breadcrumb separator="/">
+            <el-breadcrumb separator=">">
             <el-breadcrumb-item>
               <el-link @click.stop="next('')"  type="primary">{{curBucket}}</el-link>
             </el-breadcrumb-item>
@@ -63,6 +63,7 @@
   </el-container>
   <el-drawer
     :visible.sync="drawer"
+    size="45%"
     :with-header="false">
     <br>
     <br>
