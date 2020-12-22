@@ -8,10 +8,9 @@
             <el-breadcrumb-item>
               <el-link @click.stop="next('')"  type="primary">{{curBucket}}</el-link>
             </el-breadcrumb-item>
-              <el-breadcrumb-item v-for="prefix in prefixs" :key="prefix">
-                  <el-link @click.stop="next(prefix)"  type="primary">{{prefix}} </el-link>
-                </el-breadcrumb-item>
-              
+            <el-breadcrumb-item v-for="prefix in prefixs" :key="prefix">
+                <el-link @click.stop="next(prefix)"  type="primary"> {{prefix}} </el-link>
+            </el-breadcrumb-item>
             </el-breadcrumb>
       </el-col>
     </el-row>
@@ -26,7 +25,6 @@
     <el-table-column
       prop="name"
       label="名称"
-      width="280"
       cell-click="next">
       <template slot-scope="scope">
         <el-link v-if="scope.row.type === 0" style="margin-left: 10px" @click.stop="next(scope.row.name)"  type="primary">{{ scope.row.name }}</el-link>
@@ -36,16 +34,14 @@
 
     <el-table-column
       prop="size"
-      label="大小"
-      width="60">
+      label="大小">
     </el-table-column>
 
      <el-table-column
       prop="date"
       :formatter = "dateFormat"
       label="上传日期"
-      sortable
-      width="130">
+      sortable>
     </el-table-column>
 
     <el-table-column label="操作">
@@ -66,8 +62,8 @@
     </el-main>
   </el-container>
   <el-drawer
-  :visible.sync="drawer"
-  :with-header="false">
+    :visible.sync="drawer"
+    :with-header="false">
     <br>
     <br>
        <el-input readonly v-bind:value="curImage.filename">
@@ -87,7 +83,6 @@
       </el-input>
 </el-drawer>
 
-   
 </div>
   
 </template>
@@ -97,14 +92,18 @@ const remote = require('electron').remote
 const Minio = require('minio')
 export default {
   name: 'List',
+  props:{
+    objectList:Array,
+    bucket:String,
+    paths:Array,
+  },
   data:function(){
     return {
-      tableData:this.$store.getters.getObjectList,
+      tableData:this.objectList,
+      curBucket:this.bucket,
       curImage:{},
       drawer:false,
-      minioClient:{},
-      prefixs:[],
-      curBucket:this.bucket,
+      prefixs:this.paths,
     }
   },
  filters:{
@@ -143,34 +142,7 @@ export default {
       });
     },
     next(prefix){
-      console.log(prefix)
-      this.tableData = [];
-      this.listObject(prefix);
-      let index = this.prefixs.indexOf(prefix);
-      if(index > -1){
-        this.prefixs = this.prefixs.slice(0,index + 1);
-      }else if(prefix === ''){
-        this.prefixs=[];
-      }else{
-        this.prefixs.push(prefix);
-      }
-    },
-    listObject(prefix){
-      let stream = this.minioClient.listObjectsV2(this.$store.getters.getBucket,prefix);
-      stream.on('data', (obj) => {
-        let type = 1;
-        if(obj.size === 0){
-          type = 0;
-        }
-        let img = {
-          name: type === 0 ? obj.prefix:obj.name,
-          size: obj.size,
-          date: obj.lastModified,
-          type: type
-        }
-        this.tableData.unshift(img)
-      } )
-      stream.on('error', function(err) { console.log(err) } )
+      this.$emit("func",prefix);
     },
     dateFormat:function(row, column) {
       let time = row[column.property];
@@ -195,18 +167,6 @@ export default {
           if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
       return fmt;
     }
-  },
-  created(){
-    let token =  remote.getGlobal('cache').token;
-    this.minioClient = new Minio.Client({
-          endPoint: token.endPoint,
-          port: token.port,
-          useSSL: token.useSSL,
-          accessKey: token.accessKey,
-          secretKey: token.secretKey
-      });
-      this.listObject();
-
   },
 }
 </script>

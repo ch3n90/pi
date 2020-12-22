@@ -27,7 +27,7 @@ protocol.registerSchemesAsPrivileged([
     height: 600,
     autoHideMenuBar:true,
     resizable:false,
-    transparent: true,
+    // transparent: true,
     center:true,
     // frame:false,
     webPreferences: {

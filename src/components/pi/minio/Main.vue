@@ -49,7 +49,11 @@
                   mode="out-in">
           <component :is="rightComName"
                       style="animation-duration: .2s;"
-                       :key='incrementKey'></component>
+                      :objectList="objectList"
+                      :bucket="bucket"
+                      :paths="paths"
+                      @func="func"
+                      :key='incrementKey'></component>
         </transition>
       </el-col>
     </el-row>
@@ -70,21 +74,39 @@ export default {
       return {
          minioClient: null,
          buckets:[],
-         bucket:null,
+         bucket:"",
+         paths:[],
          rightComName: List,
+         objectList:[],
          incrementKey:0,
       };
     },
   methods:{
       rightCom(index,indexPath){
-          this.$store.commit("setBucket",index);
-          this.incrementKey++;
+        this.bucket = index;
+        this.objectList = [];
+        this.paths = [];
+        this.listObject(index,"");
+        this.incrementKey++;
+      },
+      func(prefix){
+        this.objectList = [];
+        this.listObject(this.bucket,prefix);
+        let index = this.paths.indexOf(prefix);
+        if(index >= 0){
+          this.paths = this.paths.slice(0,index + 1);
+        }else if(prefix === ''){
+          this.paths=[];
+        }else{
+          this.paths.push(prefix);
+        }
+        this.incrementKey++;
       },
       exit(){
         ipcRenderer.send("m3nu-win");
       },
-      listObject(prefix){
-        let stream = this.minioClient.listObjectsV2(this.bucket,prefix);
+      listObject(bucket,prefix){
+        let stream = this.minioClient.listObjectsV2(bucket,prefix);
         stream.on('data', (obj) => {
           let type = 1;
           if(obj.size === 0){
@@ -96,8 +118,8 @@ export default {
             date: obj.lastModified,
             type: type
           }
-          this.$store.commit("addObjectList",img);
-        } )
+          this.objectList.unshift(img);
+        })
         stream.on('error', function(err) { console.log(err) } )
       },
   },
@@ -120,7 +142,8 @@ export default {
           this.buckets = buckets;
           if(buckets && buckets.length > 0){
             this.bucket = buckets[0].name;
-            this.listObject('');
+            this.listObject(this.bucket,'');
+            this.paths.push(this.bucket)
           }
         }
         
