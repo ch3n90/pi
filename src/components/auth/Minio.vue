@@ -17,11 +17,12 @@
           <el-row class="rows">
             <el-col :span="13" :offset="3">
               <div class="username">
-                 <el-input
-                    placeholder="host"
-                    prefix-icon="el-icon-cloudy"
-                    v-model="host">
-                  </el-input>
+                <el-input placeholder="Host" v-model="host">
+                  <el-select v-model="protocol" slot="prepend">
+                    <el-option label="http" value="http://"></el-option>
+                    <el-option label="https" value="https://"></el-option>
+                  </el-select>
+                </el-input>
               </div>
             </el-col>
 
@@ -41,6 +42,7 @@
 
           <el-row class="rows">
             <el-col :span="18" :offset="3">
+              
               <div class="username">
                  <el-input
                     placeholder="access key"
@@ -91,6 +93,8 @@
 
 
 <script>
+// const axios = require('../../util/http')
+import HttpApi from '../../util/http.js'
 const {ipcRenderer} = require('electron')
 const remote = require('electron').remote
 const Minio = require('minio')
@@ -99,6 +103,7 @@ export default {
   name: 'Mnio',
   data(){
     return {
+      protocol:"http://",
       host:'192.168.1.118',
       port:9000,
       accessKey: "minioadmin",
@@ -108,34 +113,32 @@ export default {
   },
   methods:{
     sign(){
-      let token = {
-          endPoint: this.host,
-          port: this.port,
-          useSSL: false,
-          accessKey: this.accessKey,
-          secretKey: this.secretKey
-      }
-      let minioClient = new Minio.Client({
-          endPoint: token.endPoint,
-          port: token.port,
-          useSSL: token.useSSL,
-          accessKey: token.accessKey,
-          secretKey: token.secretKey
-      });
-      minioClient.listBuckets((err, buckets) => {
-        if (err){
-          console.log(err)
-           this.$notify.error({
-              title: '错误',
-              message: err
-            });
-        }else{
-          remote.getGlobal('cache').token = token;
-          remote.getGlobal('cache').pi = './minio/Main';
-          ipcRenderer.send("pi-win");
+     
+      HttpApi.post(
+        this.protocol+this.host+":"+this.port+"/minio/webrpc",
+        {
+          "id":1,
+          "jsonrpc":"2.0",
+          "method":"Web.Login",
+          "params":{"username": this.accessKey, "password": this.secretKey}
+        },
+        {
+          "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60"
         }
-        
-      });
+      ).then(resp => {
+        console.log(resp);
+        if(resp.error){
+          throw resp.error.message;
+        }
+        remote.getGlobal('cache').token = resp.result.token;
+        remote.getGlobal('cache').pi = './minio/Main';
+        ipcRenderer.send("pi-win");
+      }).catch(err => {
+          this.$notify.error({
+            title: '错误',
+            message: err
+          });
+      })
     }
   },
   
@@ -143,7 +146,9 @@ export default {
 </script>
 
 <style scoped>
-
+ .el-select  {
+    width: 80px;
+  }
 .login{
    height: 400px;
    margin-top: 50px;

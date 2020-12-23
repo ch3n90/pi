@@ -59,7 +59,7 @@
 
 
 <script>
-import HttpApi from '../../util/http.js'
+// import HttpApi from '../../util/http.js'
 const {ipcRenderer} = require('electron')
 const remote = require('electron').remote
 export default {
