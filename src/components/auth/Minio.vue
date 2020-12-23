@@ -93,12 +93,9 @@
 
 
 <script>
-// const axios = require('../../util/http')
 import HttpApi from '../../util/http.js'
 const {ipcRenderer} = require('electron')
 const remote = require('electron').remote
-const Minio = require('minio')
-import qs from 'qs'
 export default {
   name: 'Mnio',
   data(){
@@ -113,9 +110,9 @@ export default {
   },
   methods:{
     sign(){
-     
+      let url = this.protocol+this.host+":"+this.port+"/minio/webrpc";
       HttpApi.post(
-        this.protocol+this.host+":"+this.port+"/minio/webrpc",
+        url,
         {
           "id":1,
           "jsonrpc":"2.0",
@@ -123,14 +120,20 @@ export default {
           "params":{"username": this.accessKey, "password": this.secretKey}
         },
         {
-          "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60"
+          headers:{
+            "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60"
+          }
         }
       ).then(resp => {
-        console.log(resp);
         if(resp.error){
           throw resp.error.message;
         }
-        remote.getGlobal('cache').token = resp.result.token;
+        let token = {
+          url:url,
+          jwt:resp.result.token
+        }
+
+        remote.getGlobal('cache').token = token;
         remote.getGlobal('cache').pi = './minio/Main';
         ipcRenderer.send("pi-win");
       }).catch(err => {
@@ -138,7 +141,7 @@ export default {
             title: '错误',
             message: err
           });
-      })
+      });
     }
   },
   

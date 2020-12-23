@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import HttpApi from '../../../util/http'
 import List from './List'
 import Upload from './Upload'
 import Profile from './Profile'
@@ -72,13 +73,16 @@ export default {
   name: 'Minio',
     data() {
       return {
-         minioClient: null,
          buckets:[],
          bucket:"",
          paths:[],
          rightComName: List,
          objectList:[],
          incrementKey:0,
+         prefix:"",
+
+         //------
+         token:null,
       };
     },
   methods:{
@@ -106,48 +110,97 @@ export default {
         ipcRenderer.send("m3nu-win");
       },
       listObject(bucket,prefix){
-        let stream = this.minioClient.listObjectsV2(bucket,prefix);
-        stream.on('data', (obj) => {
-          let type = 1;
-          if(obj.size === 0){
-            type = 0;
+        // {"id":1,"jsonrpc":"2.0","params":{"bucketName":"oss","prefix":""},"method":"Web.ListObjects"}
+        HttpApi.post(
+          this.token.url,
+          {"id":1,"jsonrpc":"2.0","params":{"bucketName":bucket,"prefix":prefix},"method":"Web.ListObjects"},
+          {
+            headers:{
+              "Authorization":"Bearer "+ this.token.jwt,
+              // "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60"
+            }
           }
-          let img = {
-            name: type === 0 ? obj.prefix:obj.name,
-            size: obj.size,
-            date: obj.lastModified,
-            type: type
+        ).then(resp => {
+          if(resp.error){
+            throw resp.error.message;
           }
-          this.objectList.unshift(img);
-        })
-        stream.on('error', function(err) { console.log(err) } )
-      },
-  },
-  created(){
-    let token =  remote.getGlobal('cache').token;
-    this.minioClient = new Minio.Client({
-          endPoint: token.endPoint,
-          port: token.port,
-          useSSL: token.useSSL,
-          accessKey: token.accessKey,
-          secretKey: token.secretKey
-      });
-    this.minioClient.listBuckets((err, buckets) => {
-        if (err){
-           this.$notify.error({
+          console.log(resp);
+          this.objectList = resp.result.objects;
+        }).catch(err => {
+            this.$notify.error({
               title: '错误',
               message: err
             });
-        }else{
-          this.buckets = buckets;
-          if(buckets && buckets.length > 0){
-            this.bucket = buckets[0].name;
-            this.listObject(this.bucket,'');
-            this.paths.push(this.bucket)
+        })
+        // let stream = this.minioClient.listObjectsV2(bucket,prefix);
+        // stream.on('data', (obj) => {
+        //   let type = 1;
+        //   if(obj.size === 0){
+        //     type = 0;
+        //   }
+        //   let img = {
+        //     name: type === 0 ? obj.prefix:obj.name,
+        //     size: obj.size,
+        //     date: obj.lastModified,
+        //     type: type
+        //   }
+        //   this.objectList.unshift(img);
+        // })
+        // stream.on('error', function(err) { console.log(err) } )
+      },
+  },
+  created(){
+    this.token =  remote.getGlobal('cache').token;
+    HttpApi.post(
+        this.token.url,
+        {"id":1,"jsonrpc":"2.0","params":{},"method":"Web.ListBuckets"},
+        {
+          headers:{
+            "Authorization":"Bearer "+ this.token.jwt,
+            // "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60"
           }
         }
+      ).then(resp => {
+        if(resp.error){
+          throw resp.error.message;
+        }
+        console.log(resp);
+        this.buckets = resp.result.buckets;
+        if(buckets && buckets.length > 0){
+          this.bucket = buckets[0];
+          //TODO
+          this.listObject(this.bucket.name,'');
+          this.paths.push(this.bucket)
+        }
+      }).catch(err => {
+          this.$notify.error({
+            title: '错误',
+            message: err
+          });
+      })
+    // this.minioClient = new Minio.Client({
+    //       endPoint: token.endPoint,
+    //       port: token.port,
+    //       useSSL: token.useSSL,
+    //       accessKey: token.accessKey,
+    //       secretKey: token.secretKey
+    //   });
+    // this.minioClient.listBuckets((err, buckets) => {
+    //     if (err){
+    //        this.$notify.error({
+    //           title: '错误',
+    //           message: err
+    //         });
+    //     }else{
+    //       this.buckets = buckets;
+    //       if(buckets && buckets.length > 0){
+    //         this.bucket = buckets[0].name;
+    //         this.listObject(this.bucket,'');
+    //         this.paths.push(this.bucket)
+    //       }
+    //     }
         
-      });
+    //   });
   },
   components:{
         //right
