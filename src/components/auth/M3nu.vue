@@ -26,7 +26,7 @@
         </router-link>
       </el-col>
 
-       <el-col :span="8">
+      <el-col :span="8">
         <router-link to="/postimage">
           <div class="grid-content bg-purple">
               <el-row style="margin-bottom:5px">
@@ -49,6 +49,82 @@
           </div>
         </router-link>
       </el-col>
+
+      <el-col :span="8">
+        <router-link to="/imgbb">
+          <div class="grid-content bg-purple">
+              <el-row style="margin-bottom:5px">
+                <el-col :span="9" :offset="1">
+                  <div class="logo">
+                    <img src="../../assets/images/imgbb.png" alt="" class="logo-img">
+                  </div>
+                </el-col>
+
+                <el-col :span="11">
+                  <div  class="title">imgbb.com</div>                  
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="11" :offset="1">
+                  <span class="url">https://imgbb.com</span>
+                </el-col>
+              </el-row>
+          </div>
+        </router-link>
+      </el-col>
+
+    </el-row>
+
+    <el-row :gutter="20" class="rows">
+      <el-col :span="8">
+        <router-link to="/smms">
+          <div class="grid-content bg-purple">
+              <el-row style="margin-bottom:5px">
+                <el-col :span="9" :offset="1">
+                  <div class="logo">
+                    <img src="../../assets/images/qiniuyun.png" alt="" class="logo-img">
+                  </div>
+                </el-col>
+
+                <el-col :span="11">
+                  <div  class="title">七牛云</div>                  
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="11" :offset="1">
+                  <span class="url">https://qiniu.com</span>
+                </el-col>
+              </el-row>
+          </div>
+        </router-link>
+      </el-col>
+
+      <el-col :span="8">
+        <router-link to="/postimage">
+          <div class="grid-content bg-purple">
+              <el-row style="margin-bottom:5px">
+                <el-col :span="9" :offset="1">
+                  <div class="logo">
+                    <img src="../../assets/images/postimage.png" alt="" class="logo-img">
+                  </div>
+                </el-col>
+
+                <el-col :span="11">
+                  <div  class="title">OSS</div>                  
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="11" :offset="1">
+                  <span class="url">https://postimages.org</span>
+                </el-col>
+              </el-row>
+          </div>
+        </router-link>
+      </el-col>
+
     </el-row>
       <br>
       <br>
@@ -125,11 +201,11 @@ export default {
 
 .title{
   margin-top: 20px;
-  color: #000;
+  color: #606266;
 }
 
 .url{
-  color:#000
+  color:#606266;
 }
 
 .el-divider__text{

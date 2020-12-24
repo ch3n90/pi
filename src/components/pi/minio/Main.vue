@@ -121,12 +121,15 @@ export default {
           }
           let objectList = resp.result.objects;
           if(objectList){
+            let imagePath = this.token.protocol+this.token.host+":"+this.token.port+"/"+this.bucket.name + "/"
             objectList.forEach(ele => {
               if(ele.size === 0){
                 ele.prefix = ele.name;
                 let name = ele.name.split("/");
                 name = name[name.length - 2];
                 ele.name = name;
+              }else{
+                ele.url = imagePath + ele.name;
               }
             });
              this.objectList = objectList;

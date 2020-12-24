@@ -124,6 +124,9 @@ export default {
           throw resp.error.message;
         }
         let token = {
+          protocol:this.protocol,
+          host:this.host,
+          port:this.port,
           url:url,
           jwt:resp.result.token
         }

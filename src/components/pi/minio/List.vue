@@ -69,23 +69,25 @@
     :visible.sync="drawer"
     size="45%"
     :with-header="false">
-    <br>
-    <br>
-       <el-input readonly v-bind:value="curImage.filename">
-        <template slot="prepend">filename</template>
-      </el-input>
-    
-    <br>
-    <br>
-      <el-input readonly v-bind:value="curImage.url">
-        <template slot="prepend">URL</template>
-      </el-input>
+    <div class="detail">
+      <el-collapse accordion>
+        <el-collapse-item title="markdown" name="3">
+          <el-input readonly v-bind:value="curImage | markdown">
+          </el-input>
+        </el-collapse-item>
+        
+        <el-collapse-item title="名称" name="filename">
+          <el-input readonly v-bind:value="curImage.name">
+          </el-input>
+        </el-collapse-item>
 
-      <br>
-    <br>
-      <el-input readonly v-bind:value="curImage | markdown">
-        <template slot="prepend">markdown</template>
-      </el-input>
+        <el-collapse-item title="url" name="2">
+          <el-input readonly v-bind:value="curImage.url">
+          </el-input>
+        </el-collapse-item>
+      
+    </el-collapse>
+    </div>
 </el-drawer>
 
 </div>
@@ -106,12 +108,11 @@ export default {
     return {
       curImage:{},
       drawer:false,
-      // prefixs:this.paths,
     }
   },
  filters:{
     markdown:function(curImag){
-      return "!["+ curImag.storename +"]("+ curImag.url +")";
+      return "![图片]("+ curImag.url +")";
     },
   },
   methods:{
@@ -182,5 +183,9 @@ export default {
 
 .el-main{
   padding: 10px;
+}
+
+.detail{
+  padding: 15px;
 }
 </style>
