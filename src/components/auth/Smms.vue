@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <router-link  to="/m3nu" class="back" >
-      <el-button type="warning" icon="el-icon-arrow-left" circle></el-button>
+      <el-page-header content="sm.ms"></el-page-header>
     </router-link>
     
   <el-main>
@@ -141,5 +141,7 @@ export default {
   left: 10px;
   top: 10px;
   z-index: 999;
+  color: #000;
+  text-decoration: none;
 }
 </style>

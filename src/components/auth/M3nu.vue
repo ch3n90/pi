@@ -53,6 +53,7 @@
       <br>
       <br>
       <br>
+      <el-divider content-position="left">自建服务器</el-divider>
       <el-row :gutter="20" class="rows">
       <el-col :span="8">
         <router-link to="/minio">
@@ -71,7 +72,7 @@
 
               <el-row>
                 <el-col :span="23" :offset="1">
-                  <span class="url">自建服务器</span>
+                  <span class="url">https://min.io</span>
                 </el-col>
               </el-row>
           </div>
@@ -93,40 +94,46 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .rows{
-    margin-bottom: 20px;
-  }
-  .el-col {
-    border-radius: 4px;
-  }
+.rows{
+  margin-bottom: 20px;
+}
+.el-col {
+  border-radius: 4px;
+}
 
-  .bg-purple {
-    background: #DCDFE6;
-  }
-   .bg-purple:hover{
-     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
-  }
+.bg-purple {
+  background: #DCDFE6;
+}
+.bg-purple:hover{
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+}
 
-  .grid-content {
-    border-radius: 4px;
-    min-height: 100px;
-  }
+.grid-content {
+  border-radius: 5px;
+  min-height: 100px;
+}
 
-  .logo{
-    margin-top: 5px;
-  }
-  .logo-img{
-     width: 55px;
-     height: 55px;
-  }
+.logo{
+  margin-top: 5px;
+  
+}
+.logo-img{
+    width: 55px;
+    height: 55px;
+    border-radius: 5px;
+}
 
-  .title{
-    margin-top: 20px;
-    color: #000;
-  }
+.title{
+  margin-top: 20px;
+  color: #000;
+}
 
-  .url{
-    color:#000
-  }
+.url{
+  color:#000
+}
+
+.el-divider__text{
+  background-color: #F5F5F5;
+}
 
 </style>

@@ -49,11 +49,11 @@
 
           <el-table-column label="操作" width="145">
             <template slot-scope="scope">
-              <el-button v-if="scope.size != 0"
+              <el-button v-if="scope.row.size != 0"
                 size="mini"
                 @click="handleDetail(scope.$index, scope.row)">详情</el-button>
 
-              <el-button
+              <el-button  v-if="scope.row.size != 0"
                 size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)">删除</el-button>
