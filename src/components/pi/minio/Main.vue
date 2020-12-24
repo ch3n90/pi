@@ -52,8 +52,8 @@
                       :objectList="objectList"
                       :bucket="bucket"
                       :paths="paths"
-                      @func="func"
-                      :key='incrementKey'></component>
+                      :loading="loading"
+                      @func="func"></component>
         </transition>
       </el-col>
     </el-row>
@@ -68,18 +68,16 @@ import Upload from './Upload'
 import Profile from './Profile'
 const remote = require('electron').remote
 const {ipcRenderer} = require('electron')
-const Minio = require('minio')
 export default {
   name: 'Minio',
     data() {
       return {
          buckets:[],
-         bucket:"",
+         bucket:{},
          paths:[],
          rightComName: List,
          objectList:[],
-         incrementKey:0,
-         prefix:"",
+         loading:true,
 
          //------
          token:null,
@@ -87,24 +85,22 @@ export default {
     },
   methods:{
       rightCom(index,indexPath){
-        this.bucket = index;
+        this.bucket = {name:index};
         this.objectList = [];
         this.paths = [];
         this.listObject(index,"");
-        this.incrementKey++;
       },
-      func(prefix){
+      func(next){
         this.objectList = [];
-        this.listObject(this.bucket,prefix);
-        let index = this.paths.indexOf(prefix);
+        this.listObject(this.bucket.name,next.prefix);
+        let index = this.paths.indexOf(next);
         if(index >= 0){
           this.paths = this.paths.slice(0,index + 1);
-        }else if(prefix === ''){
+        }else if(next.prefix === ''){
           this.paths=[];
         }else{
-          this.paths.push(prefix);
+          this.paths.push(next);
         }
-        this.incrementKey++;
       },
       exit(){
         ipcRenderer.send("m3nu-win");
@@ -117,36 +113,31 @@ export default {
           {
             headers:{
               "Authorization":"Bearer "+ this.token.jwt,
-              // "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36 Edg/87.0.664.60"
             }
           }
         ).then(resp => {
           if(resp.error){
             throw resp.error.message;
           }
-          console.log(resp);
-          this.objectList = resp.result.objects;
+          let objectList = resp.result.objects;
+          if(objectList){
+            objectList.forEach(ele => {
+              if(ele.size === 0){
+                ele.prefix = ele.name;
+                let name = ele.name.split("/");
+                name = name[name.length - 2];
+                ele.name = name;
+              }
+            });
+             this.objectList = objectList;
+          }
+          this.loading = false;
         }).catch(err => {
             this.$notify.error({
               title: '错误',
               message: err
             });
         })
-        // let stream = this.minioClient.listObjectsV2(bucket,prefix);
-        // stream.on('data', (obj) => {
-        //   let type = 1;
-        //   if(obj.size === 0){
-        //     type = 0;
-        //   }
-        //   let img = {
-        //     name: type === 0 ? obj.prefix:obj.name,
-        //     size: obj.size,
-        //     date: obj.lastModified,
-        //     type: type
-        //   }
-        //   this.objectList.unshift(img);
-        // })
-        // stream.on('error', function(err) { console.log(err) } )
       },
   },
   created(){
@@ -164,13 +155,11 @@ export default {
         if(resp.error){
           throw resp.error.message;
         }
-        console.log(resp);
-        this.buckets = resp.result.buckets;
+        let buckets = resp.result.buckets;
         if(buckets && buckets.length > 0){
+          this.buckets = buckets;
           this.bucket = buckets[0];
-          //TODO
           this.listObject(this.bucket.name,'');
-          this.paths.push(this.bucket)
         }
       }).catch(err => {
           this.$notify.error({
@@ -178,29 +167,6 @@ export default {
             message: err
           });
       })
-    // this.minioClient = new Minio.Client({
-    //       endPoint: token.endPoint,
-    //       port: token.port,
-    //       useSSL: token.useSSL,
-    //       accessKey: token.accessKey,
-    //       secretKey: token.secretKey
-    //   });
-    // this.minioClient.listBuckets((err, buckets) => {
-    //     if (err){
-    //        this.$notify.error({
-    //           title: '错误',
-    //           message: err
-    //         });
-    //     }else{
-    //       this.buckets = buckets;
-    //       if(buckets && buckets.length > 0){
-    //         this.bucket = buckets[0].name;
-    //         this.listObject(this.bucket,'');
-    //         this.paths.push(this.bucket)
-    //       }
-    //     }
-        
-    //   });
   },
   components:{
         //right

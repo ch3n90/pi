@@ -6,10 +6,10 @@
       <el-col :span="24">
             <el-breadcrumb separator=">">
             <el-breadcrumb-item>
-              <el-link @click.stop="next('')"  type="primary">{{curBucket}}</el-link>
+              <el-link @click.stop="next({prefix:''})" type="primary">{{bucket.name}}</el-link>
             </el-breadcrumb-item>
-            <el-breadcrumb-item v-for="prefix in prefixs" :key="prefix">
-                <el-link @click.stop="next(prefix)"  type="primary"> {{prefix}} </el-link>
+            <el-breadcrumb-item v-for="path in paths" :key="path.name">
+                <el-link @click.stop="next(path)"  type="primary"> {{path.name}} </el-link>
             </el-breadcrumb-item>
             </el-breadcrumb>
       </el-col>
@@ -18,44 +18,48 @@
     <el-row>
       <el-col :span="24">
           <el-table
-    :data="tableData"
-    :default-sort="{prop:'date',order:'ascending'}"
-    stripe
-    style="width: 100%">
-    <el-table-column
-      prop="name"
-      label="名称"
-      cell-click="next">
-      <template slot-scope="scope">
-        <el-link v-if="scope.row.type === 0" style="margin-left: 10px" @click.stop="next(scope.row.name)"  type="primary">{{ scope.row.name }}</el-link>
-        <span v-else style="margin-left: 10px">{{ scope.row.name }}</span>
-      </template>
-    </el-table-column>
+          v-loading="loading"
+          :data="objectList"
+          :default-sort="{prop:'date',order:'ascending'}"
+          stripe
+          style="width: 100%">
+          <el-table-column
+            prop="name"
+            label="名称"
+            cell-click="next">
+            <template slot-scope="scope">
+              <el-link v-if="scope.row.size === 0" style="margin-left: 10px" @click.stop="next(scope.row)"  type="primary">{{ scope.row.name }}</el-link>
+              <span v-else style="margin-left: 10px">{{ scope.row.name}}</span>
+            </template>
+          </el-table-column>
 
-    <el-table-column
-      prop="size"
-      label="大小">
-    </el-table-column>
+          <el-table-column
+            prop="size"
+            width="80"
+            label="大小">
+          </el-table-column>
 
-     <el-table-column
-      prop="date"
-      :formatter = "dateFormat"
-      label="上传日期"
-      sortable>
-    </el-table-column>
+          <el-table-column
+            prop="lastModified"
+            :formatter = "dateFormat"
+            label="上传日期"
+            width="140"
+            sortable>
+          </el-table-column>
 
-    <el-table-column label="操作">
-      <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleDetail(scope.$index, scope.row)">详情</el-button>
-        <el-button
-          size="mini"
-          type="danger"
-          @click="handleDelete(scope.$index, scope.row)">删除</el-button>
-      </template>
-    </el-table-column>
-  </el-table>
+          <el-table-column label="操作" width="145">
+            <template slot-scope="scope">
+              <el-button v-if="scope.size != 0"
+                size="mini"
+                @click="handleDetail(scope.$index, scope.row)">详情</el-button>
+
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
       </el-col>
 
     </el-row>
@@ -90,21 +94,19 @@
 
 <script>
 const remote = require('electron').remote
-const Minio = require('minio')
 export default {
   name: 'List',
   props:{
     objectList:Array,
-    bucket:String,
+    bucket:Object,
     paths:Array,
+    loading:Boolean,
   },
   data:function(){
     return {
-      tableData:this.objectList,
-      curBucket:this.bucket,
       curImage:{},
       drawer:false,
-      prefixs:this.paths,
+      // prefixs:this.paths,
     }
   },
  filters:{
@@ -142,8 +144,9 @@ export default {
         });
       });
     },
-    next(prefix){
-      this.$emit("func",prefix);
+    next(next){
+      // let next = this.paths[index];
+      this.$emit("func",next);
     },
     dateFormat:function(row, column) {
       let time = row[column.property];
