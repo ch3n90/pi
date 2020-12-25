@@ -94,7 +94,7 @@
 
               <el-row>
                 <el-col :span="11" :offset="1">
-                  <span class="url">https://qiniu.com</span>
+                  <span class="url">https://portal.qiniu.com</span>
                 </el-col>
               </el-row>
           </div>
@@ -107,7 +107,7 @@
               <el-row style="margin-bottom:5px">
                 <el-col :span="9" :offset="1">
                   <div class="logo">
-                    <img src="../../assets/images/postimage.png" alt="" class="logo-img">
+                    <img src="../../assets/images/oss.png" alt="" class="logo-img">
                   </div>
                 </el-col>
 
@@ -202,10 +202,12 @@ export default {
 .title{
   margin-top: 20px;
   color: #606266;
+  font-size: 16px;
 }
 
 .url{
   color:#606266;
+  font-size: 14px;
 }
 
 .el-divider__text{

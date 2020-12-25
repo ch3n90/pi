@@ -5,7 +5,7 @@
     <el-row>
       <el-col :span="24">
         <el-menu
-          @select="rightCom">
+          @select="newBucket">
           <el-menu-item index="Upload">
             <i class="el-icon-plus"></i>
             <span slot="title">新建</span>
@@ -84,6 +84,38 @@ export default {
       };
     },
   methods:{
+      newBucket(){
+        this.$prompt('请输入bucket名字', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(({ value }) => {
+          HttpApi.post(
+            this.token.url,
+            {"id":1,"jsonrpc":"2.0","params":{"bucketName":value},"method":"Web.MakeBucket"},
+            {
+              headers:{
+                "Authorization":"Bearer "+ this.token.jwt,
+              }
+            }
+          ).then(resp => {
+            if(resp.error){
+              throw resp.error.message;
+            }
+            this.buckets.push({name:value});
+          }).catch(err => {
+              this.$notify.error({
+                title: '错误',
+                message: err
+              });
+          })
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          });       
+        });
+      },
       rightCom(index,indexPath){
         this.bucket = {name:index};
         this.objectList = [];

@@ -121,29 +121,8 @@ export default {
       this.drawer = true;
     },
     handleDelete(index, row){
-      HttpApi.get(
-        'https://sm.ms/api/v2/delete/' + row.hash,
-      )
-      .then(response=>{
-        if(response.success){
-          const index = this.tableData.indexOf(row);
-          if(index > -1){
-            this.tableData.splice(index, 1)
-          }
-           this.$notify({
-              title: '成功',
-              message: '图片删除成功',
-              type: 'success'
-            });
-        }else{
-          throw response.message;
-        }
-      }).catch(err => {
-         this.$notify.error({
-          title: '错误',
-          message: err
-        });
-      });
+      //{"id":1,"jsonrpc":"2.0","params":{"bucketName":"oss","objects":["user/avatar/ac5748ce585e4a0eab3581f7e8eab44b.png"]},"method":"Web.RemoveObject"}
+      
     },
     next(next){
       // let next = this.paths[index];
