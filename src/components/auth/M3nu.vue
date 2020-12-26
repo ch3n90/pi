@@ -4,7 +4,7 @@
     <el-row :gutter="20" class="rows">
       <el-col :span="8">
         <router-link to="/smms">
-          <div class="grid-content bg-purple">
+          <div class="grid-content">
               <el-row style="margin-bottom:5px">
                 <el-col :span="9" :offset="1">
                   <div class="logo">
@@ -28,7 +28,7 @@
 
       <el-col :span="8">
         <router-link to="/postimage">
-          <div class="grid-content bg-purple">
+          <div class="grid-content">
               <el-row style="margin-bottom:5px">
                 <el-col :span="9" :offset="1">
                   <div class="logo">
@@ -51,8 +51,10 @@
       </el-col>
 
       <el-col :span="8">
-        <router-link to="/imgbb">
-          <div class="grid-content bg-purple">
+        
+        <router-link to="/">
+          <div class="grid-content">
+           <div class="deving">coming soon</div>
               <el-row style="margin-bottom:5px">
                 <el-col :span="9" :offset="1">
                   <div class="logo">
@@ -78,8 +80,9 @@
 
     <el-row :gutter="20" class="rows">
       <el-col :span="8">
-        <router-link to="/smms">
-          <div class="grid-content bg-purple">
+        <router-link to="/">
+          <div class="grid-content">
+            <div class="deving">coming soon</div>
               <el-row style="margin-bottom:5px">
                 <el-col :span="9" :offset="1">
                   <div class="logo">
@@ -102,8 +105,9 @@
       </el-col>
 
       <el-col :span="8">
-        <router-link to="/postimage">
-          <div class="grid-content bg-purple">
+        <router-link to="/">
+          <div class="grid-content">
+            <div class="deving">coming soon</div>
               <el-row style="margin-bottom:5px">
                 <el-col :span="9" :offset="1">
                   <div class="logo">
@@ -133,7 +137,7 @@
       <el-row :gutter="20" class="rows">
       <el-col :span="8">
         <router-link to="/minio">
-          <div class="grid-content bg-purple">
+          <div class="grid-content">
               <el-row style="margin-bottom:5px">
                 <el-col :span="9" :offset="1">
                   <div class="logo">
@@ -170,6 +174,21 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.deving{
+  color: yellow;
+  text-decoration: none;
+  background-color: #bbb;
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  line-height: 20px;
+  font-size: 14px;
+  top: 40%;
+  /* right: -10px; */
+  transform: rotate(50deg);
+  z-index: 999;
+}
+
 .rows{
   margin-bottom: 20px;
 }
@@ -177,16 +196,15 @@ export default {
   border-radius: 4px;
 }
 
-.bg-purple {
-  background: #DCDFE6;
-}
-.bg-purple:hover{
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
-}
-
 .grid-content {
+  background: #DCDFE6;
   border-radius: 5px;
   min-height: 100px;
+  position: relative;
+  overflow: hidden;
+}
+.grid-content:hover{
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
 .logo{
