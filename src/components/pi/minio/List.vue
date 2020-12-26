@@ -20,7 +20,7 @@
           <el-table
           v-loading="loading"
           :data="objectList"
-          :default-sort="{prop:'date',order:'ascending'}"
+          :default-sort="{prop:'size',order:'ascending'}"
           stripe
           style="width: 100%">
           <el-table-column
@@ -49,25 +49,25 @@
 
           <el-table-column label="操作" width="145">
             <template slot-scope="scope">
-              <el-button v-if="scope.row.size != 0"
-                size="mini"
-                @click="handleDetail(scope.$index, scope.row)">详情</el-button>
-
-              <el-button  v-if="scope.row.size != 0"
+              <el-button
                 size="mini"
                 type="danger"
                 @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+
+              <el-button v-if="scope.row.size != 0"
+                size="mini"
+                @click="handleDetail(scope.$index, scope.row)">详情</el-button>
             </template>
           </el-table-column>
         </el-table>
       </el-col>
-
     </el-row>
     </el-main>
+    
   </el-container>
   <el-drawer
     :visible.sync="drawer"
-    size="45%"
+    size="60%"
     :with-header="false">
     <div class="detail">
       <el-collapse accordion>
@@ -89,7 +89,7 @@
     </el-collapse>
     </div>
 </el-drawer>
-
+ 
 </div>
   
 </template>
@@ -155,6 +155,9 @@ export default {
 }
 </script>
 <style scoped>
+.el-container{
+  height: 100%;
+}
 .el-table{
   font-size: 14px;
   margin-top: 10px;
@@ -162,9 +165,11 @@ export default {
 
 .el-main{
   padding: 10px;
+  height: 100%;
 }
 
 .detail{
   padding: 15px;
 }
+
 </style>

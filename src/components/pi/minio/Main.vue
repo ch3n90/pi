@@ -1,11 +1,11 @@
 <template>
  <el-container>
   <el-aside width="200px">
-
     <el-row>
       <el-col :span="24">
         <el-menu
-          @select="newBucket">
+          @select="newBucket"
+          background-color="#f5f5f5">
           <el-menu-item index="Upload">
             <i class="el-icon-plus"></i>
             <span slot="title">新建</span>
@@ -16,10 +16,10 @@
 
     <el-row>
       <el-col :span="24">
-        
         <el-menu
           default-active="List"
-          @select="rightCom">
+          @select="rightCom"
+          background-color="#f5f5f5">
           <el-menu-item :index="bucket.name" v-for="bucket in buckets" :key="bucket.name">
             <i class="el-icon-upload"></i>
             <span slot="title">{{bucket.name}}</span>
@@ -39,7 +39,8 @@
     <el-row>
       <el-col :span="24">
         <el-menu
-          @select="exit">
+          @select="exit"
+          background-color="#f5f5f5">
           <el-menu-item index="Exit">
             <i class="el-icon-toilet-paper"></i>
             <span slot="title">登出</span>
@@ -67,6 +68,16 @@
       </el-col>
     </el-row>
   </el-main>
+  
+  <el-dropdown class="uploader"  @command="uploadCommand">
+    <span class="el-dropdown-link">
+      <el-button type="danger" icon="el-icon-plus" circle ></el-button>
+    </span>
+    <el-dropdown-menu slot="dropdown">
+      <el-dropdown-item icon="el-icon-folder-add" command="path">文件夹</el-dropdown-item>
+      <el-dropdown-item icon="el-icon-picture-outline" command="image">文件</el-dropdown-item>
+    </el-dropdown-menu>
+  </el-dropdown>
    </el-container>
 </template>
 
@@ -86,38 +97,107 @@ export default {
          paths:[],
          rightComName: List,
          objectList:[],
-         loading:true,
+         loading:false,
 
          //------
          token:null,
       };
     },
   methods:{
-      handleCommand(command){
-        HttpApi.post(
-            this.token.url,
-            {id: 1, jsonrpc: "2.0", params: {bucketName: command}, method: "Web.DeleteBucket"},
-            {
-              headers:{
-                "Authorization":"Bearer "+ this.token.jwt,
+    uploadCommand(command){
+      if(command === "path"){
+        this.$prompt('文件夹', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(({ value }) => {
+          let tempPrefix ="";
+          if(this.paths && this.paths.length>0){
+            let lastEle = this.paths[this.paths.length-1];
+            tempPrefix = lastEle.prefix;
+          }
+          let temp = {
+            contentType:"",
+            lastModified:new Date(),
+            name:value,
+            prefix: tempPrefix + value + "/",
+            size:0
+          }
+          this.objectList.unshift(temp);
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          });       
+        });
+      }else if(command === "image"){
+        let path = "";
+        if(this.paths && this.paths.length > 0){
+          path = this.paths[this.paths.length - 1].prefix
+        }
+        new Promise((resolve) => {
+          let input = document.createElement('input');
+          input.value = '选择文件';
+          input.type = 'file';
+          input.accept = 'image/*';
+          input.onchange = event => {
+              let file = event.target.files[0];
+              resolve(file);
+          };
+          input.click();
+        }).then(file => {
+          HttpApi.put(
+            this.token.protocol 
+            + this.token.host 
+            + ":" 
+            + this.token.port 
+            + "/minio/upload/"
+            + this.bucket.name 
+            +"/"
+            + path
+            + file.name,
+          file,
+          {
+            headers:{
+              'Content-Type':file.type,
+              "Authorization":"Bearer "+ this.token.jwt,
               }
-            }
+          }
           ).then(resp => {
-            if(resp.error){
-              throw resp.error.message;
-            }
-            for(let i=0;i<this.buckets.length;i++){
-              if(this.buckets[i].name === command){
-                this.buckets.splice(i,1);
-                break;
-              }
-            }
-          }).catch(err => {
-              this.$notify.error({
+            this.listObject(this.bucket.name,path);
+          });
+        }).catch(err => {
+          this.$notify.error({
                 title: '错误',
                 message: err
               });
-          })
+          });
+      }
+    },
+    handleCommand(command){
+      HttpApi.post(
+          this.token.url,
+          {id: 1, jsonrpc: "2.0", params: {bucketName: command}, method: "Web.DeleteBucket"},
+          {
+            headers:{
+              "Authorization":"Bearer "+ this.token.jwt,
+            }
+          }
+        ).then(resp => {
+          if(resp.error){
+            throw resp.error.message;
+          }
+          for(let i=0;i<this.buckets.length;i++){
+            if(this.buckets[i].name === command){
+              this.buckets.splice(i,1);
+              break;
+            }
+          }
+        }).catch(err => {
+            this.$notify.error({
+              title: '错误',
+              message: err
+            });
+        })
       },
       newBucket(){
         this.$prompt('名称', '提示', {
@@ -174,6 +254,7 @@ export default {
       },
       listObject(bucket,prefix){
         // {"id":1,"jsonrpc":"2.0","params":{"bucketName":"oss","prefix":""},"method":"Web.ListObjects"}
+        this.loading = true;
         HttpApi.post(
           this.token.url,
           {"id":1,"jsonrpc":"2.0","params":{"bucketName":bucket,"prefix":prefix},"method":"Web.ListObjects"},
@@ -207,7 +288,7 @@ export default {
               title: '错误',
               message: err
             });
-        })
+        });
       },
   },
   created(){
@@ -245,9 +326,6 @@ export default {
         Profile,
      
     },
-    mounted(){
-
-    }
 }
 </script>
 <style scoped>
@@ -257,8 +335,12 @@ export default {
 .el-aside{
   height: 100%;
   font-size: 14px;
+  background-color:#f5f5f5;
+  border-right: 1px solid #ccc;
 }
-
+.el-menu{
+  border: none;
+}
 .el-main{
    height: 100%;
    background-color: #F5F5F5;
@@ -285,5 +367,11 @@ export default {
 .el-icon-more{
   transform: rotate(90deg);
   font-size: 14px;
+}
+
+.uploader{
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
 }
 </style>
