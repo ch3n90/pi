@@ -16,12 +16,21 @@
 
     <el-row>
       <el-col :span="24">
+        
         <el-menu
           default-active="List"
           @select="rightCom">
           <el-menu-item :index="bucket.name" v-for="bucket in buckets" :key="bucket.name">
             <i class="el-icon-upload"></i>
             <span slot="title">{{bucket.name}}</span>
+            <el-dropdown @command="handleCommand">
+              <span class="el-dropdown-link">
+                <i class="el-icon-more el-icon--right"></i>
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item icon="el-icon-delete" :command="bucket.name">删除</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </el-menu-item>
         </el-menu>
       </el-col>
@@ -67,7 +76,7 @@ import List from './List'
 import Upload from './Upload'
 import Profile from './Profile'
 const remote = require('electron').remote
-const {ipcRenderer} = require('electron')
+const {ipcRenderer,Menu,MenuItem} = require('electron')
 export default {
   name: 'Minio',
     data() {
@@ -84,8 +93,34 @@ export default {
       };
     },
   methods:{
+      handleCommand(command){
+        HttpApi.post(
+            this.token.url,
+            {id: 1, jsonrpc: "2.0", params: {bucketName: command}, method: "Web.DeleteBucket"},
+            {
+              headers:{
+                "Authorization":"Bearer "+ this.token.jwt,
+              }
+            }
+          ).then(resp => {
+            if(resp.error){
+              throw resp.error.message;
+            }
+            for(let i=0;i<this.buckets.length;i++){
+              if(this.buckets[i].name === command){
+                this.buckets.splice(i,1);
+                break;
+              }
+            }
+          }).catch(err => {
+              this.$notify.error({
+                title: '错误',
+                message: err
+              });
+          })
+      },
       newBucket(){
-        this.$prompt('请输入bucket名字', '提示', {
+        this.$prompt('名称', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
         }).then(({ value }) => {
@@ -201,7 +236,7 @@ export default {
             title: '错误',
             message: err
           });
-      })
+      });
   },
   components:{
         //right
@@ -210,6 +245,9 @@ export default {
         Profile,
      
     },
+    mounted(){
+
+    }
 }
 </script>
 <style scoped>
@@ -238,5 +276,14 @@ export default {
 {
 	background-color: #d2d2d2;
     border-radius: 8px;
+}
+
+.el-dropdown{
+  position: absolute;
+  right: 0;
+}
+.el-icon-more{
+  transform: rotate(90deg);
+  font-size: 14px;
 }
 </style>
