@@ -65,21 +65,30 @@
     :with-header="false">
     <div class="detail">
       <el-collapse accordion>
-        <el-collapse-item title="markdown" name="3">
-          <el-input readonly v-bind:value="curImage | markdown">
+        <el-collapse-item title="链接" name="url">
+          <el-input readonly v-bind:value="curImage.url">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
           </el-input>
         </el-collapse-item>
-        
-        <el-collapse-item title="名称" name="filename">
-          <el-input readonly v-bind:value="curImage.filename">
+        <el-collapse-item title="论坛" name="bbcode">
+            <el-input readonly v-bind:value="curImage | bbcode">
+              <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
+            </el-input>
+        </el-collapse-item>
+
+        <el-collapse-item title="Markdown" name="markdown">
+          <el-input readonly v-bind:value="curImage | markdown">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
           </el-input>
         </el-collapse-item>
 
-        <el-collapse-item title="url" name="2">
-          <el-input readonly v-bind:value="curImage.url">
+        <el-collapse-item title="HTML" name="html">
+          <el-input 
+            readonly 
+            v-bind:value="curImage | html">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
           </el-input>
         </el-collapse-item>
-      
     </el-collapse>
     </div>
   </el-drawer>
@@ -88,7 +97,7 @@
 
 <script>
 import HttpApi from '../../../util/http.js'
-const {remote} = require('electron')
+const {remote,clipboard} = require('electron')
 export default {
   name: 'History',
   data:function(){
@@ -103,8 +112,23 @@ export default {
     markdown:function(curImag){
       return "!["+ curImag.storename +"]("+ curImag.url +")";
     },
+    bbcode:function(curImag){
+      return "[url="+curImag.url+"][img]"+curImag.url+"[/img][/url]"
+    },
+    html:function(curImag){
+      return "<img src='"+curImag.url+"' alt='"+curImag.storename+"'/>"
+    }
   },
   methods:{
+    copy(event){
+      let input = event.currentTarget.parentElement.previousElementSibling
+      input.select();
+      clipboard.writeText(input.value, 'pi');
+       this.$message({
+         message: '已复制',
+         duration:800
+       });
+    },
     handleDetail(index,row){
       this.curImage = row;
       this.drawer = true;

@@ -34,28 +34,38 @@
     </el-row>
 
     <el-drawer
-      :visible.sync="drawer"
-      size="60%"
-      :with-header="false">
-      <div class="detail">
-        <el-collapse accordion>
-          <el-collapse-item title="markdown" name="markdown">
-            <el-input readonly v-bind:value="curImage | markdown">
+    :visible.sync="drawer"
+    size="60%"
+    :with-header="false">
+    <div class="detail">
+      <el-collapse accordion>
+        <el-collapse-item title="链接" name="url">
+          <el-input readonly v-bind:value="curImage.url">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
+          </el-input>
+        </el-collapse-item>
+        <el-collapse-item title="论坛" name="bbcode">
+            <el-input readonly v-bind:value="curImage | bbcode">
+              <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
             </el-input>
-          </el-collapse-item>
-          
-          <el-collapse-item title="名称" name="filename">
-            <el-input readonly v-bind:value="curImage.filename">
-            </el-input>
-          </el-collapse-item>
+        </el-collapse-item>
 
-          <el-collapse-item title="url" name="url">
-            <el-input readonly v-bind:value="curImage.url">
-            </el-input>
-          </el-collapse-item>
-      </el-collapse>
-      </div>
-    </el-drawer>
+        <el-collapse-item title="Markdown" name="markdown">
+          <el-input readonly v-bind:value="curImage | markdown">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
+          </el-input>
+        </el-collapse-item>
+
+        <el-collapse-item title="HTML" name="html">
+          <el-input 
+            readonly 
+            v-bind:value="curImage | html">
+            <el-button slot="append" icon="el-icon-copy-document" @click="copy"></el-button>
+          </el-input>
+        </el-collapse-item>
+    </el-collapse>
+    </div>
+  </el-drawer>
   </el-main>
     <el-button type="danger" icon="el-icon-back" circle class="exit" @click="exit"></el-button>
   </el-container>
@@ -80,8 +90,23 @@ export default {
     markdown:function(curImag){
       return "!["+ curImag.name +"]("+ curImag.url +")";
     },
+    bbcode:function(curImag){
+      return "[url="+curImag.url+"][img]"+curImag.url+"[/img][/url]"
+    },
+    html:function(curImag){
+      return "<img src='"+curImag.url+"' alt='"+curImag.name+"'/>"
+    }
   },
   methods:{
+    copy(event){
+      let input = event.currentTarget.parentElement.previousElementSibling
+      input.select();
+      clipboard.writeText(input.value, 'pi');
+       this.$message({
+         message: '已复制',
+         duration:800
+       });
+    },
     exit(){
       ipcRenderer.send("m3nu-win");
     },

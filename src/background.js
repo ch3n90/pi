@@ -187,7 +187,7 @@ ipcMain.on('put-in-tray', (event) => {
       {
         label: '退出',
         click: () => {
-          app.quit();
+          app.exit();
         }
       },
     ])
