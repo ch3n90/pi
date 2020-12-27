@@ -21,8 +21,6 @@
                     prefix-icon="el-icon-lock"
                     v-model="apiKey"
                     show-password>
-
-                   
                   </el-input>
               </div>
             </el-col>
@@ -78,17 +76,24 @@ export default {
   },
   methods:{
     sign(){
+      if(!this.apiKey || this.apiKey.length < 32){
+        this.$notify.error({
+            title: '错误',
+            message: ""
+        });
+        return;
+      }
       if(this.remember){
-            let access = {
-              typ3:"postimage",
-              apiKey:this.apiKey,
-              remember: this.remember,
-              default:false,
-            }
-            addAccess(access);
-          }else{
-            removeAccess("postimage");
-          }
+        let access = {
+          typ3:"postimage",
+          apiKey:this.apiKey,
+          remember: this.remember,
+          default:false,
+        }
+        addAccess(access);
+      }else{
+        removeAccess("postimage");
+      }
       remote.getGlobal('cache').token = this.apiKey;
       remote.getGlobal('cache').pi = './postimage/Main';
       ipcRenderer.send("pi-win");
