@@ -35,9 +35,9 @@
     </el-row>
       
   </el-aside>
-  <el-main>
-    <el-row>
-      <el-col>
+  <el-main class="content">
+    <el-row class="content">
+      <el-col class="content">
         <transition name="fade"
                   enter-active-class="fadeIn"
                   leave-active-class="fadeOut"
@@ -99,9 +99,12 @@ export default {
 .el-aside{
   height: 100%;
   font-size: 14px;
+  border-right: 1px solid #ccc;
 }
-
-.el-main{
+.el-menu{
+  border: none;
+}
+.content {
    height: 100%;
    background-color: #F5F5F5;
 }

@@ -60,8 +60,8 @@
           
            <el-row style="margin-top:30px">
             <el-col :span="2" :offset="21">
-              <div >
-                  <el-link type="warning">试用</el-link>
+              <div>
+                  <el-link type="warning" @click.stop="temp">试用</el-link>
               </div>
             </el-col>
           </el-row>
@@ -125,6 +125,10 @@ export default {
                 silent: true,
             });
       });
+    },
+    temp(){
+      remote.getGlobal('cache').pi = './smms/Temp';
+      ipcRenderer.send("pi-win");
     }
   },
   created(){

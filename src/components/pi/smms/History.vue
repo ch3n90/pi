@@ -1,5 +1,6 @@
 <template>
-<div>
+<div class="content"
+  v-loading="loading">
    <el-table
     :data="tableData"
     :default-sort="{prop:'created_at',order:'descending'}"
@@ -46,40 +47,43 @@
 
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button
-          size="mini"
-          @click="handleDetail(scope.$index, scope.row)">详情</el-button>
-        <el-button
+         <el-button
           size="mini"
           type="danger"
           @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+
+        <el-button
+          size="mini"
+          @click="handleDetail(scope.$index, scope.row)">详情</el-button>
       </template>
     </el-table-column>
   </el-table>
 
   <el-drawer
-  :visible.sync="drawer"
-  :with-header="false">
-    <br>
-    <br>
-       <el-input readonly v-bind:value="curImage.filename">
-        <template slot="prepend">filename</template>
-      </el-input>
-    
-    <br>
-    <br>
-      <el-input readonly v-bind:value="curImage.url">
-        <template slot="prepend">URL</template>
-      </el-input>
+    :visible.sync="drawer"
+    size="60%"
+    :with-header="false">
+    <div class="detail">
+      <el-collapse accordion>
+        <el-collapse-item title="markdown" name="3">
+          <el-input readonly v-bind:value="curImage | markdown">
+          </el-input>
+        </el-collapse-item>
+        
+        <el-collapse-item title="名称" name="filename">
+          <el-input readonly v-bind:value="curImage.filename">
+          </el-input>
+        </el-collapse-item>
 
-      <br>
-    <br>
-      <el-input readonly v-bind:value="curImage | markdown">
-        <template slot="prepend">markdown</template>
-      </el-input>
-</el-drawer>
+        <el-collapse-item title="url" name="2">
+          <el-input readonly v-bind:value="curImage.url">
+          </el-input>
+        </el-collapse-item>
+      
+    </el-collapse>
+    </div>
+  </el-drawer>
 </div>
-  
 </template>
 
 <script>
@@ -91,7 +95,8 @@ export default {
     return {
       tableData:[],
       curImage:{},
-      drawer:false
+      drawer:false,
+      loading:false,
     }
   },
  filters:{
@@ -105,6 +110,7 @@ export default {
       this.drawer = true;
     },
     handleDelete(index, row){
+      this.loading = true;
       HttpApi.get(
         'https://sm.ms/api/v2/delete/' + row.hash,
       )
@@ -114,7 +120,8 @@ export default {
           if(index > -1){
             this.tableData.splice(index, 1)
           }
-           this.$notify({
+          this.loading =false;
+          this.$notify({
               title: '成功',
               message: '图片删除成功',
               type: 'success'
@@ -123,13 +130,14 @@ export default {
           throw response.message;
         }
       }).catch(err => {
-         this.$notify.error({
+        this.loading =false;
+        this.$notify.error({
           title: '错误',
           message: err
         });
       });
+      
     },
-
     dateFormat:function(row, column) {
       let time = row[column.property];
       if(time){
@@ -155,6 +163,7 @@ export default {
     }
   },
   created(){
+    this.loading = true;
     this.auth = {"Authorization" : remote.getGlobal('cache').token} ;
     HttpApi.get(
       'https://sm.ms/api/v2/upload_history',
@@ -164,23 +173,30 @@ export default {
     )
     .then(response=>{
       if(response.success){
-        this.loading = false;
         this.tableData = response.data;
+        this.loading = false;
       }else{
         throw response.message;
       }
     }).catch(err => {
-      let myNotification = new Notification('失败',{
-              body: err,
-              silent: true,
-          });
+      this.loading = false;
+      this.$notify.error({
+          title: '错误',
+          message: err
+        });
     });
+    
   }
 }
 </script>
 <style scoped>
+.content{
+  height: 100%;
+}
 .el-table{
   font-size: 14px;
 }
-
+.detail{
+  padding: 15px;
+}
 </style>

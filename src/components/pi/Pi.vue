@@ -18,6 +18,7 @@ export default {
     "pi": () => {
       switch(remote.getGlobal('cache').pi){
         case "./smms/Main" : return import('./smms/Main');
+        case "./smms/Temp" : return import('./smms/Temp')
         case "./postimage/Main" : return import('./postimage/Main')
         case "./minio/Main" : return import('./minio/Main')
       }
@@ -34,5 +35,4 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 </style>

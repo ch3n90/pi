@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="uploader"
+    v-loading="loading">
     <el-row>
       <el-col>
         <el-upload
@@ -7,6 +8,7 @@
               action="https://sm.ms/api/v2/upload"
               :on-remove="handleRemove"
               :on-success="uploadSuccess"
+              :before-upload="beforeUpload"
               :file-list="fileList"
               :headers="auth"
               :multiple=true
@@ -23,8 +25,7 @@
                 <span class="el-upload-list__item-actions" @click="handleDetail(file)">
                   <span
                     class="el-upload-list__item-delete"
-                    @click.stop="handleRemove(file)"
-                  >
+                    @click.stop="handleRemove(file)">
                     <i class="el-icon-delete"></i>
                   </span>
                 </span>
@@ -35,17 +36,26 @@
 
   <el-drawer
     :visible.sync="drawer"
+    size="60%"
     :with-header="false">
-      <br>
-      <br>
-        <el-input readonly v-bind:value="curImage | markdown">
-          <template slot="prepend">Markdown</template>
-        </el-input>
-      <br>
-      <br>
-        <el-input readonly v-bind:value="curImage.url">
-          <template slot="prepend">URL</template>
-        </el-input>
+    <div class="detail">
+      <el-collapse accordion>
+        <el-collapse-item title="markdown" name="markdown">
+          <el-input readonly v-bind:value="curImage | markdown">
+          </el-input>
+        </el-collapse-item>
+        
+        <el-collapse-item title="名称" name="filename">
+          <el-input readonly v-bind:value="curImage.name">
+          </el-input>
+        </el-collapse-item>
+
+        <el-collapse-item title="url" name="url">
+          <el-input readonly v-bind:value="curImage.url">
+          </el-input>
+        </el-collapse-item>
+    </el-collapse>
+    </div>
   </el-drawer>
 
   </div>
@@ -65,6 +75,7 @@ export default {
       curImage:{},
       auth: null,
       drawer:false,
+      loading:false,
     }
   },
   filters:{
@@ -79,6 +90,7 @@ export default {
     },
     uploadSuccess(response,file,fileList){
       if(!response.success){
+        //upload fail
         const index = fileList.indexOf(file);
         if(index > -1){
           fileList.splice(index, 1)
@@ -88,14 +100,20 @@ export default {
           message: response.message
         });
       }else{
+        //upload success
+        file.url = response.data.url;
         this.fileList.splice(1,0,file);
       }
+      this.loading = false;
     },
     handleRemove(file, fileList){
       const index = this.fileList.indexOf(file);
       if(index > -1){
         this.fileList.splice(index, 1)
       }
+    },
+    beforeUpload(){
+      this.loading = true;
     },
     fileExceed(files, fileList){
       this.$message("一次最多上传10张图片");
@@ -107,7 +125,12 @@ export default {
 }
 </script>
 <style scoped>
-
+.uploader{
+  height: 100%;
+}
+.detail{
+  padding: 15px;
+}
 .el-col >>> .el-upload--picture-card{
   position: absolute;
   left: 0;

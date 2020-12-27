@@ -1,16 +1,17 @@
 <template>
-  <div>
-    <el-row>
+  <el-container class="content"  v-loading="loading">
+    <el-main>
+      <el-row>
       <el-col>
         <el-upload
               class="upload_list"
               action="https://sm.ms/api/v2/upload"
               :on-remove="handleRemove"
               :on-success="uploadSuccess"
-              :file-list="fileList"
-              :headers="auth"
-              :multiple=true
+              :before-upload="beforeUpload"
               :on-exceed="fileExceed"
+              :file-list="fileList"
+              :multiple=true
               accept="image/*"
               name="smfile"
               list-type="picture-card">
@@ -23,8 +24,7 @@
                 <span class="el-upload-list__item-actions" @click="handleDetail(file)">
                   <span
                     class="el-upload-list__item-delete"
-                    @click.stop="handleRemove(file)"
-                  >
+                    @click.stop="handleRemove(file)">
                     <i class="el-icon-delete"></i>
                   </span>
                 </span>
@@ -33,38 +33,47 @@
       </el-col>
     </el-row>
 
-  <el-drawer
-    :visible.sync="drawer"
-    :with-header="false">
-      <br>
-      <br>
-        <el-input readonly v-bind:value="curImage | markdown">
-          <template slot="prepend">Markdown</template>
-        </el-input>
-      <br>
-      <br>
-        <el-input readonly v-bind:value="curImage.url">
-          <template slot="prepend">URL</template>
-        </el-input>
-  </el-drawer>
+    <el-drawer
+      :visible.sync="drawer"
+      size="60%"
+      :with-header="false">
+      <div class="detail">
+        <el-collapse accordion>
+          <el-collapse-item title="markdown" name="markdown">
+            <el-input readonly v-bind:value="curImage | markdown">
+            </el-input>
+          </el-collapse-item>
+          
+          <el-collapse-item title="名称" name="filename">
+            <el-input readonly v-bind:value="curImage.filename">
+            </el-input>
+          </el-collapse-item>
 
-  </div>
-
+          <el-collapse-item title="url" name="url">
+            <el-input readonly v-bind:value="curImage.url">
+            </el-input>
+          </el-collapse-item>
+      </el-collapse>
+      </div>
+    </el-drawer>
+  </el-main>
+    <el-button type="danger" icon="el-icon-back" circle class="exit" @click="exit"></el-button>
+  </el-container>
 </template>
 
 <script>
 import HttpApi from '../../../util/http.js'
-const remote = require('electron').remote
+const {ipcRenderer} = require('electron')
 export default {
-  name: 'Upload',
+  name: 'Temp',
   data:function(){
     return {
       fileList:[
         {name: 'a.jpeg', url: 'https://'}, 
       ],
       curImage:{},
-      auth: null,
       drawer:false,
+      loading:false,
     }
   },
   filters:{
@@ -73,6 +82,9 @@ export default {
     },
   },
   methods:{
+    exit(){
+      ipcRenderer.send("m3nu-win");
+    },
     handleDetail(file){
       this.curImage = file;
       this.drawer = true;
@@ -83,12 +95,15 @@ export default {
         if(index > -1){
           fileList.splice(index, 1)
         }
+        this.loading = false;
         this.$notify.error({
           title: '错误',
           message: response.message
         });
       }else{
+        file.url = response.data.url;
         this.fileList.splice(1,0,file);
+        this.loading = false;
       }
     },
     handleRemove(file, fileList){
@@ -97,17 +112,24 @@ export default {
         this.fileList.splice(index, 1)
       }
     },
+    beforeUpload(){
+      this.loading = true;
+    },
     fileExceed(files, fileList){
       this.$message("一次最多上传10张图片");
     }
   },
-  created(){
-    this.auth = {"Authorization":remote.getGlobal('cache').token}
-  }
 }
 </script>
 <style scoped>
-
+.content{
+  height: 100%;
+}
+.exit{
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+}
 .el-col >>> .el-upload--picture-card{
   position: absolute;
   left: 0;

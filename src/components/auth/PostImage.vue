@@ -95,7 +95,7 @@ export default {
     }
   },
   created(){
-    queryAccess("postImage")
+    queryAccess("postimage")
     .then(access => {
       if(access){
         this.apiKey = access.apiKey;
@@ -133,4 +133,5 @@ export default {
   color: #000;
   text-decoration: none;
 }
+
 </style>
