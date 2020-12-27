@@ -29,19 +29,38 @@
       </el-col>
     </el-row>
 
-  <el-drawer
+ <el-drawer
     :visible.sync="drawer"
+    size="60%"
     :with-header="false">
-      <br>
-      <br>
-        <el-input readonly v-bind:value="curImage | markdown">
-          <template slot="prepend">Markdown</template>
-        </el-input>
-      <br>
-      <br>
-        <el-input readonly v-bind:value="curImage.url">
-          <template slot="prepend">URL</template>
-        </el-input>
+    <div class="detail">
+      <el-collapse accordion>
+        <el-collapse-item title="链接" name="url">
+          <el-input readonly v-bind:value="curImage.url">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
+          </el-input>
+        </el-collapse-item>
+        <el-collapse-item title="论坛" name="bbcode">
+            <el-input readonly v-bind:value="curImage | bbcode">
+              <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
+            </el-input>
+        </el-collapse-item>
+
+        <el-collapse-item title="Markdown" name="markdown">
+          <el-input readonly v-bind:value="curImage | markdown">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
+          </el-input>
+        </el-collapse-item>
+
+        <el-collapse-item title="HTML" name="html">
+          <el-input 
+            readonly 
+            v-bind:value="curImage | html">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
+          </el-input>
+        </el-collapse-item>
+    </el-collapse>
+    </div>
   </el-drawer>
 
   </div>
@@ -53,7 +72,7 @@ import HttpApi from '../../../util/http.js'
 import qs from 'qs'
 const md5 = require('md5')
 const xml2js = require('xml2js');
-const {remote} = require('electron')
+const {remote,clipboard} = require('electron')
 export default {
   name: 'Upload',
   data:function(){
@@ -70,8 +89,23 @@ export default {
     markdown:function(curImag){
       return "!["+ curImag.name +"]("+ curImag.url +")";
     },
+    bbcode:function(curImag){
+      return "[url="+curImag.url+"][img]"+curImag.url+"[/img][/url]"
+    },
+    html:function(curImag){
+      return "<img src='"+curImag.url+"' alt='"+curImag.name+"'/>"
+    }
   },
   methods:{
+    copy(event){
+      let input = event.currentTarget.parentElement.previousElementSibling
+      input.select();
+      clipboard.writeText(input.value, 'pi');
+       this.$message({
+         message: '已复制',
+         duration:800
+       });
+    },
     uploader(request){
       let file = request.file;
       if (file) {
@@ -148,7 +182,9 @@ export default {
 }
 </script>
 <style scoped>
-
+.detail{
+  padding: 15px;
+}
 .el-col >>> .el-upload--picture-card{
   position: absolute;
   left: 0;
