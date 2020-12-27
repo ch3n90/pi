@@ -195,7 +195,7 @@ ipcMain.on('put-in-tray', (event) => {
       piWin.then(win => { win.show()});
     })
 
-    appIcon.setToolTip('pi')
+    appIcon.setToolTip('π')
     appIcon.setContextMenu(contextMenu)
   }
   
