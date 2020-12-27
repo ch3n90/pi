@@ -9,7 +9,7 @@
 
 ***
 
-- [x] [minio自建](https://doc.min.io)
+- [x] [minio自建](https://docs.min.io/)  
 ***想要提供支持的服务器，请提交issue***
 ## 应用截图
 
