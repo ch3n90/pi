@@ -33,9 +33,8 @@ protocol.registerSchemesAsPrivileged([
     height: 600,
     autoHideMenuBar:true,
     resizable:false,
-    // transparent: true,
+    title:"π",
     center:true,
-    // frame:false,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -78,6 +77,7 @@ async function createPiWindow () {
     frame:true,
     show:false,
     center:true,
+    title:"π",
     // backgroundColor: '#222326',
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
