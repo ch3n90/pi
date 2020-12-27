@@ -18,7 +18,6 @@
     <el-row>
       <el-col :span="24">
           <el-table
-          v-loading="loading"
           :data="objectList"
           :default-sort="{prop:'size',order:'ascending'}"
           stripe
@@ -29,7 +28,7 @@
             cell-click="next">
             <template slot-scope="scope">
               <el-link v-if="scope.row.size === 0" style="margin-left: 10px" @click.stop="next(scope.row)"  type="primary">{{ scope.row.name }}</el-link>
-              <span v-else style="margin-left: 10px">{{ scope.row.name}}</span>
+              <span v-else style="margin-left: 10px">{{ scope.row.show}}</span>
             </template>
           </el-table-column>
 
@@ -90,43 +89,202 @@
     </div>
 </el-drawer>
  
+  <el-dropdown class="uploader"  @command="uploadCommand">
+    <span class="el-dropdown-link">
+      <el-button type="danger" icon="el-icon-plus" circle ></el-button>
+    </span>
+    <el-dropdown-menu slot="dropdown">
+      <el-dropdown-item icon="el-icon-folder-add" command="path">文件夹</el-dropdown-item>
+      <el-dropdown-item icon="el-icon-picture-outline" command="image">文件</el-dropdown-item>
+    </el-dropdown-menu>
+  </el-dropdown>
 </div>
   
 </template>
 
 <script>
 const remote = require('electron').remote
+import HttpApi from '../../../util/http'
 export default {
   name: 'List',
   props:{
-    objectList:Array,
     bucket:Object,
-    paths:Array,
-    loading:Boolean,
+    token:Object,
   },
   data:function(){
     return {
       curImage:{},
       drawer:false,
+      objectList:[],
+      paths:[],
     }
   },
- filters:{
-    markdown:function(curImag){
-      return "![图片]("+ curImag.url +")";
-    },
+  watch:{
+    bucket:function(newVal,oldVal){
+      this.paths = [];
+      this.listObject(newVal.name,"");
+    }
   },
+  filters:{
+      markdown:function(curImag){
+        return "![图片]("+ curImag.url +")";
+      },
+    },
   methods:{
     handleDetail(index,row){
       this.curImage = row;
       this.drawer = true;
     },
     handleDelete(index, row){
-      //{"id":1,"jsonrpc":"2.0","params":{"bucketName":"oss","objects":["user/avatar/ac5748ce585e4a0eab3581f7e8eab44b.png"]},"method":"Web.RemoveObject"}
-      
+      let deleteObject = "";
+      if(row.size === 0){
+        deleteObject = row.prefix;
+      }else{
+        deleteObject = row.name;
+      }
+      HttpApi.post(
+        this.token.url,
+        {id: 1, jsonrpc: "2.0", params: {bucketName: this.bucket.name, objects: [deleteObject]}, method: "Web.RemoveObject"},
+        {
+          headers:{
+            "Authorization":"Bearer "+ this.token.jwt,
+          }
+        }
+      ).then(resp => {
+        if(resp.error){
+          throw resp.error.message;
+        }
+        let path = "";
+        if(this.paths && this.paths.length > 0){
+          path = this.paths[this.paths.length - 1].prefix
+        }
+        this.listObject(this.bucket.name,path)
+      }).catch(err => {
+          this.$notify.error({
+            title: '错误',
+            message: err
+          });
+      })
+    },
+    uploadCommand(command){
+    if(command === "path"){
+      this.$prompt('文件夹', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+      }).then(({ value }) => {
+        let tempPrefix ="";
+        if(this.paths && this.paths.length>0){
+          let lastEle = this.paths[this.paths.length-1];
+          tempPrefix = lastEle.prefix;
+        }
+        let temp = {
+          contentType:"",
+          lastModified:new Date(),
+          name:value,
+          prefix: tempPrefix + value + "/",
+          size:0
+        }
+        this.objectList.unshift(temp);
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        });       
+      });
+    }else if(command === "image"){
+      let path = "";
+      if(this.paths && this.paths.length > 0){
+        path = this.paths[this.paths.length - 1].prefix
+      }
+      new Promise((resolve) => {
+        let input = document.createElement('input');
+        input.value = '选择文件';
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = event => {
+            let file = event.target.files[0];
+            resolve(file);
+        };
+        input.click();
+      }).then(file => {
+        HttpApi.put(
+          this.token.protocol 
+          + this.token.host 
+          + ":" 
+          + this.token.port 
+          + "/minio/upload/"
+          + this.bucket.name 
+          +"/"
+          + path
+          + file.name,
+        file,
+        {
+          headers:{
+            'Content-Type':file.type,
+            "Authorization":"Bearer "+ this.token.jwt,
+            }
+        }
+        ).then(resp => {
+          this.listObject(this.bucket.name,path);
+        });
+      }).catch(err => {
+        this.$notify.error({
+              title: '错误',
+              message: err
+            });
+        });
+      }
     },
     next(next){
       // let next = this.paths[index];
-      this.$emit("func",next);
+      this.objectList = [];
+      this.listObject(this.bucket.name,next.prefix);
+      let index = this.paths.indexOf(next);
+      if(index >= 0){
+        this.paths = this.paths.slice(0,index + 1);
+      }else if(next.prefix === ''){
+        this.paths=[];
+      }else{
+        this.paths.push(next);
+      }
+    },
+    listObject(bucket,prefix){
+        // {"id":1,"jsonrpc":"2.0","params":{"bucketName":"oss","prefix":""},"method":"Web.ListObjects"}
+      this.objectList = [];
+      HttpApi.post(
+        this.token.url,
+        {"id":1,"jsonrpc":"2.0","params":{"bucketName":bucket,"prefix":prefix},"method":"Web.ListObjects"},
+        {
+          headers:{
+            "Authorization":"Bearer "+ this.token.jwt,
+          }
+        }
+      ).then(resp => {
+        if(resp.error){
+          throw resp.error.message;
+        }
+        let objectList = resp.result.objects;
+        if(objectList){
+          let imagePath = this.token.protocol+this.token.host+":"+this.token.port+"/"+this.bucket.name + "/"
+          objectList.forEach(ele => {
+            if(ele.size === 0){
+              ele.prefix = ele.name;
+              let name = ele.name.split("/");
+              name = name[name.length - 2];
+              ele.name = name;
+            }else{
+              ele.url = imagePath + ele.name;
+              ele.show = ele.name.substring(ele.name.lastIndexOf("/")+1);
+            }
+          });
+          this.objectList = objectList;
+        }
+      }).catch(err => {
+          this.$notify.error({
+            title: '错误',
+            message: err
+          });
+      });
     },
     dateFormat:function(row, column) {
       let time = row[column.property];
@@ -171,5 +329,9 @@ export default {
 .detail{
   padding: 15px;
 }
-
+.uploader{
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
 </style>
