@@ -64,30 +64,39 @@
     </el-main>
     
   </el-container>
-  <el-drawer
+ <el-drawer
     :visible.sync="drawer"
     size="60%"
     :with-header="false">
     <div class="detail">
       <el-collapse accordion>
-        <el-collapse-item title="markdown" name="3">
-          <el-input readonly v-bind:value="curImage | markdown">
+        <el-collapse-item title="链接" name="url">
+          <el-input readonly v-bind:value="curImage.url">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
           </el-input>
         </el-collapse-item>
-        
-        <el-collapse-item title="名称" name="filename">
-          <el-input readonly v-bind:value="curImage.name">
+        <el-collapse-item title="论坛" name="bbcode">
+            <el-input readonly v-bind:value="curImage | bbcode">
+              <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
+            </el-input>
+        </el-collapse-item>
+
+        <el-collapse-item title="Markdown" name="markdown">
+          <el-input readonly v-bind:value="curImage | markdown">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
           </el-input>
         </el-collapse-item>
 
-        <el-collapse-item title="url" name="2">
-          <el-input readonly v-bind:value="curImage.url">
+        <el-collapse-item title="HTML" name="html">
+          <el-input 
+            readonly 
+            v-bind:value="curImage | html">
+            <el-button slot="append" icon="el-icon-copy-document"  @click="copy"></el-button>
           </el-input>
         </el-collapse-item>
-      
     </el-collapse>
     </div>
-</el-drawer>
+  </el-drawer>
  
   <el-dropdown class="uploader"  @command="uploadCommand">
     <span class="el-dropdown-link">
@@ -103,7 +112,7 @@
 </template>
 
 <script>
-const {remote} = require('electron')
+const {remote,clipboard} = require('electron')
 import HttpApi from '../../../util/http'
 export default {
   name: 'List',
@@ -126,11 +135,26 @@ export default {
     }
   },
   filters:{
-      markdown:function(curImag){
-        return "![图片]("+ curImag.url +")";
-      },
+    markdown:function(curImag){
+      return "!["+ curImag.name +"]("+ curImag.url +")";
+    },
+    bbcode:function(curImag){
+      return "[url="+curImag.url+"][img]"+curImag.url+"[/img][/url]"
+    },
+    html:function(curImag){
+      return "<img src='"+curImag.url+"' alt='"+curImag.name+"'/>"
+    }
     },
   methods:{
+    copy(event){
+      let input = event.currentTarget.parentElement.previousElementSibling
+      input.select();
+      clipboard.writeText(input.value, 'pi');
+       this.$message({
+         message: '已复制',
+         duration:800
+       });
+    },
     handleDetail(index,row){
       this.curImage = row;
       this.drawer = true;
@@ -167,73 +191,73 @@ export default {
       })
     },
     uploadCommand(command){
-    if(command === "path"){
-      this.$prompt('文件夹', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-      }).then(({ value }) => {
-        let tempPrefix ="";
-        if(this.paths && this.paths.length>0){
-          let lastEle = this.paths[this.paths.length-1];
-          tempPrefix = lastEle.prefix;
-        }
-        let temp = {
-          contentType:"",
-          lastModified:new Date(),
-          name:value,
-          prefix: tempPrefix + value + "/",
-          size:0
-        }
-        this.objectList.unshift(temp);
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消输入'
-        });       
-      });
-    }else if(command === "image"){
-      let path = "";
-      if(this.paths && this.paths.length > 0){
-        path = this.paths[this.paths.length - 1].prefix
-      }
-      new Promise((resolve) => {
-        let input = document.createElement('input');
-        input.value = '选择文件';
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = event => {
-            let file = event.target.files[0];
-            resolve(file);
-        };
-        input.click();
-      }).then(file => {
-        HttpApi.put(
-          this.token.protocol 
-          + this.token.host 
-          + ":" 
-          + this.token.port 
-          + "/minio/upload/"
-          + this.bucket.name 
-          +"/"
-          + path
-          + file.name,
-        file,
-        {
-          headers:{
-            'Content-Type':file.type,
-            "Authorization":"Bearer "+ this.token.jwt,
-            }
-        }
-        ).then(resp => {
-          this.listObject(this.bucket.name,path);
+      if(command === "path"){
+        this.$prompt('文件夹', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        }).then(({ value }) => {
+          let tempPrefix ="";
+          if(this.paths && this.paths.length>0){
+            let lastEle = this.paths[this.paths.length-1];
+            tempPrefix = lastEle.prefix;
+          }
+          let temp = {
+            contentType:"",
+            lastModified:new Date(),
+            name:value,
+            prefix: tempPrefix + value + "/",
+            size:0
+          }
+          this.objectList.unshift(temp);
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          });       
         });
-      }).catch(err => {
-        this.$notify.error({
-              title: '错误',
-              message: err
-            });
-        });
-      }
+      }else if(command === "image"){
+        let path = "";
+        if(this.paths && this.paths.length > 0){
+          path = this.paths[this.paths.length - 1].prefix
+        }
+        new Promise((resolve) => {
+          let input = document.createElement('input');
+          input.value = '选择文件';
+          input.type = 'file';
+          input.accept = 'image/*';
+          input.onchange = event => {
+              let file = event.target.files[0];
+              resolve(file);
+          };
+          input.click();
+        }).then(file => {
+          HttpApi.put(
+            this.token.protocol 
+            + this.token.host 
+            + ":" 
+            + this.token.port 
+            + "/minio/upload/"
+            + this.bucket.name 
+            +"/"
+            + path
+            + file.name,
+          file,
+          {
+            headers:{
+              'Content-Type':file.type,
+              "Authorization":"Bearer "+ this.token.jwt,
+              }
+          }
+          ).then(resp => {
+            this.listObject(this.bucket.name,path);
+          });
+        }).catch(err => {
+          this.$notify.error({
+                title: '错误',
+                message: err
+              });
+          });
+        }
     },
     next(next){
       // let next = this.paths[index];
