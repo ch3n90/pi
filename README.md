@@ -6,9 +6,6 @@
 - [ ] [imgbb](https://imgbb.com)
 - [ ] [七牛云](https://portal.qiniu.com)
 - [ ] [Aliyun OSS](https://www.aliyun.com/product/oss)  
-
-***
-
 - [x] [minio自建](https://docs.min.io/)  
 
 **想要提供支持的服务器，请提交issue**
