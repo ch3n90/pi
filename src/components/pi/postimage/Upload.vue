@@ -53,7 +53,7 @@ import HttpApi from '../../../util/http.js'
 import qs from 'qs'
 const md5 = require('md5')
 const xml2js = require('xml2js');
-const remote = require('electron').remote
+const {remote} = require('electron')
 export default {
   name: 'Upload',
   data:function(){

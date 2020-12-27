@@ -71,8 +71,7 @@
 <script>
 import HttpApi from '../../../util/http'
 import List from './List'
-const remote = require('electron').remote
-const {ipcRenderer} = require('electron')
+const {ipcRenderer,remote} = require('electron')
 export default {
   name: 'Minio',
     data() {

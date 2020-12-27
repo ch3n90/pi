@@ -77,8 +77,7 @@
 import HttpApi from '../../util/http.js'
 const {queryAccess,addAccess,removeAccess} = require('../../repsitory/access')
 const Store = require('electron-store');
-const {ipcRenderer} = require('electron')
-const remote = require('electron').remote
+const {ipcRenderer,remote} = require('electron')
 import qs from 'qs'
 import { accessSync } from 'fs';
 export default {
@@ -120,10 +119,10 @@ export default {
           throw response.message;
         }
       }).catch(err => {
-        let myNotification = new Notification('失败',{
-                body: err,
-                silent: true,
-            });
+        this.$notify.error({
+            title: '错误',
+            message: err
+          });
       });
     },
     temp(){

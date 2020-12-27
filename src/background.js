@@ -3,11 +3,14 @@
 import { app, 
   protocol,
   BrowserWindow,
-  ipcMain} from 'electron'
+  ipcMain,
+  Menu,
+  Tray,
+  nativeImage} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-// const path = require('path')
+const path = require('path')
 
 let piWin
 let m3nuWin
@@ -82,7 +85,7 @@ async function createPiWindow () {
       nodeIntegration: true,
       enableRemoteModule:true,
       webSecurity:false,
-      devTools:isDevelopment,
+      devTools:true,
     },
   });
 
@@ -100,14 +103,10 @@ async function createPiWindow () {
     piWin.show()
   })
 
-  // piWin.on("focus",(event) => {
-    // if(timer){
-    //   clearInterval(timer);
-    //   appIcon.setImage(iconPath);
-    //   timer = null;
-    // }
-
-  // })
+  piWin.on("close", (e) => {
+    e.preventDefault();
+    piWin.hide();
+  })
 
   return piWin;
 }
@@ -153,11 +152,58 @@ ipcMain.on("pi-win",()=>{
 })
 
 ipcMain.on("m3nu-win",()=>{
+  appIcon.destroy();
   m3nuWin = createM3nuWindow();
   piWin.then(win => { win.destroy()});
   piWin = null;
 })
 
+// tray
+let appIcon;
+const iconName = process.platform === 'win32' ? 'icon.png' : 'icon.png'
+const iconPath = path.join(__static, iconName)
+ipcMain.on('put-in-tray', (event) => {
+  if(!appIcon || appIcon.isDestroyed()){
+    appIcon = new Tray(iconPath)
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: '帮助',
+        click: () => {
+          
+        }
+      },
+      {
+        label: '反馈',
+        click: () => {
+          
+        }
+      },
+      {
+        label: '关于',
+        click: () => {
+          
+        }
+      },
+      {
+        label: '退出',
+        click: () => {
+          app.quit();
+        }
+      },
+    ])
+    appIcon.on('click',()=> {
+      piWin.then(win => { win.show()});
+    })
+
+    appIcon.setToolTip('pi')
+    appIcon.setContextMenu(contextMenu)
+  }
+  
+})
+
+ipcMain.on('remove-tray', () => {
+  appIcon.destroy()
+})
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {

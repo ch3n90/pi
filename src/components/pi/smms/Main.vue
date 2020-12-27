@@ -57,8 +57,7 @@ import HttpApi from '../../../util/http.js'
 import History from './History'
 import Upload from './Upload'
 import Profile from './Profile'
-const remote = require('electron').remote
-const {ipcRenderer} = require('electron')
+const {ipcRenderer,remote} = require('electron')
 export default {
   name: 'SMMS',
     data() {

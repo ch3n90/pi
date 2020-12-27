@@ -64,8 +64,7 @@ import HttpApi from '../../../util/http.js'
 import qs from 'qs'
 const md5 = require('md5')
 const xml2js = require('xml2js');
-const remote = require('electron').remote
-const {ipcRenderer} = require('electron')
+const {ipcRenderer,remote} = require('electron')
 export default {
   name: 'Temp',
   data:function(){

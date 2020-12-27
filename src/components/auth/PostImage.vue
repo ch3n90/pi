@@ -64,8 +64,7 @@
 
 <script>
 const {queryAccess,addAccess,removeAccess} = require('../../repsitory/access')
-const {ipcRenderer} = require('electron')
-const remote = require('electron').remote
+const {ipcRenderer,remote} = require('electron')
 export default {
   name: 'Smms',
   data(){

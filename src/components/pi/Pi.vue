@@ -3,9 +3,7 @@
 </template>
 
 <script>
-
-const remote = require('electron').remote
-
+const {ipcRenderer,remote} = require('electron')
 export default {
   name: 'Pi',
 
@@ -29,7 +27,11 @@ export default {
   },
   created(){
     this.componentName = remote.getGlobal('cache').pi
-  }
+  },
+  beforeMount(){
+         ipcRenderer.send("put-in-tray");
+    },
+
 
 }
 </script>

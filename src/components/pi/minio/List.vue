@@ -103,7 +103,7 @@
 </template>
 
 <script>
-const remote = require('electron').remote
+const {remote} = require('electron')
 import HttpApi from '../../../util/http'
 export default {
   name: 'List',

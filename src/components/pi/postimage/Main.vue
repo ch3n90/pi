@@ -48,8 +48,7 @@
 <script>
 import HttpApi from '../../../util/http.js'
 import Upload from './Upload'
-const remote = require('electron').remote
-const {ipcRenderer} = require('electron')
+const {ipcRenderer,remote} = require('electron')
 export default {
   name: 'SMMS',
     data() {

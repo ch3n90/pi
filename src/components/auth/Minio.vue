@@ -94,8 +94,7 @@
 <script>
 import HttpApi from '../../util/http.js'
 const {queryAccess,addAccess,removeAccess} = require('../../repsitory/access')
-const {ipcRenderer} = require('electron')
-const remote = require('electron').remote
+const {ipcRenderer,remote} = require('electron')
 export default {
   name: 'Mnio',
   data(){
