@@ -120,6 +120,6 @@ export default {
 .el-main::-webkit-scrollbar-thumb
 {
 	background-color: #d2d2d2;
-    border-radius: 8px;
+  border-radius: 8px;
 }
 </style>

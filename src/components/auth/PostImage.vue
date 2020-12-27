@@ -52,7 +52,7 @@
            <el-row style="margin-top:30px">
             <el-col :span="2" :offset="20">
               <div >
-                  <el-link type="warning">试用</el-link>
+                  <el-link type="warning"  @click.stop="temp">试用</el-link>
               </div>
             </el-col>
           </el-row>
@@ -91,6 +91,10 @@ export default {
           }
       remote.getGlobal('cache').token = this.apiKey;
       remote.getGlobal('cache').pi = './postimage/Main';
+      ipcRenderer.send("pi-win");
+    },
+    temp(){
+      remote.getGlobal('cache').pi = './postimage/Temp';
       ipcRenderer.send("pi-win");
     }
   },

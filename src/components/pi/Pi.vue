@@ -20,6 +20,7 @@ export default {
         case "./smms/Main" : return import('./smms/Main');
         case "./smms/Temp" : return import('./smms/Temp')
         case "./postimage/Main" : return import('./postimage/Main')
+        case "./postimage/Temp" : return import('./postimage/Temp')
         case "./minio/Main" : return import('./minio/Main')
       }
     }

@@ -130,6 +130,9 @@ export default {
   left: 10px;
   bottom: 10px;
 }
+.detail{
+  padding: 15px;
+}
 .el-col >>> .el-upload--picture-card{
   position: absolute;
   left: 0;

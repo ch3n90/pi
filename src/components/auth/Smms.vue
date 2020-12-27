@@ -59,7 +59,7 @@
           </el-row>
           
            <el-row style="margin-top:30px">
-            <el-col :span="2" :offset="21">
+            <el-col :span="2" :offset="20">
               <div>
                   <el-link type="warning" @click.stop="temp">试用</el-link>
               </div>
