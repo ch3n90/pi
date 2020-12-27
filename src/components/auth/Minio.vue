@@ -70,11 +70,10 @@
            <el-row class="rows">
             <el-col :span="18" :offset="3">
               <div class="remember">
-                  <el-checkbox v-model="rememberMe">记住我</el-checkbox>
+                  <el-checkbox v-model="remember">记住我</el-checkbox>
               </div>
             </el-col>
           </el-row>
-
 
            <el-row style="margin-bottom:10px">
             <el-col :span="18" :offset="3">
@@ -94,6 +93,7 @@
 
 <script>
 import HttpApi from '../../util/http.js'
+const {queryAccess,addAccess,removeAccess} = require('../../repsitory/access')
 const {ipcRenderer} = require('electron')
 const remote = require('electron').remote
 export default {
@@ -101,11 +101,11 @@ export default {
   data(){
     return {
       protocol:"http://",
-      host:'192.168.1.118',
-      port:9000,
-      accessKey: "minioadmin",
-      secretKey:"minioadmin",
-      rememberMe: false,
+      host:null,
+      port:null,
+      accessKey: null,
+      secretKey: null,
+      remember: false,
     }
   },
   methods:{
@@ -123,6 +123,23 @@ export default {
         if(resp.error){
           throw resp.error.message;
         }
+
+        if(this.remember){
+            let access = {
+              typ3:"minio",
+              protocol:this.protocol,
+              host:this.host,
+              port:this.port,
+              accessKey: this.accessKey,
+              secretKey:this.secretKey,
+              remember: this.remember,
+              default:false,
+            }
+            addAccess(access);
+          }else{
+            removeAccess("minio");
+          }
+
         let token = {
           protocol:this.protocol,
           host:this.host,
@@ -142,7 +159,19 @@ export default {
       });
     }
   },
-  
+  created(){
+    queryAccess("minio")
+    .then(access => {
+      if(access){
+        this.protocol = access.protocol;
+        this.host = access.host;
+        this.port = access.port
+        this.accessKey = access.accessKey
+        this.secretKey = access.secretKey
+        this.remember = access.remember
+      }
+    });
+  }
 }
 </script>
 

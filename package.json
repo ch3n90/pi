@@ -16,8 +16,8 @@
   "dependencies": {
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "dexie": "^3.0.3",
     "electron": "^11.0.4",
-    "electron-store": "^6.0.1",
     "element-ui": "^2.14.1",
     "md5": "^2.3.0",
     "qs": "^6.9.4",

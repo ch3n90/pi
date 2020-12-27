@@ -21,30 +21,36 @@
                     prefix-icon="el-icon-lock"
                     v-model="apiKey"
                     show-password>
+
+                   
                   </el-input>
               </div>
             </el-col>
           </el-row>
 
            <el-row class="rows">
-            <el-col :span="18" :offset="3">
+            <el-col :span="4" :offset="3">
               <div class="remember">
-                  <el-checkbox v-model="rememberMe">记住我</el-checkbox>
+                  <el-checkbox v-model="remember">记住我</el-checkbox>
               </div>
+            </el-col>
+            <el-col :span="1" >
+              <el-tooltip effect="dark" content="https://postimages.org/login/api 获取Api Key" placement="right">
+                   <i class="el-icon-info"></i>
+                </el-tooltip>
             </el-col>
           </el-row>
 
            <el-row style="margin-bottom:10px">
             <el-col :span="18" :offset="3">
               <div class="sign">
-                
                   <el-button type="primary" size="medium" @click.stop="sign">登入</el-button>
               </div>
             </el-col>
           </el-row>
           
            <el-row style="margin-top:30px">
-            <el-col :span="2" :offset="21">
+            <el-col :span="2" :offset="20">
               <div >
                   <el-link type="warning">试用</el-link>
               </div>
@@ -59,25 +65,44 @@
 
 
 <script>
-// import HttpApi from '../../util/http.js'
+const {queryAccess,addAccess,removeAccess} = require('../../repsitory/access')
 const {ipcRenderer} = require('electron')
 const remote = require('electron').remote
 export default {
   name: 'Smms',
   data(){
     return {
-      apiKey:'8ca0b57a6bb9c4c33cd9e7ab8e6a7f05',
-      rememberMe: false,
+      apiKey: null,
+      remember: false,
     }
   },
   methods:{
     sign(){
+      if(this.remember){
+            let access = {
+              typ3:"postimage",
+              apiKey:this.apiKey,
+              remember: this.remember,
+              default:false,
+            }
+            addAccess(access);
+          }else{
+            removeAccess("postimage");
+          }
       remote.getGlobal('cache').token = this.apiKey;
       remote.getGlobal('cache').pi = './postimage/Main';
       ipcRenderer.send("pi-win");
     }
   },
-  
+  created(){
+    queryAccess("postImage")
+    .then(access => {
+      if(access){
+        this.apiKey = access.apiKey;
+        this.remember = access.remember
+      }
+    });
+  }
 }
 </script>
 

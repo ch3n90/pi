@@ -43,7 +43,7 @@
            <el-row class="rows">
             <el-col :span="18" :offset="3">
               <div class="remember">
-                  <el-checkbox v-model="rememberMe">记住我</el-checkbox>
+                  <el-checkbox v-model="remember">记住我</el-checkbox>
               </div>
             </el-col>
           </el-row>
@@ -75,16 +75,19 @@
 
 <script>
 import HttpApi from '../../util/http.js'
+const {queryAccess,addAccess,removeAccess} = require('../../repsitory/access')
+const Store = require('electron-store');
 const {ipcRenderer} = require('electron')
 const remote = require('electron').remote
 import qs from 'qs'
+import { accessSync } from 'fs';
 export default {
   name: 'Smms',
   data(){
     return {
-      username:'ch3ng',
-      password: "ch3ng4smms",
-      rememberMe: false,
+      username: null,
+      password: null,
+      remember: false,
     }
   },
   methods:{
@@ -98,6 +101,18 @@ export default {
       )
       .then(response=>{
         if(response.success){
+          if(this.remember){
+            let access = {
+              typ3:"smms",
+              username:this.username,
+              password:this.password,
+              remember: this.remember,
+              default:false,
+            }
+            addAccess(access);
+          }else{
+            removeAccess("smms");
+          }
           remote.getGlobal('cache').token = response.data.token;
           remote.getGlobal('cache').pi = './smms/Main';
           ipcRenderer.send("pi-win");
@@ -112,6 +127,16 @@ export default {
       });
     }
   },
+  created(){
+    queryAccess("smms")
+    .then(access => {
+      if(access){
+        this.username = access.username;
+        this.password = access.password;
+        this.remember = access.remember
+      }
+    });
+  }
   
 }
 </script>

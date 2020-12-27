@@ -122,7 +122,7 @@
 
               <el-row>
                 <el-col :span="11" :offset="1">
-                  <span class="url">https://postimages.org</span>
+                  <span class="url">https://aliyun.com</span>
                 </el-col>
               </el-row>
           </div>
