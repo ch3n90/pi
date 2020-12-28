@@ -12,6 +12,7 @@ module.exports = {
         builderOptions: {
           "appId": "com.milchstrabe.pi",
           "copyright": "Copyright © 2020 ch3ng",
+          "publish":['github'],
           "nsis": {
             "oneClick": false,
             "allowElevation": true,

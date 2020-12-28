@@ -76,7 +76,6 @@
 <script>
 import HttpApi from '../../util/http.js'
 const {queryAccess,addAccess,removeAccess} = require('../../repsitory/access')
-const Store = require('electron-store');
 const {ipcRenderer,remote} = require('electron')
 import qs from 'qs'
 import { accessSync } from 'fs';

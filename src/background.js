@@ -5,9 +5,9 @@ import { app,
   BrowserWindow,
   ipcMain,
   Menu,
-  Tray,
-  nativeImage} from 'electron'
+  Tray} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
+import { autoUpdater } from 'electron-updater'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const path = require('path')
@@ -49,10 +49,12 @@ protocol.registerSchemesAsPrivileged([
     // Load the url of the dev server if in development mode
     await m3nuWin.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     if (!process.env.IS_TEST) m3nuWin.webContents.openDevTools()
+   
   } else {
     createProtocol('app')
     // Load the index.html when not in development
     m3nuWin.loadURL('app://./index.html')
+    autoUpdater.checkForUpdatesAndNotify()
   }
 
   m3nuWin.once('ready-to-show', () => {
@@ -85,7 +87,7 @@ async function createPiWindow () {
       nodeIntegration: true,
       enableRemoteModule:true,
       webSecurity:false,
-      devTools:true,
+      devTools:isDevelopment,
     },
   });
 
@@ -175,7 +177,7 @@ ipcMain.on('put-in-tray', (event) => {
       {
         label: '反馈',
         click: () => {
-          
+          autoUpdater.checkForUpdatesAndNotify()
         }
       },
       {
@@ -219,3 +221,5 @@ if (isDevelopment) {
     })
   }
 }
+
+
