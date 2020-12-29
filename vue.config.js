@@ -12,7 +12,12 @@ module.exports = {
         builderOptions: {
           "appId": "com.milchstrabe.pi",
           "copyright": "Copyright © 2020 ch3ng",
-          "publish":['github'],
+          "publish":{
+            "provider": "s3",
+            "bucket": "p-i",
+            "endpoint":"http://192.168.1.118:9000",
+            "path":"update"
+          },
           "nsis": {
             "oneClick": false,
             "allowElevation": true,

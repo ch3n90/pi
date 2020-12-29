@@ -166,9 +166,15 @@
 
 
 <script>
+const {ipcRenderer} = require('electron')
 export default {
   name: 'M3nu',
-
+  created(){
+    ipcRenderer.send("checking-for-update");
+    ipcRenderer.once("update-available",(event,arg) => {
+       console.log(arg);
+    })
+  }
 }
 </script>
 
@@ -188,14 +194,12 @@ export default {
   transform: rotate(50deg);
   z-index: 999;
 }
-
 .rows{
   margin-bottom: 20px;
 }
 .el-col {
   border-radius: 4px;
 }
-
 .grid-content {
   background: #DCDFE6;
   border-radius: 5px;
@@ -206,7 +210,6 @@ export default {
 .grid-content:hover{
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
-
 .logo{
   margin-top: 5px;
   
@@ -216,13 +219,11 @@ export default {
     height: 55px;
     border-radius: 5px;
 }
-
 .title{
   margin-top: 20px;
   color: #606266;
   font-size: 16px;
 }
-
 .url{
   color:#606266;
   font-size: 14px;

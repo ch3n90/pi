@@ -7,10 +7,12 @@ import { app,
   Menu,
   Tray} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import { autoUpdater } from 'electron-updater'
+
+const {autoUpdater} = require("electron-updater");
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const path = require('path')
+const log = require('electron-log');
 
 let piWin
 let m3nuWin
@@ -40,7 +42,7 @@ protocol.registerSchemesAsPrivileged([
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: true,
       enableRemoteModule:true,
-      devTools:isDevelopment,
+      devTools:true,
       webSecurity:false,
     },
   })
@@ -54,7 +56,7 @@ protocol.registerSchemesAsPrivileged([
     createProtocol('app')
     // Load the index.html when not in development
     m3nuWin.loadURL('app://./index.html')
-    autoUpdater.checkForUpdatesAndNotify()
+    
   }
 
   m3nuWin.once('ready-to-show', () => {
@@ -144,6 +146,7 @@ app.on('ready', async () => {
     }
   }
   m3nuWin = createM3nuWindow();
+  
 })
 
 
@@ -177,7 +180,7 @@ ipcMain.on('put-in-tray', (event) => {
       {
         label: '反馈',
         click: () => {
-          autoUpdater.checkForUpdatesAndNotify()
+
         }
       },
       {
@@ -207,6 +210,38 @@ ipcMain.on('remove-tray', () => {
   appIcon.destroy()
 })
 
+ipcMain.on('checking-for-update', () => {
+  autoUpdater.checkForUpdatesAndNotify()
+})
+
+autoUpdater.logger = log;
+autoUpdater.logger.transports.file.level = 'info';
+
+autoUpdater.on('checking-for-update', () => {
+  log.info('Checking for update...');
+})
+autoUpdater.on('update-available', (info) => {
+  log.info('Update available.');
+  m3nuWin.then(win => {
+    win.webContents.send("update-available",info);
+  })
+})
+autoUpdater.on('update-not-available', (info) => {
+  log.info('Update not available.');
+})
+autoUpdater.on('error', (err) => {
+  log.info('Error in auto-updater. ' + err);
+})
+autoUpdater.on('download-progress', (progressObj) => {
+  let log_message = "Download speed: " + progressObj.bytesPerSecond;
+  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+  log.info(log_message);
+})
+autoUpdater.on('update-downloaded', (info) => {
+  log.info('Update downloaded');
+});
+
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {
@@ -221,5 +256,4 @@ if (isDevelopment) {
     })
   }
 }
-
 

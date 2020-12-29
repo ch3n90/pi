@@ -18,6 +18,7 @@
     "core-js": "^3.6.5",
     "dexie": "^3.0.3",
     "electron": "^11.0.4",
+    "electron-log": "^4.3.1",
     "electron-updater": "^4.3.5",
     "element-ui": "^2.14.1",
     "md5": "^2.3.0",

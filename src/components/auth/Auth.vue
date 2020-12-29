@@ -6,21 +6,18 @@
     <router-view style="animation-duration: 0.5s"/>
   </transition>
 </div>
-
-
 </template>
-
 
 <script>
 import M3nu from './M3nu'
 import 'vue2-animate/dist/vue2-animate.min.css'
-const {remote} = require('electron')
 
 export default {
   name: 'Auth',
-   render:function(c){
+  render:function(c){
         return c(M3nu);
-    },
+  },
+
 }
 </script>
 
