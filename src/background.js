@@ -7,12 +7,10 @@ import { app,
   Menu,
   Tray} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-
-const {autoUpdater} = require("electron-updater");
+import {checkForUpdates} from './updater.js'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 const path = require('path')
-const log = require('electron-log');
 
 let piWin
 let m3nuWin
@@ -146,7 +144,7 @@ app.on('ready', async () => {
     }
   }
   m3nuWin = createM3nuWindow();
-  
+  checkForUpdates(m3nuWin);
 })
 
 
@@ -214,33 +212,7 @@ ipcMain.on('checking-for-update', () => {
   autoUpdater.checkForUpdatesAndNotify()
 })
 
-autoUpdater.logger = log;
-autoUpdater.logger.transports.file.level = 'info';
 
-autoUpdater.on('checking-for-update', () => {
-  log.info('Checking for update...');
-})
-autoUpdater.on('update-available', (info) => {
-  log.info('Update available.');
-  m3nuWin.then(win => {
-    win.webContents.send("update-available",info);
-  })
-})
-autoUpdater.on('update-not-available', (info) => {
-  log.info('Update not available.');
-})
-autoUpdater.on('error', (err) => {
-  log.info('Error in auto-updater. ' + err);
-})
-autoUpdater.on('download-progress', (progressObj) => {
-  let log_message = "Download speed: " + progressObj.bytesPerSecond;
-  log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
-  log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
-  log.info(log_message);
-})
-autoUpdater.on('update-downloaded', (info) => {
-  log.info('Update downloaded');
-});
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {

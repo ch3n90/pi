@@ -166,15 +166,9 @@
 
 
 <script>
-const {ipcRenderer} = require('electron')
 export default {
   name: 'M3nu',
-  created(){
-    ipcRenderer.send("checking-for-update");
-    ipcRenderer.once("update-available",(event,arg) => {
-       console.log(arg);
-    })
-  }
+  
 }
 </script>
 
