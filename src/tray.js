@@ -1,11 +1,10 @@
-import { app, Menu, Tray } from 'electron'
+import { app, Menu, Tray, dialog} from 'electron'
 const path = require('path')
 
 let focusedWindow;
 // tray
-
+let appIcon;
 const initTray = () => {
-    let appIcon;
     const iconName = process.platform === 'win32' ? 'icon.png' : 'icon.png'
     const iconPath = path.join(__static, iconName)
     if (!appIcon || appIcon.isDestroyed()) {
@@ -14,18 +13,29 @@ const initTray = () => {
             {
                 label: '关于',
                 click: () => {
-
+                    const options = {
+                        type: 'info',
+                        title: '关于',
+                        icon: iconPath,
+                        detail:"Version: 1.3.1 \n" +
+                                "Date: 2021-01-01 \n" +
+                                "Electron: 11.0.4 \n",
+                        message: " π (Pi) ",
+                        buttons: ['Yes']
+                    }
+                    dialog.showMessageBox(focusedWindow,options);
                 }
             },
             {
                 label: '退出',
                 click: () => {
+                    appIcon.destroy()
                     app.exit();
                 }
             },
         ])
         appIcon.on('click', () => {
-            focusedWindow.then(win => { win.show() });
+            focusedWindow.show();
         })
 
         appIcon.setToolTip('π')
@@ -37,5 +47,6 @@ const initTray = () => {
 const focusedWin = (win) => {
     focusedWindow = win;
 }
+
 // export this to MenuItem click callback
 export { initTray, focusedWin }

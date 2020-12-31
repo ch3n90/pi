@@ -10,6 +10,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 let piWin
 let m3nuWin
 let timeoutId;
+let updateCheck = true;
 
 global.cache = {
   pi: null,
@@ -30,12 +31,13 @@ async function createM3nuWindow() {
     resizable: false,
     title: "π",
     center: true,
+    backgroundColor: '#F5F5F5',
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: true,
       enableRemoteModule: true,
-      devTools: true,
+      devTools: isDevelopment,
       webSecurity: false,
     },
   })
@@ -55,10 +57,12 @@ async function createM3nuWindow() {
   m3nuWin.once('ready-to-show', () => {
     m3nuWin.show()
     focusedWin(m3nuWin);
-    timeoutId = setTimeout(() => {
-      checkForUpdates(m3nuWin);
-    }, 5000)
-
+    if(updateCheck){
+      updateCheck = false;
+      timeoutId = setTimeout(() => {
+        checkForUpdates(m3nuWin);
+      }, 3000)
+    }
   })
 
   m3nuWin.on("close", (e) => {
@@ -83,7 +87,7 @@ async function createPiWindow() {
     show: false,
     center: true,
     title: "π",
-    // backgroundColor: '#222326',
+    backgroundColor: '#F5F5F5',
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -160,17 +164,10 @@ ipcMain.on("pi-win", () => {
 })
 
 ipcMain.on("m3nu-win", () => {
-  appIcon.destroy();
   m3nuWin = createM3nuWindow();
   piWin.then(win => { win.destroy() });
   piWin = null;
 })
-
-
-ipcMain.on('remove-tray', () => {
-  appIcon.destroy()
-})
-
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {

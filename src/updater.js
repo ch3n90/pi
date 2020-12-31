@@ -8,6 +8,7 @@ const log = require('electron-log');
 autoUpdater.logger = log;
 autoUpdater.logger.transports.file.level = 'info';
 autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = false;
 
 let win;
 
@@ -24,9 +25,6 @@ autoUpdater.on('error', (err) => {
   log.info('Error in auto-updater. ' + err);
 })
 autoUpdater.on('download-progress', (progressObj) => {
-  // let log_message = "Download speed: " + progressObj.bytesPerSecond;
-  // log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
-  // log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
   win.webContents.send("update-processbar", progressObj);
 })
 autoUpdater.on('update-downloaded', (info) => {

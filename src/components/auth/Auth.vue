@@ -9,8 +9,8 @@
   <el-dialog
     title="更新提示"
     :visible.sync="dialogVisible"
-    width="80%">
-    <span v-for="(note,index) in releaseNote" :key="index">{{ note }}</span>
+    width="70%">
+    <div v-for="(note,index) in releaseNote" :key="index">{{ note }}</div>
     <span slot="footer" class="dialog-footer">
       <el-button @click="dialogVisible = false">取 消</el-button>
       <el-button type="primary" @click="agreeUpdate">确 定</el-button>
@@ -58,8 +58,8 @@ export default {
     ipcRenderer.once("start-update",(event,arg) => {
       this.updateProcessBarVisible = true;
     });
-    ipcRenderer.once("update-processbar",(event,arg) => {
-      this.percentage = parseInt(parsearg.percent);
+    ipcRenderer.on("update-processbar",(event,arg) => {
+      this.percentage = parseInt(arg.percent);
     });
     ipcRenderer.once("update-downloaded",(event,arg) => {
       this.updateProcessBarVisible = false;
@@ -70,10 +70,6 @@ export default {
         }).then(() => {
           ipcRenderer.send("start-install")
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消'
-          });          
         });
     })
   }
