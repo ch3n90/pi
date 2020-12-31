@@ -8,6 +8,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 
 let piWin
 let m3nuWin
+let timeoutId;
 
 global.cache = {
   pi: null,
@@ -52,7 +53,10 @@ async function createM3nuWindow() {
 
   m3nuWin.once('ready-to-show', () => {
     m3nuWin.show()
-    checkForUpdates(m3nuWin);
+    timeoutId = setTimeout(() => {
+      checkForUpdates(m3nuWin);
+    }, 5000)
+
   })
 
   return m3nuWin;
@@ -140,6 +144,7 @@ app.on('ready', async () => {
 
 
 ipcMain.on("pi-win", () => {
+  clearTimeout(timeoutId);
   piWin = createPiWindow();
   m3nuWin.then(win => { win.destroy() });
   m3nuWin = null;

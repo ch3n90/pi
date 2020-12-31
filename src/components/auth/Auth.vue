@@ -36,7 +36,7 @@ export default {
   data(){
     return {
       dialogVisible:false,
-      updateProcessBarVisible:true,
+      updateProcessBarVisible:false,
       percentage:0,
       releaseNote:[],
     }
