@@ -3,6 +3,7 @@
 import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { checkForUpdates } from './updater.js'
+import { initTray, focusedWin } from './tray.js'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -53,10 +54,16 @@ async function createM3nuWindow() {
 
   m3nuWin.once('ready-to-show', () => {
     m3nuWin.show()
+    focusedWin(m3nuWin);
     timeoutId = setTimeout(() => {
       checkForUpdates(m3nuWin);
     }, 5000)
 
+  })
+
+  m3nuWin.on("close", (e) => {
+    e.preventDefault();
+    m3nuWin.hide();
   })
 
   return m3nuWin;
@@ -98,7 +105,8 @@ async function createPiWindow() {
   }
 
   piWin.once('ready-to-show', () => {
-    piWin.show()
+    piWin.show();
+    focusedWin(piWin);
   })
 
   piWin.on("close", (e) => {
@@ -140,6 +148,7 @@ app.on('ready', async () => {
     }
   }
   m3nuWin = createM3nuWindow();
+  initTray();
 })
 
 

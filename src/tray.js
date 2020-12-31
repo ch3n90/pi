@@ -1,18 +1,13 @@
-import {
-    app,
-    ipcMain,
-    Menu,
-    Tray
-} from 'electron'
+import { app, Menu, Tray } from 'electron'
 const path = require('path')
 
 let focusedWindow;
-
 // tray
-let appIcon;
-const iconName = process.platform === 'win32' ? 'icon.png' : 'icon.png'
-const iconPath = path.join(__static, iconName)
-ipcMain.on('put-in-tray', (event) => {
+
+const initTray = () => {
+    let appIcon;
+    const iconName = process.platform === 'win32' ? 'icon.png' : 'icon.png'
+    const iconPath = path.join(__static, iconName)
     if (!appIcon || appIcon.isDestroyed()) {
         appIcon = new Tray(iconPath)
         const contextMenu = Menu.buildFromTemplate([
@@ -37,9 +32,10 @@ ipcMain.on('put-in-tray', (event) => {
         appIcon.setContextMenu(contextMenu)
     }
 
-})
-
-// export this to MenuItem click callback
-export const tary = (focusedWindow) => {
-    focusedWindow = focusedWindow;
 }
+
+const focusedWin = (win) => {
+    focusedWindow = win;
+}
+// export this to MenuItem click callback
+export { initTray, focusedWin }

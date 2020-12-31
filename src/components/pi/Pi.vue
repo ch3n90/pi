@@ -28,11 +28,6 @@ export default {
   created(){
     this.componentName = remote.getGlobal('cache').pi
   },
-  beforeMount(){
-    ipcRenderer.send("put-in-tray");
-  },
-
-
 }
 </script>
 
