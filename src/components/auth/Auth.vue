@@ -5,6 +5,24 @@
         leave-active-class="flipOutX" mode="out-in">
     <router-view style="animation-duration: 0.5s"/>
   </transition>
+
+  <el-dialog
+    title="更新提示"
+    :visible.sync="dialogVisible"
+    width="80%">
+    <span v-for="(note,index) in releaseNote" :key="index">{{ note }}</span>
+    <span slot="footer" class="dialog-footer">
+      <el-button @click="dialogVisible = false">取 消</el-button>
+      <el-button type="primary" @click="agreeUpdate">确 定</el-button>
+    </span>
+  </el-dialog>
+
+  <el-dialog
+    title="下载中"
+    :visible.sync="updateProcessBarVisible"
+    width="28%">
+      <el-progress type="circle" :percentage="percentage"></el-progress>
+  </el-dialog>
 </div>
 </template>
 
@@ -15,12 +33,48 @@ const {ipcRenderer} = require('electron')
 
 export default {
   name: 'Auth',
+  data(){
+    return {
+      dialogVisible:false,
+      updateProcessBarVisible:true,
+      percentage:0,
+      releaseNote:[],
+    }
+  },
   render:function(c){
         return c(M3nu);
   },
+  methods:{
+    agreeUpdate(){
+      this.dialogVisible = false;
+      ipcRenderer.send("agree-update")
+    }
+  },
   created(){
     ipcRenderer.once("update-available",(event,arg) => {
-      console.log(arg);
+      this.releaseNote = arg.releaseNote;
+      this.dialogVisible = true;
+    });
+    ipcRenderer.once("start-update",(event,arg) => {
+      this.updateProcessBarVisible = true;
+    });
+    ipcRenderer.once("update-processbar",(event,arg) => {
+      this.percentage = parseInt(parsearg.percent);
+    });
+    ipcRenderer.once("update-downloaded",(event,arg) => {
+      this.updateProcessBarVisible = false;
+      this.$confirm('下载完成，现在退出安装?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          ipcRenderer.send("start-install")
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消'
+          });          
+        });
     })
   }
 

@@ -1,24 +1,17 @@
 'use strict'
 
-import { app, 
-  protocol,
-  BrowserWindow,
-  ipcMain,
-  Menu,
-  Tray} from 'electron'
+import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
-import {checkForUpdates} from './updater.js'
+import { checkForUpdates } from './updater.js'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
-const path = require('path')
 
 let piWin
 let m3nuWin
 
-
 global.cache = {
-  pi:null,
-  token:null,
+  pi: null,
+  token: null,
 }
 
 // Scheme must be registered before the app is ready
@@ -26,22 +19,22 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
- async function createM3nuWindow() {
+async function createM3nuWindow() {
   // Create the browser window.
   const m3nuWin = new BrowserWindow({
     width: 600,
     height: 600,
-    autoHideMenuBar:true,
-    resizable:false,
-    title:"π",
-    center:true,
+    autoHideMenuBar: true,
+    resizable: false,
+    title: "π",
+    center: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: true,
-      enableRemoteModule:true,
-      devTools:true,
-      webSecurity:false,
+      enableRemoteModule: true,
+      devTools: true,
+      webSecurity: false,
     },
   })
 
@@ -49,16 +42,17 @@ protocol.registerSchemesAsPrivileged([
     // Load the url of the dev server if in development mode
     await m3nuWin.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     if (!process.env.IS_TEST) m3nuWin.webContents.openDevTools()
-   
+
   } else {
     createProtocol('app')
     // Load the index.html when not in development
     m3nuWin.loadURL('app://./index.html')
-    
+
   }
 
   m3nuWin.once('ready-to-show', () => {
     m3nuWin.show()
+    checkForUpdates(m3nuWin);
   })
 
   return m3nuWin;
@@ -66,28 +60,26 @@ protocol.registerSchemesAsPrivileged([
 
 
 //defined chat window
-async function createPiWindow () {
+async function createPiWindow() {
   // Create the browser window.
   const piWin = new BrowserWindow({
     width: 890,
     height: 700,
-    // icon: path.join(__static, 'icon.png'),
-    // resizable:false,
-    minWidth:890,
-    minHeight:700,
-    autoHideMenuBar:true,
-    frame:true,
-    show:false,
-    center:true,
-    title:"π",
+    minWidth: 890,
+    minHeight: 700,
+    autoHideMenuBar: true,
+    frame: true,
+    show: false,
+    center: true,
+    title: "π",
     // backgroundColor: '#222326',
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
       nodeIntegration: true,
-      enableRemoteModule:true,
-      webSecurity:false,
-      devTools:isDevelopment,
+      enableRemoteModule: true,
+      webSecurity: false,
+      devTools: isDevelopment,
     },
   });
 
@@ -144,74 +136,26 @@ app.on('ready', async () => {
     }
   }
   m3nuWin = createM3nuWindow();
-  checkForUpdates(m3nuWin);
 })
 
 
-ipcMain.on("pi-win",()=>{
+ipcMain.on("pi-win", () => {
   piWin = createPiWindow();
-  m3nuWin.then(win => { win.destroy()});
+  m3nuWin.then(win => { win.destroy() });
   m3nuWin = null;
 })
 
-ipcMain.on("m3nu-win",()=>{
+ipcMain.on("m3nu-win", () => {
   appIcon.destroy();
   m3nuWin = createM3nuWindow();
-  piWin.then(win => { win.destroy()});
+  piWin.then(win => { win.destroy() });
   piWin = null;
 })
 
-// tray
-let appIcon;
-const iconName = process.platform === 'win32' ? 'icon.png' : 'icon.png'
-const iconPath = path.join(__static, iconName)
-ipcMain.on('put-in-tray', (event) => {
-  if(!appIcon || appIcon.isDestroyed()){
-    appIcon = new Tray(iconPath)
-    const contextMenu = Menu.buildFromTemplate([
-      {
-        label: '帮助',
-        click: () => {
-          
-        }
-      },
-      {
-        label: '反馈',
-        click: () => {
-
-        }
-      },
-      {
-        label: '关于',
-        click: () => {
-          
-        }
-      },
-      {
-        label: '退出',
-        click: () => {
-          app.exit();
-        }
-      },
-    ])
-    appIcon.on('click',()=> {
-      piWin.then(win => { win.show()});
-    })
-
-    appIcon.setToolTip('π')
-    appIcon.setContextMenu(contextMenu)
-  }
-  
-})
 
 ipcMain.on('remove-tray', () => {
   appIcon.destroy()
 })
-
-ipcMain.on('checking-for-update', () => {
-  autoUpdater.checkForUpdatesAndNotify()
-})
-
 
 
 // Exit cleanly on request from parent process in development mode.
