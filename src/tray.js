@@ -17,7 +17,7 @@ const initTray = () => {
                         type: 'info',
                         title: '关于',
                         icon: iconPath,
-                        detail:"Version: 1.3.1 \n" +
+                        detail:"Version: 1.2.0 \n" +
                                 "Date: 2021-01-01 \n" +
                                 "Electron: 11.0.4 \n",
                         message: " π (Pi) ",
