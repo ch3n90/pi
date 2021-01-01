@@ -13,6 +13,9 @@
 
 ![pi.png](https://i.loli.net/2020/12/27/T63dHwOy7jCpbef.png)
 
+## 下载
+您可以到这里[Pi](http://pi.milchstrabe.com)下载
+
 ## 项目安装
 
 ```
