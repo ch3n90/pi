@@ -15,7 +15,7 @@ module.exports = {
         "publish": {
           "provider": "s3",
           "bucket": "p-i",
-          "endpoint": "http://192.168.1.118:9000",
+          "endpoint": "http://pi.milchstrabe.com:9000",
           "path": "update"
         },
         "nsis": {
