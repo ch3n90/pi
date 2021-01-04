@@ -8,14 +8,15 @@ const initTray = () => {
     const iconName = process.platform === 'win32' ? 'icon.png' : 'icon.png'
     const iconPath = path.join(__static, iconName)
     if (!appIcon || appIcon.isDestroyed()) {
-        appIcon = new Tray(iconPath)
-        const contextMenu = Menu.buildFromTemplate([
+        appIcon = new Tray(iconPath);
+        let menuItems = [
             {
-                label: '关于',
+                label: 'About',
                 click: () => {
+                    console.log(process.platform)
                     const options = {
                         type: 'info',
-                        title: '关于',
+                        title: 'About',
                         icon: iconPath,
                         detail:"Version: 1.2.0 \n" +
                                 "Date: 2021-01-01 \n" +
@@ -27,13 +28,22 @@ const initTray = () => {
                 }
             },
             {
-                label: '退出',
+                label: 'Exit',
                 click: () => {
                     appIcon.destroy()
                     app.exit();
                 }
             },
-        ])
+        ]
+        if(process.platform === "linux" ){
+            menuItems.unshift({
+                label: 'Dashboard',
+                click: () => {
+                    focusedWindow.show();
+                }
+            })
+        }
+        const contextMenu = Menu.buildFromTemplate(menuItems);
         appIcon.on('click', () => {
             focusedWindow.show();
         })
