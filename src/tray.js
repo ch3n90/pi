@@ -52,9 +52,9 @@ const initTray = () => {
             })
         }
         const contextMenu = Menu.buildFromTemplate(menuItems);
-        
+
         appIcon.setToolTip('π')
-        if(process.platform === "linux" || process.platform === 'darwin'){
+        if(process.platform === 'darwin'){
             appIcon.on("right-click",() => {
                 appIcon.popUpContextMenu(contextMenu);
             })
@@ -68,7 +68,7 @@ const initTray = () => {
                 app.dock.show();
             }
         });
-        
+
     }
 
 }
