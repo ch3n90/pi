@@ -9,9 +9,10 @@
 - [x] [minio自建](https://docs.min.io/)  
 
 **想要提供支持的服务器，请提交issue**
+
 ## 应用截图
 
-![pi.png](https://i.loli.net/2020/12/27/T63dHwOy7jCpbef.png)
+<img src="https://i.loli.net/2021/01/05/MUWS9zsvA6lwfyp.jpg"  width="65%"/>
 
 ## 项目安装
 
