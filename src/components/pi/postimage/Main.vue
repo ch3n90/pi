@@ -57,12 +57,6 @@ export default {
       };
     },
   methods:{
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
       rightCom(index,indexPath){
           this.rightComName = index;
       },

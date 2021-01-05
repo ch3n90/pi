@@ -4,6 +4,7 @@ import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { checkForUpdates } from './updater.js'
 import { initTray, focusedWin } from './tray.js'
+import { initMenu } from './menu.js'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -22,16 +23,17 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ])
 
-async function createM3nuWindow() {
+function createM3nuWindow() {
   // Create the browser window.
   const m3nuWin = new BrowserWindow({
     width: 600,
     height: 600,
     autoHideMenuBar: true,
     resizable: false,
-    title: "π",
+    title: "",
     center: true,
     backgroundColor: '#F5F5F5',
+    show:false,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -44,14 +46,13 @@ async function createM3nuWindow() {
 
   if (process.env.WEBPACK_DEV_SERVER_URL) {
     // Load the url of the dev server if in development mode
-    await m3nuWin.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
+    m3nuWin.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
     if (!process.env.IS_TEST) m3nuWin.webContents.openDevTools()
 
   } else {
     createProtocol('app')
     // Load the index.html when not in development
     m3nuWin.loadURL('app://./index.html')
-
   }
 
   m3nuWin.once('ready-to-show', () => {
@@ -73,9 +74,7 @@ async function createM3nuWindow() {
   return m3nuWin;
 }
 
-
-//defined chat window
-async function createPiWindow() {
+function createPiWindow() {
   // Create the browser window.
   const piWin = new BrowserWindow({
     width: 890,
@@ -86,7 +85,7 @@ async function createPiWindow() {
     frame: true,
     show: false,
     center: true,
-    title: "π",
+    title: "",
     backgroundColor: '#F5F5F5',
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -153,19 +152,20 @@ app.on('ready', async () => {
   }
   m3nuWin = createM3nuWindow();
   initTray();
+  initMenu();
 })
 
 
 ipcMain.on("pi-win", () => {
   clearTimeout(timeoutId);
   piWin = createPiWindow();
-  m3nuWin.then(win => { win.destroy() });
+  m3nuWin.destroy();
   m3nuWin = null;
 })
 
 ipcMain.on("m3nu-win", () => {
   m3nuWin = createM3nuWindow();
-  piWin.then(win => { win.destroy() });
+  piWin.destroy();
   piWin = null;
 })
 
