@@ -11,7 +11,7 @@
 **想要提供支持的服务器，请提交issue**
 ## 应用截图
 
-![pi.png](https://i.loli.net/2020/12/27/T63dHwOy7jCpbef.png)
+![pi.jpg](https://i.loli.net/2021/01/05/MUWS9zsvA6lwfyp.jpg)
 
 ## 下载
 您可以到这里[Pi](http://pi.milchstrabe.com)下载
