@@ -4,6 +4,7 @@ import { app, protocol, BrowserWindow, ipcMain } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { checkForUpdates } from './updater.js'
 import { initTray, focusedWin } from './tray.js'
+import { initMenu } from './menu.js'
 // import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -29,7 +30,7 @@ function createM3nuWindow() {
     height: 600,
     autoHideMenuBar: true,
     resizable: false,
-    title: "π",
+    title: "",
     center: true,
     backgroundColor: '#F5F5F5',
     show:false,
@@ -84,7 +85,7 @@ function createPiWindow() {
     frame: true,
     show: false,
     center: true,
-    title: "π",
+    title: "",
     backgroundColor: '#F5F5F5',
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -151,6 +152,7 @@ app.on('ready', async () => {
   }
   m3nuWin = createM3nuWindow();
   initTray();
+  initMenu();
 })
 
 

@@ -26,7 +26,7 @@ const initTray = () => {
                         type: 'info',
                         title: 'About',
                         icon: iconPath,
-                        detail:"Version: 1.2.1 \n" +
+                        detail:"Version: "+ app.getVersion +" \n" +
                                 "Date: 2021-01-05 \n" +
                                 "Electron: 11.0.4 \n",
                         message: " π (Pi) ",
