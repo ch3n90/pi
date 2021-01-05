@@ -11,7 +11,7 @@ module.exports = {
       outputDir: 'build',
       builderOptions: {
         "appId": "com.milchstrabe.pi",
-        "copyright": "Copyright © 2020 ch3ng",
+        "copyright": "Copyright © 2020-2021 ch3ng",
         "publish": {
           "provider": "s3",
           "bucket": "p-i",
@@ -45,7 +45,10 @@ module.exports = {
           ]
         },
         "mac": {
-          "icon": "build/icons/icon.icns"
+          "icon": "build/icons/icon.icns",
+          target:[
+            'dmg'
+          ],
         },
         "win": {
           "icon": "build/icons/icon.ico",

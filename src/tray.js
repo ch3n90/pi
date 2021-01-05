@@ -5,7 +5,16 @@ let focusedWindow;
 // tray
 let appIcon;
 const initTray = () => {
-    const iconName = process.platform === 'win32' ? 'icon.png' : 'icon.png'
+    let iconName;
+    if(process.platform === 'win32'){
+        iconName = 'icon.ico';
+    }else if(process.platform === 'linux'){
+        iconName = 'icon.png';
+    }else if(process.platform === "darwin"){
+        iconName = 'maciconTemplate.png';
+    }else{
+        iconName = 'icon.ico';
+    }
     const iconPath = path.join(__static, iconName)
     if (!appIcon || appIcon.isDestroyed()) {
         appIcon = new Tray(iconPath);
@@ -13,13 +22,12 @@ const initTray = () => {
             {
                 label: 'About',
                 click: () => {
-                    console.log(process.platform)
                     const options = {
                         type: 'info',
                         title: 'About',
                         icon: iconPath,
-                        detail:"Version: 1.2.0 \n" +
-                                "Date: 2021-01-01 \n" +
+                        detail:"Version: 1.2.1 \n" +
+                                "Date: 2021-01-05 \n" +
                                 "Electron: 11.0.4 \n",
                         message: " π (Pi) ",
                         buttons: ['Yes']
@@ -44,12 +52,23 @@ const initTray = () => {
             })
         }
         const contextMenu = Menu.buildFromTemplate(menuItems);
+        
+        appIcon.setToolTip('π')
+        if(process.platform === "linux" || process.platform === 'darwin'){
+            appIcon.on("right-click",() => {
+                appIcon.popUpContextMenu(contextMenu);
+            })
+        }else{
+            appIcon.setContextMenu(contextMenu)
+        }
+
         appIcon.on('click', () => {
             focusedWindow.show();
-        })
-
-        appIcon.setToolTip('π')
-        appIcon.setContextMenu(contextMenu)
+            if(process.platform === 'darwin' && !app.dock.isVisible()){
+                app.dock.show();
+            }
+        });
+        
     }
 
 }
