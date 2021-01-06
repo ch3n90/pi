@@ -354,7 +354,7 @@ export default {
   padding: 15px;
 }
 .uploader{
-  position: absolute;
+  position: fixed;
   right: 20px;
   bottom: 20px;
 }

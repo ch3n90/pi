@@ -81,8 +81,12 @@ export default {
 .el-aside{
   height: 100%;
   font-size: 14px;
+  border-right: 1px solid #ccc;
 }
-
+.el-menu{
+  border: none;
+  background-color: #f5f5f5;
+}
 .el-main{
    height: 100%;
    background-color: #F5F5F5;
