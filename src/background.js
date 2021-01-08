@@ -31,8 +31,8 @@ function createM3nuWindow() {
     autoHideMenuBar: true,
     resizable: false,
     title: "",
+    titleBarStyle:'hidden',
     center: true,
-    backgroundColor: '#F5F5F5',
     show:false,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -82,11 +82,9 @@ function createPiWindow() {
     minWidth: 890,
     minHeight: 700,
     autoHideMenuBar: true,
-    frame: true,
     show: false,
     center: true,
     title: "",
-    backgroundColor: '#F5F5F5',
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info

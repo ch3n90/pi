@@ -92,16 +92,13 @@ export default {
 .el-aside{
   height: 100%;
   font-size: 14px;
-  background-color:#f5f5f5;
   border-right: 1px solid #ccc;
 }
 .el-menu{
   border: none;
-  background-color: #f5f5f5;
 }
 .content {
    height: 100%;
-   background-color: #F5F5F5;
 }
 .el-main::-webkit-scrollbar-track
 {

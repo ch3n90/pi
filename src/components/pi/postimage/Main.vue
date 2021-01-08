@@ -85,11 +85,9 @@ export default {
 }
 .el-menu{
   border: none;
-  background-color: #f5f5f5;
 }
 .el-main{
    height: 100%;
-   background-color: #F5F5F5;
 }
 .el-main::-webkit-scrollbar-track
 {

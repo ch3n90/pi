@@ -4,8 +4,7 @@
     <el-row>
       <el-col :span="24">
         <el-menu
-          @select="newBucket"
-          background-color="#f5f5f5">
+          @select="newBucket">
           <el-menu-item index="Upload">
             <i class="el-icon-plus"></i>
             <span slot="title">新建</span>
@@ -18,8 +17,7 @@
       <el-col :span="24">
         <el-menu
           default-active="List"
-          @select="rightCom"
-          background-color="#f5f5f5">
+          @select="rightCom">
           <el-menu-item :index="bucket.name" v-for="bucket in buckets" :key="bucket.name">
             <i class="el-icon-upload"></i>
             <span slot="title">{{bucket.name}}</span>
@@ -39,8 +37,7 @@
     <el-row>
       <el-col :span="24">
         <el-menu
-          @select="exit"
-          background-color="#f5f5f5">
+          @select="exit">
           <el-menu-item index="Exit">
             <i class="el-icon-toilet-paper"></i>
             <span slot="title">登出</span>
@@ -187,15 +184,12 @@ methods:{
 .el-aside{
   height: 100%;
   font-size: 14px;
-  background-color:#f5f5f5;
   border-right: 1px solid #ccc;
 }
 .el-menu{
   border: none;
 }
-.el-main{
-   background-color: #F5F5F5;
-}
+
 .el-main > .el-row{
   height: 100%;
 }

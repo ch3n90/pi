@@ -193,9 +193,10 @@ export default {
 }
 .el-col {
   border-radius: 4px;
+  -webkit-app-region: no-drag;
 }
 .grid-content {
-  background: #DCDFE6;
+  background: #E4E7ED;
   border-radius: 5px;
   min-height: 100px;
   position: relative;
@@ -221,10 +222,6 @@ export default {
 .url{
   color:#606266;
   font-size: 14px;
-}
-
-.el-divider__text{
-  background-color: #F5F5F5;
 }
 
 </style>
