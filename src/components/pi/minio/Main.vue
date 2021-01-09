@@ -1,8 +1,8 @@
 <template>
  <el-container>
     <div class="title-bar" >
-      <div class="el-icon-close"></div>
-      <div class="el-icon-minus"></div>
+      <div class="el-icon-close" @click="hide"></div>
+      <div class="el-icon-minus" @click="minimize"></div>
     </div>
   <el-aside width="200px">
     <el-row class="menu-name-warp">
@@ -157,6 +157,12 @@ methods:{
     exit(){
       ipcRenderer.send("m3nu-win");
     },
+    hide(){
+      remote.getCurrentWindow().hide();
+    },
+    minimize(){
+      remote.getCurrentWindow().minimize();
+    }
   },
   created(){
     this.token =  remote.getGlobal('cache').token;

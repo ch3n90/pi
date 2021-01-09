@@ -1,8 +1,8 @@
 <template>
   <div class="content" >
     <div class="title-bar" >
-      <div class="el-icon-close"></div>
-      <div class="el-icon-minus"></div>
+      <div class="el-icon-close" @click="hide"></div>
+      <div class="el-icon-minus" @click="minimize"></div>
     </div>
     <el-container v-loading="loading">
       <el-main>
@@ -79,7 +79,7 @@
 
 <script>
 import HttpApi from '../../../util/http.js'
-const {ipcRenderer} = require('electron')
+const {ipcRenderer,remote} = require('electron')
 export default {
   name: 'Temp',
   data:function(){
@@ -149,6 +149,12 @@ export default {
     },
     fileExceed(files, fileList){
       this.$message("一次最多上传10张图片");
+    },
+    hide(){
+      remote.getCurrentWindow().hide();
+    },
+    minimize(){
+      remote.getCurrentWindow().minimize();
     }
   },
 }

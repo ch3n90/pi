@@ -1,8 +1,8 @@
 <template>
   <div class="content">
       <div class="title-bar" >
-        <div class="el-icon-close"></div>
-        <div class="el-icon-minus"></div>
+        <div class="el-icon-close" @click="hide"></div>
+        <div class="el-icon-minus" @click="minimize"></div>
       </div>
       <el-container v-loading="loading">
         <el-main>
@@ -197,6 +197,12 @@ export default {
     exit(){
       ipcRenderer.send("m3nu-win");
     },
+     hide(){
+      remote.getCurrentWindow().hide();
+    },
+    minimize(){
+      remote.getCurrentWindow().minimize();
+    }
   },
 }
 </script>

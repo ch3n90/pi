@@ -1,8 +1,8 @@
 <template>
 <div class="main">
   <div class="title-bar" >
-    <div class="el-icon-close"></div>
-    <div class="el-icon-minus"></div>
+    <div class="el-icon-close" @click="hide"></div>
+    <div class="el-icon-minus" @click="minimize"></div>
   </div>
   <transition name="zoom"
         enter-active-class="zoomIn"
@@ -33,7 +33,7 @@
 <script>
 import M3nu from './M3nu'
 import 'vue2-animate/dist/vue2-animate.min.css'
-const {ipcRenderer} = require('electron')
+const {ipcRenderer,remote} = require('electron')
 
 export default {
   name: 'Auth',
@@ -53,6 +53,12 @@ export default {
       this.dialogVisible = false;
       ipcRenderer.send("agree-update")
     },
+    hide(){
+      remote.getCurrentWindow().hide();
+    },
+    minimize(){
+      remote.getCurrentWindow().minimize();
+    }
   },
   created(){
     ipcRenderer.once("update-available",(event,arg) => {
