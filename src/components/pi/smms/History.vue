@@ -1,5 +1,5 @@
 <template>
-<div class="content"
+<div class="history"
   v-loading="loading">
    <el-table
     :data="tableData"
@@ -22,7 +22,7 @@
     <el-table-column
       prop="size"
       label="大小"
-      width="60">
+      width="70">
     </el-table-column>
 
      <el-table-column
@@ -42,7 +42,7 @@
       :formatter = "dateFormat"
       label="上传日期"
       sortable
-      width="130">
+      width="140">
     </el-table-column>
 
     <el-table-column label="操作">
@@ -214,11 +214,12 @@ export default {
 }
 </script>
 <style scoped>
-.content{
+.history{
   height: 100%;
 }
 .el-table{
   font-size: 14px;
+  border-radius: 10px;
 }
 .detail{
   padding: 15px;

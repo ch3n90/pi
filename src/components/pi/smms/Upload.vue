@@ -1,36 +1,34 @@
 <template>
-  <div class="uploader"
-    v-loading="loading">
+  <div v-loading="loading" class="uploader">
     <el-row>
       <el-col>
         <el-upload
-              class="upload_list"
-              action="https://sm.ms/api/v2/upload"
-              :on-remove="handleRemove"
-              :on-success="uploadSuccess"
-              :before-upload="beforeUpload"
-              :file-list="fileList"
-              :headers="auth"
-              :multiple=true
-              :on-exceed="fileExceed"
-              accept="image/*"
-              name="smfile"
-              list-type="picture-card">
-               <i slot="default" class="el-icon-plus"></i>
-              <div slot="file" slot-scope="{file}" >
-                <img
-                  class="el-upload-list__item-thumbnail"
-                  :src="file.url" alt=""
-                >
-                <span class="el-upload-list__item-actions" @click="handleDetail(file)">
-                  <span
-                    class="el-upload-list__item-delete"
-                    @click.stop="handleRemove(file)">
-                    <i class="el-icon-delete"></i>
-                  </span>
-                </span>
-              </div>
-            </el-upload>
+          action="https://sm.ms/api/v2/upload"
+          :on-remove="handleRemove"
+          :on-success="uploadSuccess"
+          :before-upload="beforeUpload"
+          :file-list="fileList"
+          :headers="auth"
+          :multiple=true
+          :on-exceed="fileExceed"
+          accept="image/*"
+          name="smfile"
+          list-type="picture-card">
+          <i slot="default" class="el-icon-plus"></i>
+          <div slot="file" slot-scope="{file}" >
+            <img
+              class="el-upload-list__item-thumbnail"
+              :src="file.url" alt=""
+            >
+            <span class="el-upload-list__item-actions" @click="handleDetail(file)">
+              <span
+                class="el-upload-list__item-delete"
+                @click.stop="handleRemove(file)">
+                <i class="el-icon-delete"></i>
+              </span>
+            </span>
+          </div>
+        </el-upload>
       </el-col>
     </el-row>
 
@@ -149,12 +147,17 @@ export default {
 }
 </script>
 <style scoped>
+
 .uploader{
   height: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
 }
 .detail{
   padding: 15px;
 }
+
 .el-col >>> .el-upload--picture-card{
   position: absolute;
   left: 0;

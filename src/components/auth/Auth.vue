@@ -97,7 +97,6 @@ export default {
   -webkit-app-region: drag;
   -webkit-user-select: none;
   position: absolute;
-  background: rgba(red, green, blue, alpha);
   top: 0;
 }
 

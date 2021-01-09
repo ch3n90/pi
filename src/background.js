@@ -85,6 +85,7 @@ function createPiWindow() {
     autoHideMenuBar: true,
     show: false,
     center: true,
+    frame:false,
     title: "",
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
