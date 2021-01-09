@@ -162,7 +162,8 @@ export default {
                 this.fileList.splice(this.fileList.length - 1,0);
                 this.$notify.error({
                 title: '错误',
-                message: err
+                message: err,
+                offset:15
               });
               })
             }).catch(err => {
@@ -170,7 +171,8 @@ export default {
               this.fileList.splice(this.fileList.length - 1,0);
               this.$notify.error({
                 title: '错误',
-                message: err
+                message: err,
+                offset:15
               });
             });
           }

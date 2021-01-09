@@ -1,7 +1,17 @@
 <template>
  <el-container>
+    <div class="title-bar" >
+      <div class="el-icon-close"></div>
+      <div class="el-icon-minus"></div>
+    </div>
   <el-aside width="200px">
-    <el-row>
+    <el-row class="menu-name-warp">
+      <el-col :span="18" :offset="2">
+        <span class="menu-name">菜单</span>
+      </el-col>
+    </el-row>
+
+    <el-row class="menu-new-warp">
       <el-col :span="24">
         <el-menu
           @select="newBucket">
@@ -13,7 +23,7 @@
       </el-col>
     </el-row>
 
-    <el-row>
+    <el-row class="menu-item-warp">
       <el-col :span="24">
         <el-menu
           default-active="List"
@@ -34,7 +44,7 @@
       </el-col>
     </el-row>
 
-    <el-row>
+    <el-row class="menu-exit-warp">
       <el-col :span="24">
         <el-menu
           @select="exit">
@@ -47,9 +57,9 @@
     </el-row>
       
   </el-aside>
-  <el-main>
-    <el-row >
-      <el-col>
+  <el-main class="content">
+  <el-row class="smms-row">
+    <el-col class="smms-col">
         <transition name="fade"
                   enter-active-class="fadeIn"
                   leave-active-class="fadeOut"
@@ -103,7 +113,8 @@ methods:{
       }).catch(err => {
           this.$notify.error({
             title: '错误',
-            message: err
+            message: err,
+            offset:15
           });
       })
     },
@@ -128,7 +139,8 @@ methods:{
         }).catch(err => {
             this.$notify.error({
               title: '错误',
-              message: err
+              message: err,
+              offset:15
             });
         })
 
@@ -168,7 +180,8 @@ methods:{
       }).catch(err => {
           this.$notify.error({
             title: '错误',
-            message: err
+            message: err,
+            offset:15
           });
       });
   },
@@ -180,17 +193,81 @@ methods:{
 <style scoped>
 .el-container{
   height: 100%;
+  background-color: #F3F3F8;
+  -webkit-user-select: none;
 }
+
+.title-bar{
+  width: 100%;
+  height: 28px;
+  z-index: 999;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+  position: absolute;
+  top: 0;
+}
+
+.title-bar div{
+  width: 28px;
+  text-align: center;
+  line-height: 28px;
+  float: right;
+  -webkit-app-region: no-drag;
+}
+
+.title-bar div:nth-child(odd):hover{
+  background-color: #f45454;
+  color: #fff;
+}
+.title-bar div:nth-child(even):hover{
+  background-color: #888;
+}
+
+.menu-name-warp{
+  padding: 28px 0 18px 0;
+}
+.menu-name{
+  color: #000;
+  font-size: 24px;
+  font-weight: bold;
+}
+
 .el-aside{
   height: 100%;
   font-size: 14px;
   border-right: 1px solid #ccc;
 }
+.menu-new-warp{
+  padding: 0 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.menu-item-warp{
+  padding: 0 10px;
+  border-radius: 10px;
+}
+
+.menu-item-warp .el-menu-item:nth-child(-n+1000){
+  border-bottom: 1px solid #e9e9e9;
+}
+
+
 .el-menu{
+  border-radius: 10px;
   border: none;
 }
 
-.el-main > .el-row{
+.menu-exit-warp{
+  padding: 0 10px;
+  margin-top: 40px;
+}
+
+.content {
+  margin-top: 28px;
+  padding: 0 10px;
+  height: 95%;
+}
+.smms-row,.smms-col{
   height: 100%;
 }
 .el-main::-webkit-scrollbar-track

@@ -129,7 +129,8 @@ export default {
         this.loading = false;
         this.$notify.error({
           title: '错误',
-          message: response.message
+          message: response.message,
+          offset:15
         });
       }else{
         file.url = response.data.url;

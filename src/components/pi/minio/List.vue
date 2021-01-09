@@ -186,7 +186,8 @@ export default {
       }).catch(err => {
           this.$notify.error({
             title: '错误',
-            message: err
+            message: err,
+            offset:15
           });
       })
     },
@@ -254,7 +255,8 @@ export default {
         }).catch(err => {
           this.$notify.error({
                 title: '错误',
-                message: err
+                message: err,
+                offset:15
               });
           });
         }
@@ -306,7 +308,8 @@ export default {
       }).catch(err => {
           this.$notify.error({
             title: '错误',
-            message: err
+            message: err,
+            offset:15
           });
       });
     },
@@ -343,10 +346,11 @@ export default {
 .el-table{
   font-size: 14px;
   margin-top: 10px;
+  border-radius: 10px;
 }
 
 .el-main{
-  padding: 10px;
+  padding: 5px;
   height: 100%;
 }
 
@@ -357,5 +361,6 @@ export default {
   position: fixed;
   right: 20px;
   bottom: 20px;
+  z-index: 999;
 }
 </style>

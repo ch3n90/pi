@@ -78,7 +78,8 @@ export default {
       if(!this.apiKey || this.apiKey.length < 32){
         this.$notify.error({
             title: '错误',
-            message: "apiKey非法"
+            message: "apiKey非法",
+            offset:15
         });
         return;
       }
