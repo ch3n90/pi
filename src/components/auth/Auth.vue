@@ -1,12 +1,10 @@
 <template>
 <div class="main">
-  <div class="title-bar" :style="{backgroundColor:titleBarBGC}">
+  <div class="title-bar" >
     <div class="el-icon-close"></div>
     <div class="el-icon-minus"></div>
   </div>
   <transition name="zoom"
-        @before-enter="beforeEnter"
-        @before-leave="beforeLeave"
         enter-active-class="zoomIn"
         leave-active-class="zoomOut" mode="out-in">
     <router-view style="animation-duration: 0.5s"/>
@@ -45,27 +43,16 @@ export default {
       updateProcessBarVisible:false,
       percentage:0,
       releaseNote:[],
-      titleBarBGC:'none'
     }
   },
   render:function(c){
-        return c(M3nu);
+    return c(M3nu);
   },
   methods:{
     agreeUpdate(){
       this.dialogVisible = false;
       ipcRenderer.send("agree-update")
     },
-    beforeLeave(el){
-      if(el.children.length === 2){
-        this.titleBarBGC = '';
-      }
-    },
-    beforeEnter(el){
-      if(el.children.length === 2){
-        this.titleBarBGC = '#fff';
-      }
-    }
   },
   created(){
     ipcRenderer.once("update-available",(event,arg) => {
@@ -106,8 +93,12 @@ export default {
 .title-bar{
   width: 100%;
   height: 28px;
+  z-index: 999;
   -webkit-app-region: drag;
   -webkit-user-select: none;
+  position: absolute;
+  background: rgba(red, green, blue, alpha);
+  top: 0;
 }
 
 .title-bar div{
@@ -125,4 +116,5 @@ export default {
 .title-bar div:nth-child(even):hover{
   background-color: #888;
 }
+
 </style>

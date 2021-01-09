@@ -184,7 +184,7 @@ export default {
 .back{
   position: absolute;
   left: 10px;
-  top: 10px;
+  top: 38px;
   z-index: 999;
   color: #000;
   text-decoration: none;
