@@ -7,7 +7,7 @@
           <el-row>
             <el-col :span="24">
               <div class="logo">
-                <img src="../../assets/images/smms.webp" alt="" class="logo-img">
+                <img src="../../assets/images/smms.jpg" alt="" class="logo-img">
               </div>
             </el-col>
           </el-row>
@@ -84,7 +84,7 @@
             <el-col :span="24">
               <div class="logo">
                 <div class="deving">deving</div>
-                <img src="../../assets/images/oss.png" alt="" class="logo-img">
+                <img src="../../assets/images/oss.svg" alt="" class="logo-img">
               </div>
             </el-col>
           </el-row>
@@ -103,7 +103,7 @@
               <el-row>
                 <el-col :span="24">
                   <div class="logo">
-                    <img src="../../assets/images/minio.svg" alt="" class="logo-img">
+                    <img src="../../assets/images/minio.png" alt="" class="logo-img">
                   </div>
                 </el-col>
               </el-row>
