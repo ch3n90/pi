@@ -157,9 +157,7 @@ export default {
   height: 100%;
   -webkit-user-select: none;
   background-color: #F3F3F8;
-  padding:28px 10px 10px 10px;
 }
-
 .title-bar{
   width: 100%;
   height: 28px;
@@ -169,7 +167,6 @@ export default {
   position: absolute;
   top: 0;
 }
-
 .title-bar div{
   width: 28px;
   text-align: center;
@@ -177,7 +174,6 @@ export default {
   float: right;
   -webkit-app-region: no-drag;
 }
-
 .title-bar div:nth-child(odd):hover{
   background-color: #f45454;
   color: #fff;
@@ -185,10 +181,12 @@ export default {
 .title-bar div:nth-child(even):hover{
   background-color: #888;
 }
-
 .el-container {
-  background-color: #fff;
   height: 100%;
+  padding:28px 10px 10px 10px;
+}
+.el-main{
+  background-color: #fff;
   border-radius: 10px;
 }
 .exit{

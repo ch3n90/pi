@@ -1,7 +1,17 @@
 <template>
  <el-container>
+  <div class="title-bar" >
+    <div class="el-icon-close"></div>
+    <div class="el-icon-minus"></div>
+  </div>
   <el-aside width="200px">
-    <el-row>
+    <el-row class="menu-name-warp">
+      <el-col :span="18" :offset="2">
+        <span class="menu-name">菜单</span>
+      </el-col>
+    </el-row>
+
+    <el-row class="menu-item-warp">
       <el-col :span="24">
         <el-menu
           default-active="Upload"
@@ -15,7 +25,7 @@
       </el-col>
     </el-row>
 
-    <el-row>
+    <el-row class="menu-exit-warp">
       <el-col :span="24">
         <el-menu
           @select="exit">
@@ -26,11 +36,11 @@
         </el-menu>
       </el-col>
     </el-row>
-      
   </el-aside>
-  <el-main>
-    <el-row>
-      <el-col>
+
+  <el-main class="content">
+    <el-row class="smms-row">
+      <el-col class="smms-col">
         <transition name="fade"
                   enter-active-class="fadeIn"
                   leave-active-class="fadeOut"
@@ -77,17 +87,65 @@ export default {
 <style scoped>
 .el-container{
   height: 100%;
+  background-color: #F3F3F8;
+}
+.title-bar{
+  width: 100%;
+  height: 28px;
+  z-index: 999;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+  position: absolute;
+  top: 0;
+}
+.title-bar div{
+  width: 28px;
+  text-align: center;
+  line-height: 28px;
+  float: right;
+  -webkit-app-region: no-drag;
+}
+.title-bar div:nth-child(odd):hover{
+  background-color: #f45454;
+  color: #fff;
+}
+.title-bar div:nth-child(even):hover{
+  background-color: #888;
 }
 .el-aside{
   height: 100%;
   font-size: 14px;
   border-right: 1px solid #ccc;
 }
+
+.menu-name-warp{
+  padding: 28px 0 18px 0;
+}
+.menu-name{
+  color: #000;
+  font-size: 24px;
+  font-weight: bold;
+}
+.menu-item-warp{
+  padding: 0 10px;
+  border-radius: 10px;
+}
+
 .el-menu{
+  border-radius: 10px;
   border: none;
 }
-.el-main{
-   height: 100%;
+.menu-exit-warp{
+  padding: 0 10px;
+  margin-top: 40px;
+}
+.content {
+  margin-top: 28px;
+  padding: 0 10px;
+  height: 95%;
+}
+.smms-row,.smms-col{
+  height: 100%;
 }
 .el-main::-webkit-scrollbar-track
 {

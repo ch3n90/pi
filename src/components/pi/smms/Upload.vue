@@ -119,7 +119,8 @@ export default {
         }
         this.$notify.error({
           title: '错误',
-          message: response.message
+          message: response.message,
+          offset:20
         });
       }else{
         //upload success

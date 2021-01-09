@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div  v-loading="loading"  class="uploader">
     <el-row>
       <el-col>
         <el-upload
@@ -83,6 +83,7 @@ export default {
       curImage:{},
       drawer:false,
       key:null,
+      loading:false,
     }
   },
   filters:{
@@ -107,6 +108,7 @@ export default {
        });
     },
     uploader(request){
+      this.loading = true;
       let file = request.file;
       if (file) {
         let ext = file.type.substring(file.type.indexOf("/") + 1);
@@ -141,6 +143,7 @@ export default {
               xml2js.parseStringPromise(response ,{explicitArray : false})
               .then( result => {
                 if(result.data.$.status === "200"){
+                  this.loading = false;
                   let img = {
                     name:result.data.image.name,
                     url:result.data.links.hotlink
@@ -152,9 +155,11 @@ export default {
                 throw err;
               });
             }).catch(err => {
+              this.loading = false;
               this.$notify.error({
                 title: '错误',
-                message: err
+                message: err,
+                offset:15,
               });
             });
 
@@ -182,6 +187,12 @@ export default {
 }
 </script>
 <style scoped>
+.uploader{
+  height: 100%;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+}
 .detail{
   padding: 15px;
 }

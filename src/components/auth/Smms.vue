@@ -120,7 +120,8 @@ export default {
       }).catch(err => {
         this.$notify.error({
             title: '错误',
-            message: err
+            message: err,
+            offset:15,
           });
       });
     },
