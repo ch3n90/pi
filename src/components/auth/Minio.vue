@@ -1,22 +1,22 @@
 <template>
   <el-container>
     <router-link  to="/m3nu" class="back" >
-      <el-page-header content="minio"></el-page-header>
+      <el-page-header></el-page-header>
     </router-link>
     
   <el-main>
     <el-row >
-      <el-col :span="20" :offset="2">
+      <el-col :span="22" :offset="1">
         <div class="login">
           <el-row >
             <el-col :span="24">
-              <div class="title">登入</div>
+              <div class="title">MINIO</div>
             </el-col>
           </el-row>
 
           <el-row class="rows">
-            <el-col :span="13" :offset="3">
-              <div class="username">
+            <el-col :span="15" :offset="1">
+              <div>
                 <el-input placeholder="Host" v-model="host">
                   <el-select v-model="protocol" slot="prepend">
                     <el-option label="http" value="http://"></el-option>
@@ -30,8 +30,8 @@
                <div class="flag">:</div>
             </el-col>
 
-            <el-col :span="4">
-              <div class="username">
+            <el-col :span="6">
+              <div>
                  <el-input
                     placeholder="host"
                     v-model="port">
@@ -41,9 +41,8 @@
           </el-row>
 
           <el-row class="rows">
-            <el-col :span="18" :offset="3">
-              
-              <div class="username">
+            <el-col :span="22" :offset="1">
+              <div>
                  <el-input
                     placeholder="access key"
                     prefix-icon="el-icon-user"
@@ -54,7 +53,7 @@
           </el-row>
 
           <el-row class="rows">
-            <el-col :span="18" :offset="3">
+            <el-col :span="22" :offset="1">
               <div class="password">
                  <el-input
                     placeholder="secret key"
@@ -68,7 +67,7 @@
 
 
            <el-row class="rows">
-            <el-col :span="18" :offset="3">
+            <el-col :span="22" :offset="1">
               <div class="remember">
                   <el-checkbox v-model="remember">记住我</el-checkbox>
               </div>
@@ -76,7 +75,7 @@
           </el-row>
 
            <el-row style="margin-bottom:10px">
-            <el-col :span="18" :offset="3">
+            <el-col :span="22" :offset="1">
               <div class="sign">
                 
                   <el-button type="primary" size="medium" @click.stop="sign">登入</el-button>
@@ -175,13 +174,31 @@ export default {
 </script>
 
 <style scoped>
- .el-select  {
+
+.el-container{
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+}
+.back{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 999;
+  color: #000;
+  text-decoration: none;
+}
+.el-page-header >>>.el-page-header__left::after{
+  content: none;
+}
+
+.el-select  {
     width: 80px;
   }
 .login{
-   height: 400px;
-   margin-top: 50px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+  height: 400px;
+  margin-top: 50px;
 }
 
 .title{
@@ -195,18 +212,9 @@ export default {
 .sign .el-button{
   width: 100%;
 }
-
-.back{
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  z-index: 999;
-  color: #000;
-  text-decoration: none;
-}
-
 .flag{
   text-align: center;
   line-height: 40px;
 }
+
 </style>

@@ -2,164 +2,122 @@
 <el-container>
   <el-main>
     <el-row :gutter="20" class="rows">
-      <el-col :span="8">
+      <el-col :span="6">
         <router-link to="/smms">
-          <div class="grid-content">
-              <el-row style="margin-bottom:5px">
-                <el-col :span="9" :offset="1">
-                  <div class="logo">
-                    <img src="../../assets/images/smms.webp" alt="" class="logo-img">
-                  </div>
-                </el-col>
+          <el-row>
+            <el-col :span="24">
+              <div class="logo">
+                <img src="../../assets/images/smms.webp" alt="" class="logo-img">
+              </div>
+            </el-col>
+          </el-row>
 
-                <el-col :span="11">
-                  <div  class="title">sm.ms</div>                  
-                </el-col>
-              </el-row>
-
-              <el-row>
-                <el-col :span="11" :offset="1">
-                  <span class="url">https://sm.ms</span>
-                </el-col>
-              </el-row>
-          </div>
+          <el-row>
+            <el-col :span="24" class="app-name">
+              <span>sm.ms</span>
+            </el-col>
+          </el-row>
         </router-link>
       </el-col>
 
-      <el-col :span="8">
+      <el-col :span="6">
         <router-link to="/postimage">
-          <div class="grid-content">
-              <el-row style="margin-bottom:5px">
-                <el-col :span="9" :offset="1">
-                  <div class="logo">
-                    <img src="../../assets/images/postimage.png" alt="" class="logo-img">
-                  </div>
-                </el-col>
+          <el-row>
+            <el-col :span="24">
+              <div class="logo">
+                <img src="../../assets/images/postimage.png" alt="" class="logo-img">
+              </div>
+            </el-col>
+          </el-row>
 
-                <el-col :span="11">
-                  <div  class="title">post.image</div>                  
-                </el-col>
-              </el-row>
-
-              <el-row>
-                <el-col :span="11" :offset="1">
-                  <span class="url">https://postimages.org</span>
-                </el-col>
-              </el-row>
-          </div>
+          <el-row>
+            <el-col :span="24" class="app-name">
+              <span>postimage</span>
+            </el-col>
+          </el-row>
         </router-link>
       </el-col>
 
-      <el-col :span="8">
-        
+      <el-col :span="6">
         <router-link to="/">
-          <div class="grid-content">
-           <div class="deving">coming soon</div>
-              <el-row style="margin-bottom:5px">
-                <el-col :span="9" :offset="1">
-                  <div class="logo">
-                    <img src="../../assets/images/imgbb.png" alt="" class="logo-img">
-                  </div>
-                </el-col>
+          <el-row>
+            <el-col :span="24">
+              <div class="logo">
+                <div class="deving">deving</div>
+                <img src="../../assets/images/imgbb.png" alt="" class="logo-img">
+              </div>
+            </el-col>
+          </el-row>
 
-                <el-col :span="11">
-                  <div  class="title">imgbb.com</div>                  
-                </el-col>
-              </el-row>
-
-              <el-row>
-                <el-col :span="11" :offset="1">
-                  <span class="url">https://imgbb.com</span>
-                </el-col>
-              </el-row>
-          </div>
+          <el-row>
+            <el-col :span="24" class="app-name">
+              <span>imgbb</span>
+            </el-col>
+          </el-row>
         </router-link>
       </el-col>
 
-    </el-row>
-
-    <el-row :gutter="20" class="rows">
-      <el-col :span="8">
+      <el-col :span="6">
         <router-link to="/">
-          <div class="grid-content">
-            <div class="deving">coming soon</div>
-              <el-row style="margin-bottom:5px">
-                <el-col :span="9" :offset="1">
+              <el-row>
+                <el-col :span="24">
                   <div class="logo">
+                    <div class="deving">deving</div>
                     <img src="../../assets/images/qiniuyun.png" alt="" class="logo-img">
                   </div>
                 </el-col>
-
-                <el-col :span="11">
-                  <div  class="title">七牛云</div>                  
-                </el-col>
               </el-row>
 
               <el-row>
-                <el-col :span="11" :offset="1">
-                  <span class="url">https://portal.qiniu.com</span>
+                <el-col :span="24" class="app-name">
+                  <span>七牛云</span>
                 </el-col>
               </el-row>
-          </div>
         </router-link>
       </el-col>
-
-      <el-col :span="8">
-        <router-link to="/">
-          <div class="grid-content">
-            <div class="deving">coming soon</div>
-              <el-row style="margin-bottom:5px">
-                <el-col :span="9" :offset="1">
-                  <div class="logo">
-                    <img src="../../assets/images/oss.png" alt="" class="logo-img">
-                  </div>
-                </el-col>
-
-                <el-col :span="11">
-                  <div  class="title">OSS</div>                  
-                </el-col>
-              </el-row>
-
-              <el-row>
-                <el-col :span="11" :offset="1">
-                  <span class="url">https://aliyun.com</span>
-                </el-col>
-              </el-row>
-          </div>
-        </router-link>
-      </el-col>
-
     </el-row>
-      <br>
-      <br>
-      <br>
-      <el-divider content-position="left">自建服务器</el-divider>
-      <el-row :gutter="20" class="rows">
-      <el-col :span="8">
+
+    <el-row :gutter="20" class="rows">
+      <el-col :span="6">
+        <router-link to="/">
+          <el-row>
+            <el-col :span="24">
+              <div class="logo">
+                <div class="deving">deving</div>
+                <img src="../../assets/images/oss.png" alt="" class="logo-img">
+              </div>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="24" class="app-name">
+              <span>oss</span>
+            </el-col>
+          </el-row>
+        </router-link>
+      </el-col>
+
+      <el-col :span="6">
         <router-link to="/minio">
           <div class="grid-content">
-              <el-row style="margin-bottom:5px">
-                <el-col :span="9" :offset="1">
+              <el-row>
+                <el-col :span="24">
                   <div class="logo">
                     <img src="../../assets/images/minio.svg" alt="" class="logo-img">
                   </div>
                 </el-col>
-
-                <el-col :span="11">
-                  <div  class="title">minio</div>                  
-                </el-col>
               </el-row>
 
               <el-row>
-                <el-col :span="23" :offset="1">
-                  <span class="url">https://min.io</span>
+                <el-col :span="24" class="app-name">
+                  <span>minio</span>
                 </el-col>
               </el-row>
           </div>
         </router-link>
       </el-col>
-    </el-row>
 
+    </el-row>
   </el-main>
 </el-container>
 </template>
@@ -183,45 +141,37 @@ export default {
   position: absolute;
   line-height: 20px;
   font-size: 14px;
-  top: 40%;
-  /* right: -10px; */
+  top: 10%;
+  right: -30%;
   transform: rotate(50deg);
   z-index: 999;
 }
+.el-container{
+  width: 100%;
+  height: 100%;
+}
 .rows{
   margin-bottom: 20px;
+  -webkit-user-select: none;
 }
-.el-col {
-  border-radius: 4px;
-  -webkit-app-region: no-drag;
-}
-.grid-content {
-  background: #E4E7ED;
-  border-radius: 5px;
-  min-height: 100px;
+.logo{
+  width: 63px;
+  height: 63px;
+  text-align: center;
   position: relative;
   overflow: hidden;
 }
-.grid-content:hover{
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-}
-.logo{
-  margin-top: 5px;
-  
-}
 .logo-img{
-    width: 55px;
-    height: 55px;
-    border-radius: 5px;
+  width: 63px;
+  height: 63px;
+  border-radius: 10px;
+  background-color: #fff;
 }
-.title{
-  margin-top: 20px;
-  color: #606266;
-  font-size: 16px;
-}
-.url{
-  color:#606266;
+
+.app-name{
+  color:#fff;
   font-size: 14px;
+  text-align: center;
 }
 
 </style>

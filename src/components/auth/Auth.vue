@@ -1,8 +1,14 @@
 <template>
 <div class="main">
-  <transition  name="flip"
-        enter-active-class="flipInX"
-        leave-active-class="flipOutX" mode="out-in">
+  <div class="title-bar" :style="{backgroundColor:titleBarBGC}">
+    <div class="el-icon-close"></div>
+    <div class="el-icon-minus"></div>
+  </div>
+  <transition name="zoom"
+        @before-enter="beforeEnter"
+        @before-leave="beforeLeave"
+        enter-active-class="zoomIn"
+        leave-active-class="zoomOut" mode="out-in">
     <router-view style="animation-duration: 0.5s"/>
   </transition>
 
@@ -39,6 +45,7 @@ export default {
       updateProcessBarVisible:false,
       percentage:0,
       releaseNote:[],
+      titleBarBGC:'none'
     }
   },
   render:function(c){
@@ -48,6 +55,16 @@ export default {
     agreeUpdate(){
       this.dialogVisible = false;
       ipcRenderer.send("agree-update")
+    },
+    beforeLeave(el){
+      if(el.children.length === 2){
+        this.titleBarBGC = '';
+      }
+    },
+    beforeEnter(el){
+      if(el.children.length === 2){
+        this.titleBarBGC = '#fff';
+      }
     }
   },
   created(){
@@ -82,5 +99,30 @@ export default {
 .main{
   width: 100%;
   height: 100%;
+  background: url('../../assets/images/bg5.jpg') no-repeat center center;
+  background-size: cover;
+  background-attachment:fixed;
+}
+.title-bar{
+  width: 100%;
+  height: 28px;
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+}
+
+.title-bar div{
+  width: 28px;
+  text-align: center;
+  line-height: 28px;
+  float: right;
+  -webkit-app-region: no-drag;
+}
+
+.title-bar div:nth-child(odd):hover{
+  background-color: #f45454;
+  color: #fff;
+}
+.title-bar div:nth-child(even):hover{
+  background-color: #888;
 }
 </style>

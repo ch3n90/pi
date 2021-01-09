@@ -26,11 +26,12 @@ protocol.registerSchemesAsPrivileged([
 function createM3nuWindow() {
   // Create the browser window.
   const m3nuWin = new BrowserWindow({
-    width: 600,
-    height: 600,
+    width: 350,
+    height: 650,
     autoHideMenuBar: true,
     resizable: false,
     title: "",
+    frame:false,
     titleBarStyle:'hidden',
     center: true,
     show:false,

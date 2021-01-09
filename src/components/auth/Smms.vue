@@ -1,21 +1,21 @@
 <template>
   <el-container>
     <router-link  to="/m3nu" class="back" >
-      <el-page-header content="sm.ms"></el-page-header>
+      <el-page-header></el-page-header>
     </router-link>
     
   <el-main>
     <el-row >
-      <el-col :span="20" :offset="2">
+      <el-col :span="24">
         <div class="login">
           <el-row >
             <el-col :span="24">
-              <div class="title">登入</div>
+              <div class="title">SM.MS</div>
             </el-col>
           </el-row>
 
           <el-row class="rows">
-            <el-col :span="18" :offset="3">
+            <el-col :span="22" :offset="1">
               <div class="username">
                  <el-input
                     placeholder="ID"
@@ -27,7 +27,7 @@
           </el-row>
 
           <el-row class="rows">
-            <el-col :span="18" :offset="3">
+            <el-col :span="22" :offset="1">
               <div class="password">
                  <el-input
                     placeholder="password"
@@ -41,7 +41,7 @@
 
 
            <el-row class="rows">
-            <el-col :span="18" :offset="3">
+            <el-col :span="22" :offset="1">
               <div class="remember">
                   <el-checkbox v-model="remember">记住我</el-checkbox>
               </div>
@@ -50,7 +50,7 @@
 
 
            <el-row style="margin-bottom:10px">
-            <el-col :span="18" :offset="3">
+            <el-col :span="22" :offset="1">
               <div class="sign">
                 
                   <el-button type="primary" size="medium" @click.stop="sign">登入</el-button>
@@ -59,7 +59,7 @@
           </el-row>
           
            <el-row style="margin-top:30px">
-            <el-col :span="2" :offset="20">
+            <el-col :span="4" :offset="21">
               <div>
                   <el-link type="warning" @click.stop="temp">试用</el-link>
               </div>
@@ -144,11 +144,26 @@ export default {
 </script>
 
 <style scoped>
-
+.el-container{
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+}
+.back{
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  z-index: 999;
+  color: #000;
+  text-decoration: none;
+}
+.el-page-header >>>.el-page-header__left::after{
+  content: none;
+}
 .login{
-   height: 400px;
-   margin-top: 50px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1)
+  height: 400px;
+  margin-top: 50px;
 }
 
 .title{
@@ -163,12 +178,5 @@ export default {
   width: 100%;
 }
 
-.back{
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  z-index: 999;
-  color: #000;
-  text-decoration: none;
-}
+
 </style>
