@@ -1,0 +1,23 @@
+{
+  "id": "2265240",
+  "name": "pi",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "7735866",
+      "name": "battery-4",
+      "font_class": "battery-",
+      "unicode": "e8cc",
+      "unicode_decimal": 59596
+    },
+    {
+      "icon_id": "12310633",
+      "name": "wifi",
+      "font_class": "wifi",
+      "unicode": "e8d6",
+      "unicode_decimal": 59606
+    }
+  ]
+}

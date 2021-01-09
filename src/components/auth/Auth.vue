@@ -1,8 +1,21 @@
 <template>
 <div class="main">
   <div class="title-bar" >
-    <div class="el-icon-close" @click="hide"></div>
-    <div class="el-icon-minus" @click="minimize"></div>
+    <div class="info"> 
+      <div>{{ time }}</div>
+      <div>
+        <span class="iconfont icon-wifi"></span>
+      </div>
+      <div>
+        <span class="iconfont icon-battery-"></span>
+      </div>
+    </div>
+    
+    <div class="cmm">
+      <div class="el-icon-close" @click="hide"></div>
+      <div class="el-icon-minus" @click="minimize"></div>
+    </div>
+    
   </div>
   <transition name="zoom"
         enter-active-class="zoomIn"
@@ -33,6 +46,8 @@
 <script>
 import M3nu from './M3nu'
 import 'vue2-animate/dist/vue2-animate.min.css'
+import "../../assets/fonts/iconfont.css"
+import dayjs from 'dayjs'
 const {ipcRenderer,remote} = require('electron')
 
 export default {
@@ -43,6 +58,8 @@ export default {
       updateProcessBarVisible:false,
       percentage:0,
       releaseNote:[],
+      time: dayjs(new Date()).format('HH:mm'),
+      timeId:null,
     }
   },
   render:function(c){
@@ -58,9 +75,12 @@ export default {
     },
     minimize(){
       remote.getCurrentWindow().minimize();
-    }
+    },
   },
   created(){
+    this.timeId = setInterval(() => {
+      this.time = dayjs(new Date()).format("HH:mm");
+    },1000 * 10)
     ipcRenderer.once("update-available",(event,arg) => {
       this.releaseNote = arg.releaseNote;
       this.dialogVisible = true;
@@ -82,6 +102,11 @@ export default {
         }).catch(() => {
         });
     })
+  },
+  beforeDestroy(){
+    if(this.timeId){
+      clearInterval(this.timeId);
+    }
   }
 
 }
@@ -106,12 +131,26 @@ export default {
   top: 0;
 }
 
-.title-bar div{
+.cmm div{
   width: 28px;
   text-align: center;
   line-height: 28px;
   float: right;
   -webkit-app-region: no-drag;
+}
+.info{
+  margin: 0 10px;
+  font-size: 14px;
+  color: #000;
+  
+}
+.info div{
+  line-height: 28px;
+  float: left;
+  margin-right: 6px;
+}
+.info div:nth-child(-n+2){
+  font-weight: bold;
 }
 
 .title-bar div:nth-child(odd):hover{

@@ -16,6 +16,7 @@
   "dependencies": {
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
+    "dayjs": "^1.10.3",
     "dexie": "^3.0.3",
     "electron": "^11.0.4",
     "electron-log": "^4.3.1",
