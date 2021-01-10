@@ -81,6 +81,7 @@ function createPiWindow() {
     show: false,
     center: true,
     frame:false,
+    titleBarStyle:'hidden',
     title: "",
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
