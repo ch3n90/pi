@@ -161,7 +161,7 @@ ipcMain.on("m3nu-win", () => {
 })
 
 ipcMain.on("check-update", () => {
-  checkForUpdates(m3nuWin);
+  checkForUpdates(piWin);
 })
 
 

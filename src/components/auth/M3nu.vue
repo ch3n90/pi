@@ -117,23 +117,23 @@
 
       
       <el-col :span="6">
-        <router-link to="/settings">
-              <el-row>
-                <el-col :span="24">
-                  <el-badge value="1" :hidden='$store.getters.getSettingsBadgeHidden'>
-                    <div class="logo">
-                      <img src="../../assets/images/settings.png" alt="" class="logo-img">
-                    </div>
-                  </el-badge>
-                </el-col>
-              </el-row>
+        <a @click="settings" style="cursor: pointer">
+          <el-row>
+            <el-col :span="24">
+              <el-badge value="1" :hidden='$store.getters.getSettingsBadgeHidden'>
+                <div class="logo">
+                  <img src="../../assets/images/settings.png" alt="" class="logo-img">
+                </div>
+              </el-badge>
+            </el-col>
+          </el-row>
 
-              <el-row>
-                <el-col :span="24" class="app-name">
-                  <span>设置</span>
-                </el-col>
-              </el-row>
-        </router-link>
+          <el-row>
+            <el-col :span="24" class="app-name">
+              <span>设置</span>
+            </el-col>
+          </el-row>
+        </a>
       </el-col>
 
     </el-row>
@@ -143,8 +143,15 @@
 
 
 <script>
+const {ipcRenderer,remote} = require('electron')
 export default {
   name: 'M3nu',
+  methods:{
+    settings(){
+      remote.getGlobal('cache').pi = './settings/Settings';
+      ipcRenderer.send("pi-win");
+    }
+  },
   created(){
     this.$store.commit("setTitleBarFontColor","#fff");
   }
@@ -171,6 +178,7 @@ export default {
   width: 100%;
   height: 100%;
   padding-top: 28px;
+  
 }
 .rows{
   margin-bottom: 20px;

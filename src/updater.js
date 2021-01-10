@@ -2,6 +2,8 @@
 
 import { ipcMain } from 'electron'
 const { autoUpdater } = require("electron-updater");
+const {activeWindow} = require('electron-util');
+
 
 const log = require('electron-log');
 
@@ -16,19 +18,27 @@ autoUpdater.on('checking-for-update', () => {
   log.info('Checking for update...');
 })
 autoUpdater.on('update-available', (info) => {
-  win.webContents.send("update-available", info);
+  if(win === activeWindow()){
+    win.webContents.send("update-available", info);
+  }
 })
 autoUpdater.on('update-not-available', (info) => {
-  win.webContents.send("update-not-available", info);
+  if(win === activeWindow()){
+    win.webContents.send("update-not-available", info);
+  }
 })
 autoUpdater.on('error', (err) => {
   log.info('Error in auto-updater. ' + err);
 })
 autoUpdater.on('download-progress', (progressObj) => {
-  win.webContents.send("update-processbar", progressObj);
+  if(win === activeWindow()){
+    win.webContents.send("update-processbar", progressObj);
+  }
 })
 autoUpdater.on('update-downloaded', (info) => {
-  win.webContents.send("update-downloaded");
+  if(win === activeWindow()){
+    win.webContents.send("update-downloaded");
+  }
 });
 
 ipcMain.on("agree-download", () => {
