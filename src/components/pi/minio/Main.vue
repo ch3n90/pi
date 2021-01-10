@@ -1,8 +1,10 @@
 <template>
  <el-container>
     <div class="title-bar" >
-      <div class="el-icon-close" @click="hide"></div>
-      <div class="el-icon-minus" @click="minimize"></div>
+      <div class="cmm" v-if="!isMac">
+        <div class="el-icon-close" @click="hide"></div>
+        <div class="el-icon-minus" @click="minimize"></div>
+      </div>
     </div>
   <el-aside width="200px">
     <el-row class="menu-name-warp">
@@ -79,6 +81,7 @@
 import HttpApi from '../../../util/http'
 import List from './List'
 const {ipcRenderer,remote} = require('electron')
+const {is} = require('electron-util');
 export default {
   name: 'Minio',
     data() {
@@ -88,6 +91,7 @@ export default {
         //  paths:[],
          rightComName: List,
          token:null,
+         isMac:is.macos,
       };
     },
 methods:{
@@ -213,7 +217,7 @@ methods:{
   top: 0;
 }
 
-.title-bar div{
+.cmm div{
   width: 28px;
   text-align: center;
   line-height: 28px;
@@ -221,11 +225,11 @@ methods:{
   -webkit-app-region: no-drag;
 }
 
-.title-bar div:nth-child(odd):hover{
+.cmm div:nth-child(odd):hover{
   background-color: #f45454;
   color: #fff;
 }
-.title-bar div:nth-child(even):hover{
+.cmm div:nth-child(even):hover{
   background-color: #888;
 }
 

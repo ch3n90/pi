@@ -1,8 +1,10 @@
 <template>
   <div class="content">
       <div class="title-bar" >
-        <div class="el-icon-close" @click="hide"></div>
-        <div class="el-icon-minus" @click="minimize"></div>
+        <div class="cmm" v-if="!isMac">
+          <div class="el-icon-close" @click="hide"></div>
+          <div class="el-icon-minus" @click="minimize"></div>
+        </div>
       </div>
       <el-container v-loading="loading">
         <el-main>
@@ -82,6 +84,7 @@ import qs from 'qs'
 const md5 = require('md5')
 const xml2js = require('xml2js');
 const {ipcRenderer,remote,clipboard} = require('electron')
+const {is} = require('electron-util');
 export default {
   name: 'Temp',
   data:function(){
@@ -93,6 +96,7 @@ export default {
       drawer:false,
       loading:false,
       key:"8ca0b57a6bb9c4c33cd9e7ab8e6a7f05",
+      isMac:is.macos,
     }
   },
   filters:{
@@ -224,7 +228,7 @@ export default {
   top: 0;
 }
 
-.title-bar div{
+.cmm div{
   width: 28px;
   text-align: center;
   line-height: 28px;
@@ -232,11 +236,11 @@ export default {
   -webkit-app-region: no-drag;
 }
 
-.title-bar div:nth-child(odd):hover{
+.cmm div:nth-child(odd):hover{
   background-color: #f45454;
   color: #fff;
 }
-.title-bar div:nth-child(even):hover{
+.cmm div:nth-child(even):hover{
   background-color: #888;
 }
 .el-container {

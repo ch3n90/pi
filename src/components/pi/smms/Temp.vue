@@ -1,8 +1,10 @@
 <template>
   <div class="content" >
     <div class="title-bar" >
+     <div class="cmm" v-if="!isMac">
       <div class="el-icon-close" @click="hide"></div>
       <div class="el-icon-minus" @click="minimize"></div>
+    </div>
     </div>
     <el-container v-loading="loading">
       <el-main>
@@ -80,6 +82,7 @@
 <script>
 import HttpApi from '../../../util/http.js'
 const {ipcRenderer,remote} = require('electron')
+const {is} = require('electron-util');
 export default {
   name: 'Temp',
   data:function(){
@@ -90,6 +93,7 @@ export default {
       curImage:{},
       drawer:false,
       loading:false,
+      isMac:is.macos,
     }
   },
   filters:{
@@ -174,18 +178,18 @@ export default {
   position: absolute;
   top: 0;
 }
-.title-bar div{
+.cmm div{
   width: 28px;
   text-align: center;
   line-height: 28px;
   float: right;
   -webkit-app-region: no-drag;
 }
-.title-bar div:nth-child(odd):hover{
+.cmm div:nth-child(odd):hover{
   background-color: #f45454;
   color: #fff;
 }
-.title-bar div:nth-child(even):hover{
+.cmm div:nth-child(even):hover{
   background-color: #888;
 }
 .el-container {
