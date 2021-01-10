@@ -117,7 +117,7 @@
 
       
       <el-col :span="6">
-        <router-link to="/">
+        <router-link to="/settings">
               <el-row>
                 <el-col :span="24">
                   <el-badge value="1" :hidden='$store.getters.getSettingsBadgeHidden'>

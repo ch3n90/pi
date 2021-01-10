@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
       titleBarFontColor:'#fff',
-      settingsBadgeHidden:true,
+      settingsBadgeHidden:true, 
     },
     mutations: {
       setTitleBarFontColor(state,fc){

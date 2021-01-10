@@ -23,12 +23,6 @@
     <router-view style="animation-duration: 0.5s"/>
   </transition>
 
-  <el-dialog
-    title="下载中"
-    :visible.sync="updateProcessBarVisible"
-    width="28%">
-      <el-progress type="circle" :percentage="percentage"></el-progress>
-  </el-dialog>
 </div>
 </template>
 
@@ -75,25 +69,8 @@ export default {
 
     ipcRenderer.once("update-available",(event,arg) => {
       this.$store.commit("setSettingsBadgeHidden",false);
-      // this.releaseNote = arg.releaseNote;
     });
-    ipcRenderer.once("start-update",(event,arg) => {
-      this.updateProcessBarVisible = true;
-    });
-    ipcRenderer.on("update-processbar",(event,arg) => {
-      this.percentage = parseInt(arg.percent);
-    });
-    ipcRenderer.once("update-downloaded",(event,arg) => {
-      this.updateProcessBarVisible = false;
-      this.$confirm('下载完成，现在退出安装?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          ipcRenderer.send("start-install")
-        }).catch(() => {
-        });
-    })
+    
   },
   beforeDestroy(){
     if(this.timeId){

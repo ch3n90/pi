@@ -159,6 +159,11 @@ ipcMain.on("m3nu-win", () => {
   piWin = null;
 })
 
+ipcMain.on("check-update", () => {
+  checkForUpdates(m3nuWin);
+})
+
+
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {
   if (process.platform === 'win32') {

@@ -19,7 +19,7 @@ autoUpdater.on('update-available', (info) => {
   win.webContents.send("update-available", info);
 })
 autoUpdater.on('update-not-available', (info) => {
-  log.info('Update not available.');
+  win.webContents.send("update-not-available", info);
 })
 autoUpdater.on('error', (err) => {
   log.info('Error in auto-updater. ' + err);
@@ -31,9 +31,8 @@ autoUpdater.on('update-downloaded', (info) => {
   win.webContents.send("update-downloaded");
 });
 
-ipcMain.on("agree-update", () => {
+ipcMain.on("agree-download", () => {
   autoUpdater.downloadUpdate();
-  win.webContents.send("start-update");
 });
 
 ipcMain.on("start-install", () => {
