@@ -1,6 +1,6 @@
 <template>
 <div class="main">
-  <div class="title-bar" >
+  <div class="title-bar" :style="{color:fc}">
     <div class="info"> 
       <div>{{ time }}</div>
       <div>
@@ -11,7 +11,7 @@
       </div>
     </div>
     
-    <div class="cmm">
+    <div class="cmm" v-if="!isMac">
       <div class="el-icon-close" @click="hide"></div>
       <div class="el-icon-minus" @click="minimize"></div>
     </div>
@@ -49,6 +49,7 @@ import 'vue2-animate/dist/vue2-animate.min.css'
 import "../../assets/fonts/iconfont.css"
 import dayjs from 'dayjs'
 const {ipcRenderer,remote} = require('electron')
+const {is} = require('electron-util');
 
 export default {
   name: 'Auth',
@@ -60,6 +61,8 @@ export default {
       releaseNote:[],
       time: dayjs(new Date()).format('HH:mm'),
       timeId:null,
+      fc:"#fff",
+      isMac:is.macos,
     }
   },
   render:function(c){
@@ -117,7 +120,7 @@ export default {
 .main{
   width: 100%;
   height: 100%;
-  background: url('../../assets/images/bg5.jpg') no-repeat center center;
+  background: url('../../assets/images/bg13.jpg') no-repeat center center;
   background-size: cover;
   background-attachment:fixed;
 }
@@ -141,16 +144,11 @@ export default {
 .info{
   margin: 0 10px;
   font-size: 14px;
-  color: #000;
-  
 }
 .info div{
   line-height: 28px;
   float: left;
   margin-right: 6px;
-}
-.info div:nth-child(-n+2){
-  font-weight: bold;
 }
 
 .title-bar div:nth-child(odd):hover{

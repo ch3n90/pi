@@ -21,6 +21,7 @@
     "electron": "^11.0.4",
     "electron-log": "^4.3.1",
     "electron-updater": "^4.3.5",
+    "electron-util": "^0.14.2",
     "element-ui": "^2.14.1",
     "md5": "^2.3.0",
     "qs": "^6.9.4",
