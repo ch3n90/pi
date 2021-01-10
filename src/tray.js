@@ -1,4 +1,5 @@
-import { app, Menu, Tray, dialog} from 'electron'
+import { app, Menu, Tray} from 'electron'
+const {showAboutWindow} = require('electron-util');
 const path = require('path')
 
 let focusedWindow;
@@ -22,17 +23,11 @@ const initTray = () => {
             {
                 label: 'About',
                 click: () => {
-                    const options = {
-                        type: 'info',
-                        title: 'About',
-                        icon: iconPath,
-                        detail:"Version: "+ app.getVersion() +" \n" +
-                                "Date: 2021-01-05 \n" +
-                                "Electron: 11.0.4 \n",
-                        message: " π (Pi) ",
-                        buttons: ['Yes']
-                    }
-                    dialog.showMessageBox(focusedWindow,options);
+                    showAboutWindow({
+                        icon: path.join(__static, 'icon.png'),
+                        copyright: 'Copyright © ch3ng',
+                        text: 'http://pi.milchstrabe.com'
+                    });
                 }
             },
             {

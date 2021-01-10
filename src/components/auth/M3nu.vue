@@ -84,7 +84,7 @@
             <el-col :span="24">
               <div class="logo">
                 <div class="deving">deving</div>
-                <img src="../../assets/images/oss.svg" alt="" class="logo-img">
+                <img src="../../assets/images/oss.png" alt="" class="logo-img">
               </div>
             </el-col>
           </el-row>
@@ -99,7 +99,6 @@
 
       <el-col :span="6">
         <router-link to="/minio">
-          <div class="grid-content">
               <el-row>
                 <el-col :span="24">
                   <div class="logo">
@@ -113,7 +112,27 @@
                   <span>minio</span>
                 </el-col>
               </el-row>
-          </div>
+        </router-link>
+      </el-col>
+
+      
+      <el-col :span="6">
+        <router-link to="/">
+              <el-row>
+                <el-col :span="24">
+                  <el-badge value="1" :hidden='$store.getters.getSettingsBadgeHidden'>
+                    <div class="logo">
+                      <img src="../../assets/images/settings.png" alt="" class="logo-img">
+                    </div>
+                  </el-badge>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="24" class="app-name">
+                  <span>设置</span>
+                </el-col>
+              </el-row>
         </router-link>
       </el-col>
 
@@ -168,7 +187,6 @@ export default {
   width: 63px;
   height: 63px;
   border-radius: 10px;
-  background-color: #fff;
 }
 
 .app-name{
@@ -176,5 +194,9 @@ export default {
   font-size: 14px;
   text-align: center;
 }
-
+.el-col >>> .el-badge__content {
+  border: none;
+  background-color: #F94739;
+  border-radius: 50%;
+}
 </style>

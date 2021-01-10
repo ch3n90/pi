@@ -24,17 +24,6 @@
   </transition>
 
   <el-dialog
-    title="更新提示"
-    :visible.sync="dialogVisible"
-    width="70%">
-    <div v-for="(note,index) in releaseNote" :key="index">{{ note }}</div>
-    <span slot="footer" class="dialog-footer">
-      <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="agreeUpdate">确 定</el-button>
-    </span>
-  </el-dialog>
-
-  <el-dialog
     title="下载中"
     :visible.sync="updateProcessBarVisible"
     width="28%">
@@ -55,7 +44,6 @@ export default {
   name: 'Auth',
   data(){
     return {
-      dialogVisible:false,
       updateProcessBarVisible:false,
       percentage:0,
       releaseNote:[],
@@ -84,9 +72,10 @@ export default {
     this.timeId = setInterval(() => {
       this.time = dayjs(new Date()).format("HH:mm");
     },1000 * 10)
+
     ipcRenderer.once("update-available",(event,arg) => {
-      this.releaseNote = arg.releaseNote;
-      this.dialogVisible = true;
+      this.$store.commit("setSettingsBadgeHidden",false);
+      // this.releaseNote = arg.releaseNote;
     });
     ipcRenderer.once("start-update",(event,arg) => {
       this.updateProcessBarVisible = true;
