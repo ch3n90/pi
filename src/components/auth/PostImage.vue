@@ -104,6 +104,7 @@ export default {
     }
   },
   created(){
+    this.$store.commit("setTitleBarFontColor","#000");
     queryAccess("postimage")
     .then(access => {
       if(access){

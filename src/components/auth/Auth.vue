@@ -1,6 +1,6 @@
 <template>
 <div class="main">
-  <div class="title-bar" :style="{color:fc}">
+  <div class="title-bar" :style="{color:$store.getters.getTitleBarFontColor}">
     <div class="info"> 
       <div :style="{float:isRight}">{{ time }}</div>
       <div :style="{float:isRight}">
@@ -61,7 +61,6 @@ export default {
       releaseNote:[],
       time: dayjs(new Date()).format('HH:mm'),
       timeId:null,
-      fc:"#fff",
       isMac:is.macos,
       isRight:is.macos?"right":"left",
     }
@@ -152,11 +151,11 @@ export default {
   margin-right: 6px;
 }
 
-.title-bar div:nth-child(odd):hover{
+.cmm div:nth-child(odd):hover{
   background-color: #f45454;
   color: #fff;
 }
-.title-bar div:nth-child(even):hover{
+.cmm div:nth-child(even):hover{
   background-color: #888;
 }
 

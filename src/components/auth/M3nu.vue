@@ -126,7 +126,9 @@
 <script>
 export default {
   name: 'M3nu',
-  
+  created(){
+    this.$store.commit("setTitleBarFontColor","#fff");
+  }
 }
 </script>
 

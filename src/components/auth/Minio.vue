@@ -159,6 +159,7 @@ export default {
     }
   },
   created(){
+    this.$store.commit("setTitleBarFontColor","#000");
     queryAccess("minio")
     .then(access => {
       if(access){

@@ -5,23 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-      bucket:null,
-      objectList: [],
+      titleBarFontColor:'#fff',
     },
     mutations: {
-      setBucket(state,bucket){
-        state.bucket = bucket;
+      setTitleBarFontColor(state,fc){
+        state.titleBarFontColor = fc;
       },
-      addObjectList(state,object){
-        state.objectList.unshift(object)
-      }
     },
     getters: {
-      getBucket: state => {
-        return state.bucket;
+      getTitleBarFontColor: state => {
+        return state.titleBarFontColor;
       },
-      getObjectList: state => {
-        return state.objectList;
-      }
     }
   })
