@@ -12,7 +12,7 @@
 
 ## 应用截图
 
-![7gDchXYrkdfz2NQ.png](https://i.loli.net/2021/01/07/7gDchXYrkdfz2NQ.png)
+<img src="https://i.loli.net/2021/01/10/Uqra7W8eKIzsZNw.png" alt="pi.png" style="zoom:50%;" />
 
 ## 下载
 您可以到这里[Pi](http://pi.milchstrabe.com)下载
