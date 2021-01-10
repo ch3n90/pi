@@ -2,11 +2,11 @@
 <div class="main">
   <div class="title-bar" :style="{color:fc}">
     <div class="info"> 
-      <div>{{ time }}</div>
-      <div>
+      <div :style="{float:isRight}">{{ time }}</div>
+      <div :style="{float:isRight}">
         <span class="iconfont icon-wifi"></span>
       </div>
-      <div>
+      <div :style="{float:isRight}">
         <span class="iconfont icon-battery-"></span>
       </div>
     </div>
@@ -63,6 +63,7 @@ export default {
       timeId:null,
       fc:"#fff",
       isMac:is.macos,
+      isRight:is.macos?"right":"left",
     }
   },
   render:function(c){
