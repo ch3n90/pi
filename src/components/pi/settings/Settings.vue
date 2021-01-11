@@ -32,7 +32,7 @@
           @select="exit">
           <el-menu-item index="Exit">
             <i class="el-icon-toilet-paper"></i>
-            <span slot="title">登出</span>
+            <span slot="title">返回</span>
           </el-menu-item>
         </el-menu>
       </el-col>

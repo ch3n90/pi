@@ -67,6 +67,11 @@ function createM3nuWindow() {
     }
   })
 
+  m3nuWin.on("close", (e) => {
+    e.preventDefault();
+    m3nuWin.hide();
+  })
+
   return m3nuWin;
 }
 
@@ -106,6 +111,11 @@ function createPiWindow() {
   piWin.once('ready-to-show', () => {
     piWin.show();
     focusedWin(piWin);
+  })
+
+  piWin.on("close", (e) => {
+    e.preventDefault();
+    piWin.hide();
   })
 
   return piWin;
