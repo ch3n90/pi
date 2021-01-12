@@ -1,8 +1,6 @@
 <template>
   <el-container>
-    <router-link  to="/m3nu" class="back" >
-      <el-page-header></el-page-header>
-    </router-link>
+    <router-link  to="/m3nu" class="back el-icon-arrow-left"></router-link>
     
   <el-main>
     <el-row >
@@ -17,7 +15,7 @@
           <el-row class="rows">
             <el-col :span="15" :offset="1">
               <div>
-                <el-input placeholder="Host" v-model="host">
+                <el-input placeholder="Host" v-model="host" spellcheck="false">
                   <el-select v-model="protocol" slot="prepend">
                     <el-option label="http" value="http://"></el-option>
                     <el-option label="https" value="https://"></el-option>
@@ -33,8 +31,9 @@
             <el-col :span="6">
               <div>
                  <el-input
+                    spellcheck="false"
                     placeholder="host"
-                    v-model="port">
+                    v-model.number="port">
                   </el-input>
               </div>
             </el-col>
@@ -44,6 +43,7 @@
             <el-col :span="22" :offset="1">
               <div>
                  <el-input
+                    spellcheck="false"
                     placeholder="access key"
                     prefix-icon="el-icon-user"
                     v-model="accessKey">
@@ -56,6 +56,7 @@
             <el-col :span="22" :offset="1">
               <div class="password">
                  <el-input
+                    spellcheck="false"
                     placeholder="secret key"
                     prefix-icon="el-icon-lock"
                     v-model="secretKey"
@@ -182,6 +183,7 @@ export default {
   width: 100%;
   position: relative;
   background-color: #fff;
+  -webkit-user-select: none;
 }
 .back{
   position: absolute;
@@ -190,6 +192,8 @@ export default {
   z-index: 999;
   color: #000;
   text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
 }
 .el-page-header >>>.el-page-header__left::after{
   content: none;

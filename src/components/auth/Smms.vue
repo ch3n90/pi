@@ -1,9 +1,6 @@
 <template>
   <el-container>
-    <router-link  to="/m3nu" class="back" >
-      <el-page-header></el-page-header>
-    </router-link>
-    
+     <router-link  to="/m3nu" class="back el-icon-arrow-left"></router-link>
   <el-main>
     <el-row >
       <el-col :span="24">
@@ -18,6 +15,7 @@
             <el-col :span="22" :offset="1">
               <div class="username">
                  <el-input
+                    spellcheck="false"
                     placeholder="ID"
                     prefix-icon="el-icon-user"
                     v-model="username">
@@ -30,6 +28,7 @@
             <el-col :span="22" :offset="1">
               <div class="password">
                  <el-input
+                    spellcheck="false"
                     placeholder="password"
                     prefix-icon="el-icon-lock"
                     v-model="password"
@@ -61,7 +60,7 @@
            <el-row style="margin-top:30px">
             <el-col :span="4" :offset="21">
               <div>
-                  <el-link type="warning" @click.stop="temp">试用</el-link>
+                  <el-link type="warning" :underline="false" @click.stop="temp">试用</el-link>
               </div>
             </el-col>
           </el-row>
@@ -128,7 +127,7 @@ export default {
     temp(){
       remote.getGlobal('cache').pi = './smms/Temp';
       ipcRenderer.send("pi-win");
-    }
+    },
   },
   created(){
     this.$store.commit("setTitleBarFontColor","#000");
@@ -151,6 +150,7 @@ export default {
   width: 100%;
   position: relative;
   background-color: #fff;
+  -webkit-user-select: none;
 }
 .back{
   position: absolute;
@@ -158,7 +158,8 @@ export default {
   top: 38px;
   z-index: 999;
   color: #000;
-  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
 }
 .el-page-header >>>.el-page-header__left::after{
   content: none;
@@ -172,6 +173,7 @@ export default {
   text-align: center;
   color: #409eff;
   margin:20px 0 30px 0 ;
+  -webkit-user-select: none;
 }
 .rows{
   margin-bottom: 30px;
