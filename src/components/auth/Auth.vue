@@ -51,10 +51,6 @@ export default {
     return c(M3nu);
   },
   methods:{
-    agreeUpdate(){
-      this.dialogVisible = false;
-      ipcRenderer.send("agree-update")
-    },
     hide(){
       remote.getCurrentWindow().hide();
     },
@@ -67,7 +63,7 @@ export default {
       this.time = dayjs(new Date()).format("HH:mm");
     },1000 * 10)
 
-    ipcRenderer.once("update-available",(event,arg) => {
+    ipcRenderer.on("update-available",(event,arg) => {
       this.$store.commit("setSettingsBadgeHidden",false);
     });
     

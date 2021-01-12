@@ -5,7 +5,7 @@
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(0, 0, 0, 0.5)"
   >
-  <el-main >
+  <el-main v-if="hasNewVersion">
     <el-row class="release-info">
         <el-col :span="3">
           <div class="logo">
@@ -15,23 +15,19 @@
 
         <el-col :span="18">
           <el-row>
-              <span style="font-weight: bold">{{arg.version}}</span>
+              <p style="font-weight: bold">Version: {{arg.version}}</p>
+              <p>Date: {{ arg.releaseDate }} </p>
+              <p>Size: {{ parseInt(arg.files[0].size / 1024 / 1024) }}MB</p>
           </el-row>
           <el-row v-if="updating===1">
             <el-progress :percentage="percentage"></el-progress>
           </el-row>
-         
         </el-col>
     </el-row>
 
-    <el-row class="release-note">
-       <el-row v-if="hasNewVersion">
-              <div v-for="(note,index) in arg.releaseNote" :key="index">{{note}}</div>
-          </el-row>
-           <el-row v-else>
-              <div> 最新版本 </div>
-          </el-row>
-    </el-row>
+      <el-row class="release-note">
+        <div class="notes" v-html="arg.releaseNotes"></div>
+      </el-row>
 
     <el-row class="start-update-warp" v-if="hasNewVersion" >
       <el-col :span="24">
@@ -47,7 +43,16 @@
       </el-col>
       <!--  -->
     </el-row>
-      
+  </el-main>
+
+  <el-main v-else>
+    <el-row>
+        <el-col :span="24">
+          <div class="no-update">
+            您的软件是最新版本
+          </div>
+        </el-col>
+    </el-row>
   </el-main>
 </el-container>
 </template>
@@ -83,25 +88,35 @@ export default {
     }else{
       ipcRenderer.send("check-update");
 
-    ipcRenderer.once("update-available",(event,arg) => {
-      this.loading = false;
-      this.hasNewVersion = true;
-      this.arg = arg;
-    });
+      ipcRenderer.once("update-available",(event,arg) => {
+        this.loading = false;
+        this.hasNewVersion = true;
+        this.arg = arg;
+      });
 
-    ipcRenderer.once("update-not-available",(event,arg) => {
-      this.loading = false;
-      this.arg = {
-        "version": api.app.getVersion(),
-      }
-    });
-  
-    ipcRenderer.on("update-processbar",(event,arg) => {
-      this.percentage = parseInt(arg.percent);
-    });
-    ipcRenderer.once("update-downloaded",(event,arg) => {
-        this.updating == 2;
-    })
+      ipcRenderer.once("update-not-available",(event,arg) => {
+        this.loading = false;
+        this.arg = {
+          "version": api.app.getVersion(),
+        }
+      });
+    
+      ipcRenderer.on("update-processbar",(event,arg) => {
+        this.percentage = parseInt(arg.percent);
+      });
+
+      ipcRenderer.once("update-downloaded",(event,arg) => {
+          this.updating == 2;
+      });
+
+      ipcRenderer.once("update-error",(event) => {
+        this.loading = false;
+        this.$notify.error({
+          title: '错误',
+          message: "检查更新出差",
+          offset:15
+        });
+      });
     }
     
   }
@@ -135,7 +150,15 @@ export default {
   border-radius: 0 0 10px 10px;
   margin-bottom: 40px;
 }
-
+.notes{
+  padding-left: 20px;
+}
+p{
+  padding: 5px 0;
+}
+.no-update{
+  text-align: center;
+}
 .el-button{
   border: none;
   text-align: left;
