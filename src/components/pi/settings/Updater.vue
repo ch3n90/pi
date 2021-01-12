@@ -49,7 +49,7 @@
     <el-row>
         <el-col :span="24">
           <div class="no-update">
-            您的软件是最新版本
+            
           </div>
         </el-col>
     </el-row>
@@ -67,6 +67,7 @@ export default {
     return {
       loading: true,
       hasNewVersion:false,
+      noNewVersion:"",
       updating:0,
       percentage:0,
       arg:{},
@@ -96,9 +97,7 @@ export default {
 
       ipcRenderer.once("update-not-available",(event,arg) => {
         this.loading = false;
-        this.arg = {
-          "version": api.app.getVersion(),
-        }
+        this.anoNewVersion = "您的软件是最新版本"
       });
     
       ipcRenderer.on("update-processbar",(event,arg) => {
@@ -113,7 +112,7 @@ export default {
         this.loading = false;
         this.$notify.error({
           title: '错误',
-          message: "检查更新出差",
+          message: "检查更新出错了",
           offset:15
         });
       });
