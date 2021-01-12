@@ -10,59 +10,57 @@ module.exports = {
       nodeIntegration: true,
       outputDir: 'build',
       builderOptions: {
-        "appId": "com.milchstrabe.pi",
-        "copyright": "Copyright © 2020-2021 ch3ng",
-        "publish": {
-          "provider": "s3",
-          "bucket": "p-i",
-          "endpoint": "http://pi.milchstrabe.com:9000",
-          "path": "update"
+        appId: "com.milchstrabe.pi",
+        copyright: "Copyright © 2020-2021 ch3ng",
+        publish: {
+          provider: "github"
         },
-        "nsis": {
-          "oneClick": false,
-          "allowElevation": true,
-          "allowToChangeInstallationDirectory": true,
-          "installerIcon": "build/icons/icon.ico",
-          "uninstallerIcon": "build/icons/icon.ico",
-          "installerHeaderIcon": "build/icons/icon.ico",
-          "createDesktopShortcut": true,
-          "createStartMenuShortcut": true,
-          "shortcutName": "π"
-        },
-        "dmg": {
-          "contents": [
+        dmg: {
+          contents: [
             {
-              "x": 410,
-              "y": 150,
-              "type": "link",
-              "path": "/Applications"
+              x: 410,
+              y: 150,
+              type: "link",
+              path: "/Applications"
             },
             {
-              "x": 130,
-              "y": 150,
-              "type": "file"
+              x: 130,
+              y: 150,
+              type: "file"
             }
           ]
         },
-        "mac": {
-          "icon": "build/icons/icon.icns",
-          target:[
+        mac: {
+          category: "public.app-category.productivity",
+          icon: "build/icons/icon.icns",
+          target: [
             'dmg'
           ],
         },
-        "win": {
-          "icon": "build/icons/icon.ico",
-          "target": [
+        nsis: {
+          oneClick: false,
+          allowElevation: true,
+          allowToChangeInstallationDirectory: true,
+          installerIcon: "build/icons/icon.ico",
+          uninstallerIcon: "build/icons/icon.ico",
+          installerHeaderIcon: "build/icons/icon.ico",
+          createDesktopShortcut: true,
+          createStartMenuShortcut: true,
+          shortcutName: "π"
+        },
+        win: {
+          icon: "build/icons/icon.ico",
+          target: [
             {
-              "target": "nsis",
-              "arch": [
+              target: "nsis",
+              arch: [
                 "x64",
                 "ia32"
               ]
             }
           ]
         },
-        "linux": {
+        linux: {
           "icon": "build/icons"
         }
 
