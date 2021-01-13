@@ -44,6 +44,9 @@
       size="60%"
       :with-header="false">
       <div class="detail">
+        <div class="preview">
+          <img :src="curImage.url" alt="" class="preview-img">
+        </div>
         <el-collapse accordion>
           <el-collapse-item title="链接" name="url">
             <el-input readonly v-bind:value="curImage.url">
@@ -216,4 +219,13 @@ export default {
 .el-col >>> .el-upload-list__item-actions{
   cursor: pointer;
 }
+.preview{
+  width: 80%;
+  height: 50%;
+  margin: auto;
+}
+.preview-img{
+  width: 100%;
+  height: 100%;
+} 
 </style>
