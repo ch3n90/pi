@@ -215,7 +215,6 @@ export default {
   height: 100%;
   -webkit-user-select: none;
   background-color: #F3F3F8;
-  
 }
 
 .title-bar{

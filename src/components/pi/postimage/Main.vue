@@ -98,6 +98,7 @@ export default {
 .el-container{
   height: 100%;
   background-color: #F3F3F8;
+  -webkit-user-select: none;
 }
 .title-bar{
   width: 100%;

@@ -342,6 +342,7 @@ export default {
 <style scoped>
 .el-container{
   height: 100%;
+  -webkit-user-select: none;
 }
 .el-table{
   font-size: 14px;
