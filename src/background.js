@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow, ipcMain } from 'electron'
+import { app, protocol, BrowserWindow, ipcMain, powerMonitor} from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import { checkForUpdates } from './updater.js'
 import { initTray, focusedWin } from './tray.js'
@@ -10,8 +10,6 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 
 let piWin
 let m3nuWin
-let timeoutId;
-let updateCheck = true;
 
 global.cache = {
   pi: null,
@@ -60,12 +58,20 @@ function createM3nuWindow() {
   m3nuWin.once('ready-to-show', () => {
     m3nuWin.show()
     focusedWin(m3nuWin);
-    if (updateCheck) {
-      updateCheck = false;
-      timeoutId = setTimeout(() => {
-        checkForUpdates(m3nuWin);
-      }, 3000)
+
+    if (process.platform === 'darwin' || process.platform === 'win32') {
+      // ac
+      powerMonitor.on('on-ac', () => {
+        m3nuWin.webContents.send("power-monitor","ac");
+      })
+    
+      //battery power
+      powerMonitor.on('on-battery', () => {
+        m3nuWin.webContents.send("power-monitor","battery");
+      })
     }
+
+    checkForUpdates(m3nuWin);
   })
 
   m3nuWin.on("close", (e) => {
@@ -140,6 +146,12 @@ app.on('activate', () => {
   }
 })
 
+
+
+
+
+
+
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -161,7 +173,6 @@ app.on('ready', async () => {
 
 
 ipcMain.on("pi-win", () => {
-  clearTimeout(timeoutId);
   piWin = createPiWindow();
   m3nuWin.destroy();
   m3nuWin = null;

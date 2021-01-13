@@ -6,18 +6,32 @@
   "description": "",
   "glyphs": [
     {
-      "icon_id": "7735866",
-      "name": "battery-4",
-      "font_class": "battery-",
-      "unicode": "e8cc",
-      "unicode_decimal": 59596
+      "icon_id": "1160786",
+      "name": "ios-world-outline",
+      "font_class": "iosworldoutline",
+      "unicode": "e822",
+      "unicode_decimal": 59426
     },
     {
-      "icon_id": "12310633",
-      "name": "wifi",
-      "font_class": "wifi",
-      "unicode": "e8d6",
-      "unicode_decimal": 59606
+      "icon_id": "544846",
+      "name": "ios-world",
+      "font_class": "iosworld",
+      "unicode": "e886",
+      "unicode_decimal": 59526
+    },
+    {
+      "icon_id": "7137903",
+      "name": "ios-battery-full",
+      "font_class": "ios-battery-full",
+      "unicode": "e7d2",
+      "unicode_decimal": 59346
+    },
+    {
+      "icon_id": "12467361",
+      "name": "ios-battery-charging",
+      "font_class": "ios-battery-charging1",
+      "unicode": "e693",
+      "unicode_decimal": 59027
     }
   ]
 }

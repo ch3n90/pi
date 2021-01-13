@@ -4,10 +4,10 @@
     <div class="info"> 
       <div :style="{float:isRight}">{{ time }}</div>
       <div :style="{float:isRight}">
-        <span class="iconfont icon-wifi"></span>
+        <span :class="['iconfont',net]" style="font-size:18px"></span>
       </div>
       <div :style="{float:isRight}">
-        <span class="iconfont icon-battery-"></span>
+        <span :class="['iconfont',power]" style="font-size:22px"></span>
       </div>
     </div>
     
@@ -45,6 +45,8 @@ export default {
       timeId:null,
       isMac:is.macos,
       isRight:is.macos?"right":"left",
+      net:navigator.onLine?"icon-iosworld":"icon-iosworldoutline",
+      power:'icon-ios-battery-charging1'
     }
   },
   render:function(c){
@@ -63,8 +65,27 @@ export default {
       this.time = dayjs(new Date()).format("HH:mm");
     },1000 * 10)
 
+    window.addEventListener('online', () => {
+      if(navigator.onLine){
+        this.net = "icon-iosworld"
+      }
+    })
+    window.addEventListener('offline', () => {
+       if(!navigator.onLine){
+        this.net = "icon-iosworldoutline"
+      }
+    })
+
     ipcRenderer.on("update-available",(event,arg) => {
       this.$store.commit("setSettingsBadgeHidden",false);
+    });
+
+    ipcRenderer.on("power-monitor",(event,status) => {
+      if(status === "ac"){
+        this.power = "icon-ios-battery-charging1"
+      }else if(status === "battery"){
+        this.power = "icon-ios-battery-full"
+      }
     });
     
   },
@@ -112,7 +133,6 @@ export default {
   float: left;
   margin-right: 6px;
 }
-
 .cmm div:nth-child(odd):hover{
   background-color: #f45454;
   color: #fff;
