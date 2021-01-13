@@ -206,7 +206,6 @@ methods:{
   background-color: #F3F3F8;
   -webkit-user-select: none;
 }
-
 .title-bar{
   width: 100%;
   height: 28px;
@@ -216,7 +215,6 @@ methods:{
   position: absolute;
   top: 0;
 }
-
 .cmm div{
   width: 28px;
   text-align: center;
@@ -224,7 +222,6 @@ methods:{
   float: right;
   -webkit-app-region: no-drag;
 }
-
 .cmm div:nth-child(odd):hover{
   background-color: #f45454;
   color: #fff;
@@ -232,7 +229,6 @@ methods:{
 .cmm div:nth-child(even):hover{
   background-color: #888;
 }
-
 .menu-name-warp{
   padding: 28px 0 18px 0;
 }
@@ -255,23 +251,25 @@ methods:{
 .menu-item-warp{
   padding: 0 10px;
   border-radius: 10px;
+  height: 65%;
+  overflow-y: auto;
 }
-
-.menu-item-warp .el-menu-item:nth-child(-n+1000){
+.menu-item-warp .el-menu-item{
   border-bottom: 1px solid #e9e9e9;
+  overflow: hidden; 
+  text-overflow: ellipsis
 }
-
-
+.menu-item-warp .el-menu-item:last-child{
+  border-bottom: none;
+}
 .el-menu{
   border-radius: 10px;
   border: none;
 }
-
 .menu-exit-warp{
   padding: 0 10px;
-  margin-top: 40px;
+  margin-top: 30px;
 }
-
 .content {
   margin-top: 28px;
   padding: 0 10px;
@@ -280,21 +278,15 @@ methods:{
 .smms-row,.smms-col{
   height: 100%;
 }
-.el-main::-webkit-scrollbar-track
-{
+.el-main::-webkit-scrollbar-track, .menu-item-warp::-webkit-scrollbar-track{
 	background-color: #f5f5f5;
 }
-.el-main::-webkit-scrollbar
-{
-	width: 8px;
-	background-color: #f5f5f5;
+.el-main::-webkit-scrollbar, .menu-item-warp::-webkit-scrollbar{
+	width: 0px;
 }
-.el-main::-webkit-scrollbar-thumb
-{
-	background-color: #d2d2d2;
-  border-radius: 8px;
+.el-main::-webkit-scrollbar-thumb, .menu-item-warp::-webkit-scrollbar-thumb{
+  border-radius: 0px;
 }
-
 .el-dropdown{
   position: absolute;
   right: 0;

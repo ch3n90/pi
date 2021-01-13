@@ -175,18 +175,13 @@ export default {
 .smms-row,.smms-col{
   height: 100%;
 }
-.el-main::-webkit-scrollbar-track
-{
+.el-main::-webkit-scrollbar-track{
 	background-color: #f5f5f5;
 }
-.el-main::-webkit-scrollbar
-{
-	width: 8px;
-	background-color: #f5f5f5;
+.el-main::-webkit-scrollbar{
+	width: 0;
 }
-.el-main::-webkit-scrollbar-thumb
-{
-	background-color: #d2d2d2;
-  border-radius: 8px;
+.el-main::-webkit-scrollbar-thumb{
+  border-radius: 0;
 }
 </style>

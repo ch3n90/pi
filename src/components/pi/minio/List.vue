@@ -114,6 +114,8 @@
 <script>
 const {remote,clipboard} = require('electron')
 import HttpApi from '../../../util/http'
+import dayjs from 'dayjs'
+const fmt =  "YYYY/MM/DD HH:mm";
 export default {
   name: 'List',
   props:{
@@ -316,25 +318,16 @@ export default {
     dateFormat:function(row, column) {
       let time = row[column.property];
       if(time){
-        time = new Date(time);
+        let targetDayjs = dayjs(time);
+        if(!targetDayjs.isBefore(dayjs("1000-01-01"))){
+          return targetDayjs.format(fmt);
+        }else{
+           return '';
+        }
       }else{
-        return "";
+        return '';
       }
-      let fmt =  "yyyy/MM/dd HH:mm";
-      var o = {
-                  "M+": time.getMonth() + 1, // 月份
-                  "d+": time.getDate(), // 日
-                  "H+": time.getHours(), // 小时
-                  "m+": time.getMinutes(), // 分
-                  "s+": time.getSeconds(), // 秒
-                  "q+": Math.floor((time.getMonth() + 3) / 3), // 季度
-                  "S": time.getMilliseconds() // 毫秒
-              };
-      if (/(y+)/.test(fmt))
-          fmt = fmt.replace(RegExp.$1, (time.getFullYear() + "").substr(4 - RegExp.$1.length));
-      for (var k in o)
-          if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-      return fmt;
+      
     }
   },
 }
