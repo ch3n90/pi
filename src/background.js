@@ -31,10 +31,11 @@ function createM3nuWindow() {
     autoHideMenuBar: true,
     resizable: false,
     title: "",
-    frame:false,
-    titleBarStyle:'hidden',
+    frame: false,
+    titleBarStyle: 'hidden',
+    transparent: true,
     center: true,
-    show:false,
+    show: false,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -59,7 +60,7 @@ function createM3nuWindow() {
   m3nuWin.once('ready-to-show', () => {
     m3nuWin.show()
     focusedWin(m3nuWin);
-    if(updateCheck){
+    if (updateCheck) {
       updateCheck = false;
       timeoutId = setTimeout(() => {
         checkForUpdates(m3nuWin);
@@ -85,8 +86,8 @@ function createPiWindow() {
     autoHideMenuBar: true,
     show: false,
     center: true,
-    frame:false,
-    titleBarStyle:'hidden',
+    frame: false,
+    titleBarStyle: 'hidden',
     title: "",
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
@@ -153,7 +154,9 @@ app.on('ready', async () => {
   }
   m3nuWin = createM3nuWindow();
   initTray();
-  initMenu();
+  if (process.platform === "darwin") {
+    initMenu();
+  }
 })
 
 
