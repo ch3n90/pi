@@ -39,11 +39,10 @@
       </el-col>
 
       <el-col :span="6">
-        <router-link to="/">
+        <router-link to="/imgbb">
           <el-row>
             <el-col :span="24">
               <div class="logo">
-                <div class="deving">deving</div>
                 <img src="../../assets/images/imgbb.png" alt="" class="logo-img">
               </div>
             </el-col>

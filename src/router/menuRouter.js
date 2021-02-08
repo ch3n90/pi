@@ -5,6 +5,7 @@ import M3nu from '../components/auth/M3nu'
 import Smms from '../components/auth/Smms.vue'
 import PostImage from '../components/auth/PostImage'
 import Minio from '../components/auth/Minio'
+import Imgbb from '../components/auth/Imgbb'
 
 Vue.use(Router)
 
@@ -32,6 +33,10 @@ export default new Router({
         {
           path: '/minio',
           component: Minio,
+        },
+        {
+          path: '/imgbb',
+          component: Imgbb,
         },
       ]
     },

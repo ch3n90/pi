@@ -21,6 +21,7 @@ export default {
         case "./postimage/Temp" : return import('./postimage/Temp')
         case "./minio/Main" : return import('./minio/Main')
         case "./settings/Settings" : return import('./settings/Settings')
+        case "./imgbb/Main" : return import('./imgbb/Main')
       }
     }
   },
