@@ -19,8 +19,7 @@
                 <span class="el-upload-list__item-actions" @click="handleDetail(file)">
                   <span
                     class="el-upload-list__item-delete"
-                    @click.stop="handleRemove(file)"
-                  >
+                    @click.stop="handleRemove(file)">
                     <i class="el-icon-delete"></i>
                   </span>
                 </span>
