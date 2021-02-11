@@ -112,59 +112,35 @@ export default {
       this.loading = true;
       let file = request.file;
       if (file) {
-        let ext = file.type.substring(file.type.indexOf("/") + 1);
-        //将文件以Data URL形式读入页面
-        let reader = new FileReader();
-        reader.readAsDataURL(file);
-          reader.onload = (e) => {
-            let imgBase64 = reader.result;
-            imgBase64 = imgBase64.substring(imgBase64.indexOf(",") + 1);
-            const form = {
-              key:this.key,
-              m:md5str,
-              key:this.key,
-              image:imgBase64,
-              version:"1.0.1",
-              name:file.name,
-              portable:1,
-              type: ext
+        var formData = new FormData();
+        formData.append("key",this.key);
+        formData.append("image",file);
+
+        HttpApi.post(
+          'https://api.imgbb.com/1/upload',
+          formData
+        )
+        .then(response=>{
+          this.loading = false;
+          if(response.status === 200){
+            let img = {
+              name:response.data.image.name,
+              url:response.data.image.url
             }
-
-            // -----------------
-
-            HttpApi.post(
-              'https://api.imgbb.com/1/upload',
-              qs.stringify(
-                form
-              ),
-            )
-            .then(response=>{
-              response =response.replace(/&(?!(?:apos|quot|[gl]t|amp);|#)/g, '&amp;')
-              xml2js.parseStringPromise(response ,{explicitArray : false})
-              .then( result => {
-                if(result.data.$.status === "200"){
-                  this.loading = false;
-                  let img = {
-                    name:result.data.image.name,
-                    url:result.data.links.hotlink
-                  }
-                  this.fileList.splice(1,0,img);
-                }
-              })
-              .catch(function (err) {
-                throw err;
-              });
-            }).catch(err => {
-              this.loading = false;
-              this.$notify.error({
-                title: '错误',
-                message: err,
-                offset:15,
-              });
-            });
-
+            this.fileList.splice(1,0,img);
           }
-        }
+          
+        })
+        .catch(err => {
+          this.fileList.splice(this.fileList.length, 1)
+          this.loading = false;
+          this.$notify.error({
+            title: '错误',
+            message: err,
+            offset:15,
+          });
+        });
+      }
      
     },
     handleDetail(file){
