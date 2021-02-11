@@ -1,9 +1,9 @@
 # π
-π(pi)是一个图床聚合软件。
+π(pi)是一个开发者工具箱。
 ## 支持的图床
 - [x] [sm.ms](https://sm.ms)
 - [x] [postimage](https://postimage.org)
-- [ ] [imgbb](https://imgbb.com)
+- [x] [imgbb](https://imgbb.com)
 - [ ] [七牛云](https://portal.qiniu.com)
 - [ ] [Aliyun OSS](https://www.aliyun.com/product/oss)  
 - [x] [minio自建](https://docs.min.io/)  

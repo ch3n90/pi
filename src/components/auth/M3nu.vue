@@ -114,7 +114,26 @@
         </router-link>
       </el-col>
 
-      
+      <el-col :span="6">
+        <router-link to="/">
+              <el-row>
+                <el-col :span="24">
+                  <div class="logo">
+                    <div class="deving">deving</div>
+                    <img src="../../assets/images/jsonf.jpeg" alt="" class="logo-img">
+                  </div>
+                </el-col>
+              </el-row>
+
+              <el-row>
+                <el-col :span="24" class="app-name">
+                  <span>jsonf</span>
+                </el-col>
+              </el-row>
+        </router-link>
+      </el-col>
+
+
       <el-col :span="6">
         <a @click="settings" style="cursor: pointer">
           <el-row>
@@ -134,8 +153,29 @@
           </el-row>
         </a>
       </el-col>
-
     </el-row>
+
+     <el-row :gutter="20" class="rows">
+      <el-col :span="6">
+        <router-link to="/">
+          <el-row>
+            <el-col :span="24">
+              <div class="logo">
+                <div class="deving">deving</div>
+                <img src="../../assets/images/timef.jpeg" alt="" class="logo-img">
+              </div>
+            </el-col>
+          </el-row>
+
+          <el-row>
+            <el-col :span="24" class="app-name">
+              <span>timef</span>
+            </el-col>
+          </el-row>
+        </router-link>
+      </el-col>
+    </el-row>
+    
   </el-main>
 </el-container>
 </template>
