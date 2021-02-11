@@ -135,7 +135,7 @@ export default {
             // -----------------
 
             HttpApi.post(
-              'http://api.postimage.org/1/upload',
+              'https://api.imgbb.com/1/upload',
               qs.stringify(
                 form
               ),
