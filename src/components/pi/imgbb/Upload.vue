@@ -73,7 +73,6 @@
 import HttpApi from '../../../util/http.js'
 import qs from 'qs'
 const md5 = require('md5')
-const xml2js = require('xml2js');
 const {remote,clipboard} = require('electron')
 export default {
   name: 'Upload',
@@ -114,7 +113,6 @@ export default {
       let file = request.file;
       if (file) {
         let ext = file.type.substring(file.type.indexOf("/") + 1);
-        let md5str = md5(this.key)
         //将文件以Data URL形式读入页面
         let reader = new FileReader();
         reader.readAsDataURL(file);
@@ -122,7 +120,7 @@ export default {
             let imgBase64 = reader.result;
             imgBase64 = imgBase64.substring(imgBase64.indexOf(",") + 1);
             const form = {
-              o:md5str,
+              key:this.key,
               m:md5str,
               key:this.key,
               image:imgBase64,
